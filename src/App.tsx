@@ -1,25 +1,41 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+import './styles/App.css';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import {Text} from './styles/Typography'
+import {ButtonPrimary, ButtonSecondary, ButtonTertiary} from './styles/Buttons'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Honest data test
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+          <Route exact path="/">
+            <Grid fluid>
+              <Row>
+                <Col lg={12}>
+                  <h1>Hello world</h1>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={4}>
+                  <Text size="lg" len="short">
+                    Hey there
+                  </Text>
+                </Col>
+                <Col lg={4}>
+                  <ButtonPrimary id="test">Test button</ButtonPrimary>
+                </Col>
+                <Col lg={4}><p>Hello world</p></Col>
+              </Row>
+            </Grid>
+            
+          </Route>
+      </Switch>
+    </Router>
   );
 }
 
@@ -29,7 +45,5 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 } else {
   url = 'https://api.honestdata.world/'
 }
-
-fetch(url).then(res=> res.json()).then(res=>console.log(res))
 
 export default App;
