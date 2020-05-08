@@ -34,14 +34,6 @@ h1, h2, h3, h4, h5, h6,
 p, ul, li, a, label, i, button {
   color: var(--text-color);
 }
-.css-1pahdxg-control,
-.css-yk16xz-control {
-  background: #F3F3F3 !important;
-  border-radius: 10px !important;
-  border-color: transparent !important;
-  padding: .5em;
-
-}
 
 
 .btn {
@@ -219,9 +211,128 @@ h6 {
 
 
 
+
+/**** end ui kit ****/
+.search__container {
+  height: 100%;
+  display: flex;
+  background: linear-gradient(137.11deg, #FDFDFD 20%,#F4D5FF, #FDFDFD, #ACFEBA, #FDFDFD, #DABCFF, #FDFDFD, #BCFFC7);
+  background-size: 300% 300%;
+	animation: gradient 15s ease infinite;
+}
+
+/* @keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+} */
+
+
+
+.css-1pahdxg-control,
+.css-yk16xz-control {
+  background: #F3F3F3 !important;
+  border-radius: 10px !important;
+  border-color: transparent !important;
+  padding: .5em;
+
+}
+
+.search_screen {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-self:center;
+  justify-content: center;
+  margin: 0 auto;
+}
+#search__button {
+  margin: 2em auto;
+  display: flex;
+}
+
+
+.searchToggle__controller {
+  display: flex;
+  flex-basis: 50%;
+  width: 50%;
+  margin: 1em auto;
+  padding-left: 0;
+}
+.searchToggle__controller li {
+  display: inline;
+  list-style-type: none;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  padding: 1em;
+  font-weight: 700;
+  transition-duration: .3s;
+}
+
+.searchToggle__controller li:hover {
+  border-color: var(--text-color);
+}
+
+.searchToggle__controller li.active__search {
+  border-color: var(--text-color);
+}
+
+
+
+.availableSources__list {
+  display: flex;
+  columns: 4;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  padding-left: 0;
+}
+.availableSources__list li {
+  box-shadow: 20px 20px 60px #d9d9d9, 
+             -20px -20px 60px #ffffff;
+  background: #fff;
+  margin: 1em;
+  list-style-type: none;
+  flex-basis: 20%;
+  text-align:center;
+  border-radius: 5px;
+  padding: 1em 2em;
+  cursor: pointer;
+  transition-duration: .3s;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.availableSources__list li:hover {
+  background: linear-gradient(115.8deg, #6E30F2 0%, #86E2FF 100%);
+  color: white;
+}
+
+.availableSources__list div[class^="col"] {
+  padding: .5em;
+}
+
+
+
+
+
 @media only screen and (max-width: 775px) {
+  .search__container {
+    height: auto;
+    padding-top: 2em;
+    padding-bottom: 5em;
+  }
   nav {
-    background: var(--bg);
+    background: white;
     width: 100%;
     z-index: 2;
   }
@@ -251,40 +362,7 @@ h6 {
   #menu-popout {
     display: block;
   }
-}
-
-
-
-/**** end ui kit ****/
-.search__container {
-  height: 100%;
-  display: flex;
-  background: linear-gradient(137.11deg, #FDFDFD 20%,#F4D5FF, #FDFDFD, #ACFEBA, #FDFDFD, #DABCFF, #FDFDFD, #BCFFC7);
-  background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
-}
-
-@keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-}
-
-.search_screen {
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  align-self:center;
-  justify-content: center;
-  margin: 0 auto;
-}
-#search__button {
-  margin: 2em auto;
-  display: flex;
+  .searchToggle__controller {
+    width: 100%;
+  }
 }
