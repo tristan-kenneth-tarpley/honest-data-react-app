@@ -5,34 +5,16 @@ import {
   Route
 } from "react-router-dom";
 import './styles/App.css';
-import { Grid, Row, Col } from 'react-flexbox-grid';
-import {Text} from './styles/Typography'
-import {ButtonPrimary, ButtonSecondary, ButtonTertiary} from './styles/Buttons'
+import Search from './components/Search'
+import Navbar from './components/Navbar'
 
 function App() {
   return (
     <Router>
+      <Navbar />
       <Switch>
           <Route exact path="/">
-            <Grid fluid>
-              <Row>
-                <Col lg={12}>
-                  <h1>Hello world</h1>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={4}>
-                  <Text size="lg" len="short">
-                    Hey there
-                  </Text>
-                </Col>
-                <Col lg={4}>
-                  <ButtonPrimary id="test">Test button</ButtonPrimary>
-                </Col>
-                <Col lg={4}><p>Hello world</p></Col>
-              </Row>
-            </Grid>
-            
+            <Search></Search>
           </Route>
       </Switch>
     </Router>

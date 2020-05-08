@@ -1,7 +1,16 @@
+:root {
+  --text-color: #011549;
+  --purple: #8D34FF;
+  --bg: #ffffff;
+}
+
 * {
   box-sizing: border-box;
 }
 
+body, html, #root {
+  height: 100%;
+}
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
@@ -17,16 +26,22 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Ubuntu', sans-serif;
 }
-p, ul, li, a, label, button {
+p, ul, li, a, label, button, div {
   font-family: 'Lato', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6,
 p, ul, li, a, label, i, button {
-  color: #011549;
+  color: var(--text-color);
 }
+.css-1pahdxg-control,
+.css-yk16xz-control {
+  background: #F3F3F3 !important;
+  border-radius: 10px !important;
+  border-color: transparent !important;
+  padding: .5em;
 
-
+}
 
 
 .btn {
@@ -70,8 +85,8 @@ p .btn {
 
 }
 .btn-secondary:hover {
-  background: var(--primary);
-  border-color: var(--primary);
+  background: var(--text-color);
+  border-color: var(--text-color);
   color: white;
 }
 .btn-secondary.disabled {
@@ -83,11 +98,12 @@ p .btn {
 
 .btn-tertiary {
   border-color: transparent;
-  color: var(--primary);
+  color: var(--text-color);
   background: transparent;
+
 }
 .btn-tertiary:hover {
-  background: #3F484A;
+  color: var(--purple);
 }
 .btn-tertiary.disabled {
   color: #919191;
@@ -171,4 +187,104 @@ h6 {
   line-height: 1rem;
   font-weight: 400;
   letter-spacing: .32px;
+}
+
+
+
+
+.nav {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display:flex;
+}
+
+.nav .btn-group {
+  justify-content: flex-end;
+  display:flex;
+  width: 100%;
+  align-items: center;
+  margin-right: 2em;
+}
+.nav .btn-group .dropdown i:first-of-type {
+  margin-left: 0;
+}
+.nav img {
+  width:10em;
+  margin: 1em 4.5rem;
+}
+#menu-popout {
+  display: none;
+}
+
+
+
+@media only screen and (max-width: 775px) {
+  nav {
+    background: var(--bg);
+    width: 100%;
+    z-index: 2;
+  }
+  nav, .nav {
+    position: fixed;
+    bottom: 0;
+    height:6%;
+    top: 94%;
+  }
+  .nav-logo {
+    display: none;
+  }
+  .nav .btn-group {
+    justify-content: center;
+  }
+  .btn-group a {
+    margin: 0;
+    width: 25%;
+    padding: 0;
+  }
+  .home {
+    margin-top: 0;
+  }
+  #nav-dropdown {
+    display: none;
+  }
+  #menu-popout {
+    display: block;
+  }
+}
+
+
+
+/**** end ui kit ****/
+.search__container {
+  height: 100%;
+  display: flex;
+  background: linear-gradient(137.11deg, #FDFDFD 20%,#F4D5FF, #FDFDFD, #ACFEBA, #FDFDFD, #DABCFF, #FDFDFD, #BCFFC7);
+  background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.search_screen {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-self:center;
+  justify-content: center;
+  margin: 0 auto;
+}
+#search__button {
+  margin: 2em auto;
+  display: flex;
 }
