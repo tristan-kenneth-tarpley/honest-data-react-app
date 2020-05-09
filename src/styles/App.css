@@ -329,7 +329,10 @@ h6 {
   .search__container {
     height: auto;
     padding-top: 2em;
-    padding-bottom: 5em;
+    padding-bottom: 7em;
+  }
+  .search_screen {
+    width: 95%;
   }
   nav {
     background: white;
@@ -339,8 +342,8 @@ h6 {
   nav, .nav {
     position: fixed;
     bottom: 0;
-    height:6%;
-    top: 94%;
+    height:8%;
+    top: 92%;
   }
   .nav-logo {
     display: none;
@@ -350,7 +353,7 @@ h6 {
   }
   .btn-group a {
     margin: 0;
-    width: 25%;
+    width: 50%;
     padding: 0;
   }
   .home {

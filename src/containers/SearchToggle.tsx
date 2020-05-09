@@ -19,7 +19,7 @@ const SearchTypeSelector: React.FC = (props:any) => {
                         onClick={() => handleToggle(searchTypes.singleSource)}
                         className={`${props.activeSearchField === searchTypes.singleSource && 'active__search'}`}>
                         
-                        Browse available data sources
+                        Browse available data
                     </li>
                     <li
                         onClick={() => handleToggle(searchTypes.compareSources)}
