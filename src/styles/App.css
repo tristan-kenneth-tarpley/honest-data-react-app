@@ -35,7 +35,9 @@ p, ul, li, a, label, i, button {
   color: var(--text-color);
 }
 
-
+.invisibleLink {
+  text-decoration: none;
+}
 .btn {
   border-radius: 100px;
   font-size: 1rem;
@@ -324,6 +326,20 @@ h6 {
 
 
 
+/* dashboard stuff */
+
+
+.dashboard__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  top: 10%;
+  height:100%;
+  padding: 2em;
+}
+
+
+
 
 @media only screen and (max-width: 775px) {
   .search__container {
@@ -369,3 +385,5 @@ h6 {
     width: 100%;
   }
 }
+
+
