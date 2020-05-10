@@ -2,6 +2,11 @@
   --text-color: #011549;
   --purple: #8D34FF;
   --bg: #ffffff;
+  --dashboard-bg: #F5F5F5;
+  --dashboard-secondary: #e6e6e6;
+  --box-shadow: 20px 20px 60px #d9d9d9, 
+                -20px -20px 60px #ffffff;
+    
 }
 
 * {
@@ -184,7 +189,9 @@ h6 {
 }
 
 
-
+.mobile-logo {
+  display: none;
+}
 
 .nav {
   position: absolute;
@@ -237,8 +244,8 @@ h6 {
 
 
 
-.css-1pahdxg-control,
-.css-yk16xz-control {
+#root .css-1pahdxg-control,
+#root .css-yk16xz-control {
   background: #F3F3F3 !important;
   border-radius: 10px !important;
   border-color: transparent !important;
@@ -297,8 +304,7 @@ h6 {
   padding-left: 0;
 }
 .availableSources__list li {
-  box-shadow: 20px 20px 60px #d9d9d9, 
-             -20px -20px 60px #ffffff;
+  box-shadow: var(--box-shadow);
   background: #fff;
   margin: 1em;
   list-style-type: none;
@@ -324,20 +330,67 @@ h6 {
 }
 
 
+div[class^="col"].parent {
+  margin-top: 1em !important;
+}
+
+.card.justify {
+  justify-content: center
+}
+.card {
+  background: #fff;
+  box-shadow: var(--box-shadow);
+  border-radius: .625rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2rem 2rem 0;
+  margin-top: 2em;
+  align-items: stretch;
+  height: 100%;
+  text-overflow: ellipsis;
+  flex-wrap: wrap;
+}
+.card h5:first-of-type {
+  margin-bottom: 1em;
+  margin-top: 0;
+}
+.card p:last-child,
+.card a:last-child {
+  margin:0;
+}
+
 
 
 /* dashboard stuff */
 
 
 .dashboard__container {
+  background: var(--dashboard-bg);
   position: relative;
   display: flex;
   flex-direction: column;
-  top: 10%;
+  top: 8%;
   height:100%;
   padding: 2em;
 }
 
+.dashboard__toolbar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.dashboard__toolbar #select {
+  width: 40%;
+  margin-left: 2em;
+}
+#dashboard__container .css-yk16xz-control {
+  background: var(--dashboard-secondary) !important;
+}
+
+.dashboard__container .info {
+  width: 60%;
+}
 
 
 
@@ -364,9 +417,22 @@ h6 {
   .nav-logo {
     display: none;
   }
+  .mobile-logo {
+    display: flex;
+    position: relative;
+    top: 0;
+    padding: 1em 0;
+    width: 100%;
+    z-index: 1;
+    justify-content: center;
+  }
+  .mobile-logo img {
+    width: 50%;
+  }
   .nav .btn-group {
     justify-content: center;
   }
+  
   .btn-group a {
     margin: 0;
     width: 50%;
@@ -384,6 +450,19 @@ h6 {
   .searchToggle__controller {
     width: 100%;
   }
+  .dashboard__toolbar {
+    flex-direction: column;
+  }
+  .dashboard__container {
+    top: 0;
+    margin-bottom: 10%;
+  }
+  .dashboard__toolbar #select,
+  .dashboard__container .info {
+    margin-left: 0;
+    width: 100%;
+  }
+  .dashboard__toolbar #select {margin-top: 1em;}
 }
 
 

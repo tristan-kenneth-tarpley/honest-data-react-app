@@ -11,12 +11,10 @@ export const SingleSourceSearchField: React.FC = () => {
         <React.Fragment>
             <Col lg={12}>
                 <ul className="availableSources__list">
-                    <Row>
+                    <Row style={{width: '100%'}}>
                     {sources.map(src=>{
-                        // need to build in view logic here for when there are fewer than 4 results
-                            //  lg={4} md={4} sm={6} xs={12}
                         return (
-                            <Col key={src.uid}>
+                            <Col lg={3} md={3} sm={6} xs={12} key={src.uid}>
                                 <Link className="invisibleLink" to={`/dashboard/${src.route}/single`}>
                                     <li key={src.uid}>{src.value}</li>
                                 </Link>

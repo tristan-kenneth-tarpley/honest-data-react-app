@@ -8,7 +8,7 @@ import {
 import './styles/App.css';
 import Search from './components/Search'
 import Navbar from './components/Navbar'
-import Dashboard from './containers/Dashboard'
+import DashboardContainer from './containers/DashboardContainer'
 
 function App() {
   //let { src } = useParams();
@@ -19,7 +19,7 @@ function App() {
           <Route exact path="/">
             <Search></Search>
           </Route>
-          <Route path="/dashboard/:src/:singleOrMulti" component={Dashboard} />
+          <Route path="/dashboard/:src/:singleOrMulti" component={DashboardContainer} />
       </Switch>
     </Router>
   );
