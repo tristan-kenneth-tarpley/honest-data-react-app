@@ -5,11 +5,11 @@ import logo from '../img/first_draft.png'
 const Navbar: React.FC = () => {
     return (
         <div>
-            <Link to="/">
+            
                 <div className="mobile-logo">
                     <img src={logo} alt="white-logo.svg"></img>
                 </div>
-            </Link>
+            
             <nav>
                 
                 <div className="_9 nav">
@@ -18,7 +18,10 @@ const Navbar: React.FC = () => {
                     </Link>
                     <div className="btn-group">
                         <Link className="btn btn-tertiary" to="/about">About honest data</Link>
-                        <Link className="btn btn-tertiary" to="/contact">Contact</Link>
+                        <Link className="btn btn-tertiary" to="/contact">
+                            <i className="fad fa-phone"></i>
+                            Contact
+                        </Link>
                     </div>
                 </div>
             </nav>
