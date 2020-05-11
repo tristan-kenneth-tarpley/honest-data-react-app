@@ -15,7 +15,8 @@ const Dashboard: React.FC<dashboard> = (props) => {
     for (let i of Object.keys(data.records[0])) {
         const root = data.records[0]
         const disallowedKeys = ["internal", "flag"]
-        if (i != "uid" && !disallowedKeys.includes(root[i])) {
+        console.log(i, disallowedKeys.includes(root[i]))
+        if (root[i] !== "uid" && !disallowedKeys.includes(root[i])) {
             filterables = [...filterables, {
                 value: i.toLowerCase(),
                 label: i
