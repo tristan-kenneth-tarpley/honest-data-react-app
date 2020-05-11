@@ -431,7 +431,7 @@ div[class^="col"].parent {
   }
   .nav i {
     display: block;
-    font-size: 150%;
+    font-size: 175%;
   }
   .hideOnMobile {
     display: none;
@@ -466,7 +466,7 @@ div[class^="col"].parent {
   }
   .dashboard__container {
     top: 0;
-    margin-bottom: 10%;
+    padding-bottom: 7em;
   }
   .dashboard__toolbar #select,
   .dashboard__container .info {

@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
                             <span className="hideOnMobile">About honest data</span>
                         </Link>
                         <Link className="btn btn-tertiary" to="/contact">
-                            <i className="fad fa-phone"></i>
+                            <i className="fad fa-envelope"></i>
                             <span className="hideOnMobile">Contact</span>
                         </Link>
                     </div>
