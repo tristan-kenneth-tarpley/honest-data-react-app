@@ -466,7 +466,7 @@ div[class^="col"].parent {
   }
   .dashboard__container {
     top: 0;
-    padding-bottom: 7em;
+    margin-bottom: 7em;
   }
   .dashboard__toolbar #select,
   .dashboard__container .info {
