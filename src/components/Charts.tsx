@@ -77,17 +77,20 @@ export const PIE_CHART: React.FC<chart> = (props) => {
             <div className="metrics__selector">
                 Viewing:
                 {
-                    filtered.map(filter=>{
-                        const isActive = activeMetric === filter ? true : false
-                        return (
-                            <span
-                                onClick={()=>changeMetric(filter)}
-                                className={isActive ? 'active' : ""}
-                                >
-                                {filter}
-                            </span>
-                        )
-                    })
+                    filtered.length > 1 && (  
+                        
+                        filtered.map(filter=>{
+                            const isActive = activeMetric === filter ? true : false
+                            return (
+                                <span
+                                    onClick={()=>changeMetric(filter)}
+                                    className={isActive ? 'active' : ""}
+                                    >
+                                    {filter}
+                                </span>
+                            )
+                        })
+                    ) 
                 }
             </div>
             <ResponsiveContainer width={'99%'} height={Styles.chartHeight}>

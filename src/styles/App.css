@@ -402,7 +402,6 @@ div[class^="col"].parent {
 /*** chart styles ***/
 .metrics__selector {
   display: inline-flex;
-  justify-content: flex-end;
 }
 
 .metrics__selector span {

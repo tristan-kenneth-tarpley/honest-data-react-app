@@ -48,13 +48,13 @@ const Dashboard: React.FC<dashboard> = (props) => {
                     filterables={filterables}
                     title={data.title} />
                 <Row>
-                    <Col className="parent" lg={8} md={8}>
+                    <Col className="parent" lg={6} md={6}>
                         <Card>   
                             <h5>Line chart</h5>
                             <LINE_CHART data={chartData} />
                         </Card>
                     </Col>
-                    <Col className="parent" lg={4} md={4}>
+                    <Col className="parent" lg={6} md={6}>
                         <Card>       
                             <h5>Pie Chart</h5>
                             <PIE_CHART data={chartData} />
