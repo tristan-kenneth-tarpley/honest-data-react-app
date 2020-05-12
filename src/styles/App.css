@@ -399,6 +399,23 @@ div[class^="col"].parent {
 
 
 
+/*** chart styles ***/
+.metrics__selector {
+  display: inline-flex;
+  justify-content: flex-end;
+}
+
+.metrics__selector span {
+  margin: 0 1em .5em;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+}
+.metrics__selector span.active {
+  font-weight: bold;
+  border-color: var(--text-color);
+}
+
+
 @media only screen and (max-width: 775px) {
   .search__container {
     height: auto;

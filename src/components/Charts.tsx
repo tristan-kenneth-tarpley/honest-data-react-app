@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { ResponsiveContainer, LineChart, PieChart, Pie, BarChart, Bar, Sector, Line,
     XAxis, YAxis, Cell, ReferenceLine, ReferenceArea,
     ReferenceDot, Tooltip, CartesianGrid, Legend, Brush, ErrorBar, AreaChart, Area,
@@ -70,15 +70,33 @@ export const LINE_CHART: React.FC<chart> = (props) => {
 
 export const PIE_CHART: React.FC<chart> = (props) => {
     const filtered = filterData(props.data)
+    let [activeMetric, changeMetric] = useState(filtered[0])
+
     return (
         <React.Fragment>
+            <div className="metrics__selector">
+                Viewing:
+                {
+                    filtered.map(filter=>{
+                        const isActive = activeMetric === filter ? true : false
+                        return (
+                            <span
+                                onClick={()=>changeMetric(filter)}
+                                className={isActive ? 'active' : ""}
+                                >
+                                {filter}
+                            </span>
+                        )
+                    })
+                }
+            </div>
             <ResponsiveContainer width={'99%'} height={Styles.chartHeight}>
                 <PieChart width={Styles.chartWidth} height={Styles.chartHeight} >
                     <Tooltip />
                     <Legend />
                     <Pie
                         data={props.data} 
-                        dataKey="uv"
+                        dataKey={activeMetric}
                         innerRadius={30}
                         outerRadius={75} 
                         fill="#8884d8"
