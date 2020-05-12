@@ -125,7 +125,7 @@ export const BAR_CHART: React.FC<chart> = (props) => {
                     height={Styles.chartHeight}
                     data={props.data}
                     margin={{
-                    top: 5, right: 30, left: 20, bottom: 5,
+                    top: 5, right: 30, left: 0, bottom: 5,
                     }}
                 >
                     <XAxis axisLine={false} tickLine={false} dataKey="name" />
@@ -156,7 +156,7 @@ export const STACKED_BAR_CHART: React.FC<chart> = (props) => {
                     height={Styles.chartHeight}
                     data={props.data}
                     margin={{
-                    top: 20, right: 30, left: 20, bottom: 5,
+                    top: 20, right: 30, left: 0, bottom: 5,
                     }}
                 >
                     <XAxis axisLine={false} tickLine={false} dataKey="name" />

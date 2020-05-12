@@ -12,10 +12,10 @@ const chartData = [
     { name: 'Page C', uv: 280, pv: 1398},
     { name: 'Page D', uv: 200, pv: 9800},
     { name: 'Page E', uv: 278, pv: 4300},
-    { name: 'Page F', uv: 189, pv: 4800},
-    { name: 'Page G', uv: 189, pv: 4800},
-    { name: 'Page H', uv: 189, pv: 4800},
-    { name: 'Page I', uv: 189, pv: 4800},
+    { name: 'Page F', uv: 20000, pv: 4800},
+    { name: 'Page G', uv: 189, pv: 7350},
+    { name: 'Page H', uv: 7500, pv: 4800},
+    { name: 'Page I', uv: 189, pv: 200},
     { name: 'Page J', uv: 189, pv: 4800},
 ];
     
