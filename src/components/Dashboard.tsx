@@ -4,6 +4,21 @@ import Card from '../components/Card'
 import { Link } from 'react-router-dom';
 import Toolbar from '../components/Toolbar'
 import {decamelize} from '../helpers'
+import {LINE_CHART, PIE_CHART, BAR_CHART, STACKED_BAR_CHART} from '../components/Charts'
+
+const chartData = [
+    { name: 'Page A', uv: 1000, pv: 2400},
+    { name: 'Page B', uv: 300, pv: 4567},
+    { name: 'Page C', uv: 280, pv: 1398},
+    { name: 'Page D', uv: 200, pv: 9800},
+    { name: 'Page E', uv: 278, pv: 4300},
+    { name: 'Page F', uv: 189, pv: 4800},
+    { name: 'Page G', uv: 189, pv: 4800},
+    { name: 'Page H', uv: 189, pv: 4800},
+    { name: 'Page I', uv: 189, pv: 4800},
+    { name: 'Page J', uv: 189, pv: 4800},
+];
+    
 
 interface dashboard {
     data: any
@@ -16,7 +31,6 @@ const Dashboard: React.FC<dashboard> = (props) => {
     for (let i of Object.keys(data.records[0])) {
         const root = data.records[0]
         const disallowedKeys = ["internal", "flag"]
-        console.log(i, disallowedKeys.includes(root[i]))
         if (i !== "uid" && !disallowedKeys.includes(root[i])) {
             filterables = [...filterables, {
                 value: i,
@@ -34,24 +48,28 @@ const Dashboard: React.FC<dashboard> = (props) => {
                     filterables={filterables}
                     title={data.title} />
                 <Row>
-                    <Col className="parent" lg={4} md={4}>
-                        <Card>       
-                        </Card>
-                    </Col>
-                    <Col className="parent" lg={4} md={4}>
-                        <Card>       
-                        </Card>
-                    </Col>
-                    <Col className="parent" lg={4} md={4}>
-                        <Card>       
-                        </Card>
-                    </Col>
-                    <Col className="parent" lg={4} md={4}>
-                        <Card>       
-                        </Card>
-                    </Col>
                     <Col className="parent" lg={8} md={8}>
+                        <Card>   
+                            <h5>Line chart</h5>
+                            <LINE_CHART data={chartData} />
+                        </Card>
+                    </Col>
+                    <Col className="parent" lg={4} md={4}>
                         <Card>       
+                            <h5>Pie Chart</h5>
+                            <PIE_CHART data={chartData} />
+                        </Card>
+                    </Col>
+                    <Col className="parent" lg={6} md={6}>
+                        <Card>       
+                            <h5>Bar chart</h5>
+                            <BAR_CHART data={chartData} />
+                        </Card>
+                    </Col>
+                    <Col className="parent" lg={6} md={6}>
+                        <Card> 
+                            <h5>Stacked Bar chart</h5>     
+                            <STACKED_BAR_CHART data={chartData} /> 
                         </Card>
                     </Col>
                 </Row>

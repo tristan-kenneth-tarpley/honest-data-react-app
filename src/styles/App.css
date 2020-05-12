@@ -1,6 +1,8 @@
 :root {
   --text-color: #011549;
   --purple: #8D34FF;
+  --blue: #86E2FF;
+  --green: #A2F4D7;
   --bg: #ffffff;
   --dashboard-bg: #F5F5F5;
   --dashboard-secondary: #e6e6e6;
@@ -374,8 +376,8 @@ div[class^="col"].parent {
   display: flex;
   flex-direction: column;
   top: 8%;
-  height:100%;
   padding: 2em;
+  padding-bottom: 5%;
 }
 
 .dashboard__toolbar {
