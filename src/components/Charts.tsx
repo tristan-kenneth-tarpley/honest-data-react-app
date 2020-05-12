@@ -25,6 +25,12 @@ const COLORS = [
     Styles.purple,
     Styles.blue,
     Styles.green,
+    Styles.pink,
+    Styles.peach,
+    Styles.red,
+    Styles.deepBlue,
+    Styles.yellow,
+    Styles.orange,
     Styles.fontColor,
 ];
 const filterData = (data: Array<chartRecord>) => Object.keys(data[0]).filter(x => x !== "name")
@@ -42,8 +48,9 @@ export const LINE_CHART: React.FC<chart> = (props) => {
                     <XAxis axisLine={false} tickLine={false} dataKey="name" />
                     <YAxis axisLine={false} tickLine={false} type="number" />
                     <Tooltip />
+                    <Legend />
                     {
-                        props.data.map((row, index)=>{
+                        filtered.map((row, index)=>{
                             const color = COLORS[index % COLORS.length]
                             return (
                                 <Line type="monotone"
@@ -62,16 +69,18 @@ export const LINE_CHART: React.FC<chart> = (props) => {
 }
 
 export const PIE_CHART: React.FC<chart> = (props) => {
+    const filtered = filterData(props.data)
     return (
         <React.Fragment>
             <ResponsiveContainer width={'99%'} height={Styles.chartHeight}>
                 <PieChart width={Styles.chartWidth} height={Styles.chartHeight} >
                     <Tooltip />
+                    <Legend />
                     <Pie
                         data={props.data} 
                         dataKey="uv"
-                        innerRadius={50}
-                        outerRadius={100} 
+                        innerRadius={30}
+                        outerRadius={75} 
                         fill="#8884d8"
                         paddingAngle={2}
                         >
@@ -100,6 +109,7 @@ export const BAR_CHART: React.FC<chart> = (props) => {
                 >
                     <XAxis axisLine={false} tickLine={false} dataKey="name" />
                     <YAxis axisLine={false} tickLine={false} />
+                    <Legend />
                     <Tooltip />
                     {
                         filtered.map((row, index)=>{
@@ -130,9 +140,10 @@ export const STACKED_BAR_CHART: React.FC<chart> = (props) => {
                 >
                     <XAxis axisLine={false} tickLine={false} dataKey="name" />
                     <YAxis axisLine={false} tickLine={false} />
+                    <Legend />
                     <Tooltip />
                     {
-                        props.data.map((row, index)=>{
+                        filtered.map((row, index)=>{
                             const color = COLORS[index % COLORS.length]
                             return (
                                 <Bar stackId="a" dataKey={filtered[index]} fill={color} />

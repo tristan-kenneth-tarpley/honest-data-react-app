@@ -5,13 +5,13 @@ import logo from '../img/first_draft.png'
 const Navbar: React.FC = () => {
     return (
         <div>
-            
+            <Link to="/">
                 <div className="mobile-logo">
                     <img src={logo} alt="white-logo.svg"></img>
                 </div>
+            </Link>
             
             <nav>
-                
                 <div className="_9 nav">
                     <Link className="nav-logo" to="/">
                         <img src={logo} alt="white-logo.svg"></img>
