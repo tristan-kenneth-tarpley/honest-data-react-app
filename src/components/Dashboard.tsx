@@ -3,6 +3,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import Card from '../components/Card'
 import { Link } from 'react-router-dom';
 import Toolbar from '../components/Toolbar'
+import {decamelize} from '../helpers'
 
 interface dashboard {
     data: any
@@ -16,10 +17,10 @@ const Dashboard: React.FC<dashboard> = (props) => {
         const root = data.records[0]
         const disallowedKeys = ["internal", "flag"]
         console.log(i, disallowedKeys.includes(root[i]))
-        if (root[i] !== "uid" && !disallowedKeys.includes(root[i])) {
+        if (i !== "uid" && !disallowedKeys.includes(root[i])) {
             filterables = [...filterables, {
-                value: i.toLowerCase(),
-                label: i
+                value: i,
+                label: decamelize(i)
             }]
         }
     }
