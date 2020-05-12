@@ -469,7 +469,7 @@ div[class^="col"].parent {
   .dashboard__container {
     top: 0;
     padding:0;
-    margin-bottom: 7em;
+    padding-bottom: 7em;
     position: static;
   }
   .dashboard__toolbar #select,
