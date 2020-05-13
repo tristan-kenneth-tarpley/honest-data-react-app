@@ -19,12 +19,14 @@ const chartData = [
     { name: 'Page I', uv: 189, pv: 200},
     { name: 'Page J', uv: 189, pv: 4800},
 ];
-    
+
+
 
 interface dashboard {
     data: any
     editMode: boolean
     toggleEditMode: () => void
+    charts: Array<any>
 }
 
 const Dashboard: React.FC<dashboard> = (props) => {
@@ -42,6 +44,7 @@ const Dashboard: React.FC<dashboard> = (props) => {
         }
     }
 
+
     return (
         <React.Fragment>
             <Grid fluid>
@@ -56,30 +59,30 @@ const Dashboard: React.FC<dashboard> = (props) => {
                     endpoints={data.endpoints}
                     src={data.src} />
                 <Row>
-                    <Col className="parent" lg={6} md={6}>
-                        <Card>   
-                            <h5>Line chart</h5>
-                            <LINE_CHART data={chartData} />
-                        </Card>
-                    </Col>
-                    <Col className="parent" lg={6} md={6}>
-                        <Card>       
-                            <h5>Pie Chart</h5>
-                            <PIE_CHART data={chartData} />
-                        </Card>
-                    </Col>
-                    <Col className="parent" lg={6} md={6}>
-                        <Card>       
-                            <h5>Bar chart</h5>
-                            <BAR_CHART data={chartData} />
-                        </Card>
-                    </Col>
-                    <Col className="parent" lg={6} md={6}>
-                        <Card> 
-                            <h5>Stacked Bar chart</h5>     
-                            <STACKED_BAR_CHART data={chartData} /> 
-                        </Card>
-                    </Col>
+                    {
+                        props.charts.length > 0 ? (
+                            props.charts.map(chart=>{
+                                return (
+                                <Col className="parent" lg={6} md={6}>
+                                    <Card>   
+                                        <h5>{chart.metrics.map((metric: string, index:number)=> {
+                                            return (
+                                                `${metric}${index < chart.metrics.length - 1
+                                                    ? ", "
+                                                    : ''}`
+                                            )
+                                        })}</h5>
+                                        <LINE_CHART uid={chart.uid} data={chart.data} />
+                                    </Card>
+                                </Col>
+                                )
+                            })
+                        ) : (
+                            <Col style={{marginTop: '1em',textAlign:'center'}} lg={12}>
+                                <h5>Dashboard is empty. Start by adding some charts on the left!</h5>
+                            </Col>
+                        )
+                    }
                 </Row>
             </Grid>
         </React.Fragment>

@@ -11,8 +11,10 @@ type chartRecord = {
     [key: string]: value
 }
 interface chart {
+    uid: string
     data: Array<chartRecord>
     numLines?: number
+    dataKey?: string
 }
 
 const dotStyle = (color: string) => {
@@ -70,7 +72,7 @@ export const LINE_CHART: React.FC<chart> = (props) => {
 
 export const PIE_CHART: React.FC<chart> = (props) => {
     const filtered = filterData(props.data)
-    let [activeMetric, changeMetric] = useState(filtered[0])
+    let [activeMetric, changeMetric] = useState(props.dataKey || filtered[0])
 
     return (
         <React.Fragment>

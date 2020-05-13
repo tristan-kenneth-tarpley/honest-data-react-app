@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import {useParams} from 'react-router'
 import Skeleton from 'react-loading-skeleton';
 import { connect } from 'react-redux'
-import {hydrateDashboard, fetchData, toggleEditMode} from '../actions/dashboardActions'
+import {hydrateDashboard, fetchData, toggleEditMode, addChart} from '../actions/dashboardActions'
 import Dashboard from '../components/Dashboard'
 import DashboardSidebar from '../containers/SidebarContainer'
 
@@ -24,10 +24,15 @@ const DashboardContainer: React.FC = (props: any) => {
 
     return (
         <div className="dashboard">
-            { props.editMode && <DashboardSidebar /> }
+            { props.editMode && (
+                <DashboardSidebar
+                    charts={props.charts}
+                    /> 
+            )}
             <div id="dashboard__container" className="dashboard__container">
                 { props.data ? (
                     <Dashboard
+                        charts={props.charts}
                         editMode={editMode}
                         toggleEditMode={()=>props.toggleEditMode(!props.editMode)}
                         data={props.data} />
@@ -42,14 +47,16 @@ const DashboardContainer: React.FC = (props: any) => {
 const mapStateToProps = (state: any) => {
     return {
         data: state.dashboardReducer.data,
-        editMode: state.dashboardReducer.editMode
+        editMode: state.dashboardReducer.editMode,
+        charts: state.dashboardReducer.charts
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
         hydrateDashboard: (data: any) => dispatch(hydrateDashboard(data)),
-        toggleEditMode: (data: boolean) => dispatch(toggleEditMode(data))
+        toggleEditMode: (data: boolean) => dispatch(toggleEditMode(data)),
+        addChart: (data: any) => dispatch(addChart(data))
     }
 }
 

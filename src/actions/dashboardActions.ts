@@ -6,6 +6,12 @@ const fetchData = async (singleOrMulti: string, src: string, endpoint?: string) 
     return data
 }
 
+const addChart = (data: any) => {
+    return ({
+        type: "ADD_CHART",
+        payload: data
+    })
+}
 
 const hydrateDashboard = (data: string) => {
     return ({
@@ -21,4 +27,4 @@ const toggleEditMode = (data: boolean) => {
     })
 }
 
-export {hydrateDashboard, fetchData, toggleEditMode}
+export {hydrateDashboard, fetchData, toggleEditMode, addChart}
