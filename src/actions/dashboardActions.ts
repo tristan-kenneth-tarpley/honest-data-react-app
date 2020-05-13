@@ -1,8 +1,8 @@
 import apiClient from '../apiUtils/apiClient'
 
-const fetchData = async (singleOrMulti: string, src: string) => {
+const fetchData = async (singleOrMulti: string, src: string, endpoint?: string) => {
     const api = new apiClient(singleOrMulti)
-    const data = await api.query(src)
+    const data = await api.query(src, endpoint)
     return data
 }
 

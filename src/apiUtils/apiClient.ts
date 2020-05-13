@@ -26,8 +26,10 @@ export default class APIClient {
         this.baseUrl = `${url}/${searchType}`
     }
 
-    async query(endpoint: string) {
-        let url = `${this.baseUrl}/${endpoint}`
+    async query(src: string, endpoint: string | undefined) {
+        let url = `${this.baseUrl}/${src}`
+        console.log(url)
+        if (endpoint) url += `/${endpoint}`
 
         const res = await fetch(url)
         const json = await res.json()

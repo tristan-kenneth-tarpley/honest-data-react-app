@@ -8,16 +8,17 @@ import Dashboard from '../components/Dashboard'
 interface RouteParams {
     src: string
     singleOrMulti: string
+    endpoint?: string | undefined
 }
 
 const DashboardContainer: React.FC = (props: any) => {
     const params = useParams<RouteParams>();
-    const {singleOrMulti, src} = params
+    const {singleOrMulti, src, endpoint} = params
 
     useEffect(()=>{
-        fetchData(singleOrMulti, src)
+        fetchData(singleOrMulti, src, endpoint)
             .then( data => props.hydrateDashboard(data) )
-    }, []);
+    }, [endpoint]);
 
     return (
         <div id="dashboard__container" className="dashboard__container">

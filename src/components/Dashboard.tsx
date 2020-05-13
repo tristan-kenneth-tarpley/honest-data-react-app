@@ -46,7 +46,9 @@ const Dashboard: React.FC<dashboard> = (props) => {
                     source={data.source}
                     description={data.description}
                     filterables={filterables}
-                    title={data.title} />
+                    title={data.title}
+                    endpoints={data.endpoints}
+                    src={data.src} />
                 <Row>
                     <Col className="parent" lg={6} md={6}>
                         <Card>   

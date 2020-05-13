@@ -301,6 +301,10 @@ h6 {
 
 
 
+.available__sources {
+  width: 100%;
+  padding-left: 0;
+}
 .availableSources__list {
   display: flex;
   columns: 4;
@@ -308,7 +312,7 @@ h6 {
   margin: 0 auto;
   padding-left: 0;
 }
-.availableSources__list li {
+.listing {
   box-shadow: var(--box-shadow);
   background: #fff;
   margin: 1em;
@@ -325,7 +329,8 @@ h6 {
   flex-direction: column;
 }
 
-.availableSources__list li:hover {
+.listing.active, 
+.listing:hover {
   background: linear-gradient(115.8deg, #6E30F2 0%, #86E2FF 100%);
   color: white;
 }
@@ -382,19 +387,20 @@ div[class^="col"].parent {
 
 .dashboard__toolbar {
   display: flex;
+  flex-direction:column;
   align-items: center;
   width: 100%;
 }
 .dashboard__toolbar #select {
-  width: 40%;
-  margin-left: 2em;
+  width: 50%;
+  margin: 3em 2em 0;
 }
 #dashboard__container .css-yk16xz-control {
   background: var(--dashboard-secondary) !important;
 }
 
 .dashboard__container .info {
-  width: 60%;
+  width: 100%;
 }
 
 

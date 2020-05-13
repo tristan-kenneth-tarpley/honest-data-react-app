@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col } from 'react-flexbox-grid';
 import {Link} from 'react-router-dom'
-import { Props } from 'react-linkify';
+import {decamelize} from '../helpers'
 
 const sources = [
     { value: 'COVID-19', uid: 'adsf', route: 'covid' }
@@ -32,16 +32,22 @@ export const SingleSourceSearchField: React.FC = () => {
 }
 
 interface listing {
-    uid: string
+    uid: string | number
     route: string
     value: string
+    link?: string
+    src?: string
+    active?: boolean
 }
 
 export const Listing: React.FC<listing> = (props) => {
+    const url = props.src
+                    ? `/dashboard/${props.src}/single/${props.route}`
+                    : `/dashboard/${props.route}/single`
     return (
         <React.Fragment>
-            <Link className="invisibleLink" to={`/dashboard/${props.route}/single`}>
-                <li key={props.uid}>{props.value}</li>
+            <Link className={`listing invisibleLink ${props.active && 'active'}`} to={url}>
+                {decamelize(props.value)}
             </Link>
         </React.Fragment>
     )

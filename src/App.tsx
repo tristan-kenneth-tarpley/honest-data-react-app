@@ -17,9 +17,10 @@ function App() {
       <Navbar />
       <Switch>
           <Route exact path="/">
-            <Search></Search>
+            <Search />
           </Route>
-          <Route path="/dashboard/:src/:singleOrMulti" component={DashboardContainer} />
+          <Route exact path="/dashboard/:src/:singleOrMulti" component={DashboardContainer} />
+          <Route exact path="/dashboard/:src/:singleOrMulti/:endpoint" component={DashboardContainer} />
       </Switch>
     </Router>
   );
