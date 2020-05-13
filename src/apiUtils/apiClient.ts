@@ -28,7 +28,6 @@ export default class APIClient {
 
     async query(src: string, endpoint: string | undefined) {
         let url = `${this.baseUrl}/${src}`
-        console.log(url)
         if (endpoint) url += `/${endpoint}`
 
         const res = await fetch(url)

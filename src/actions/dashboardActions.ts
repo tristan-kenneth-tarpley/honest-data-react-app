@@ -14,4 +14,11 @@ const hydrateDashboard = (data: string) => {
     })
 }
 
-export {hydrateDashboard, fetchData}
+const toggleEditMode = (data: boolean) => {
+    return ({
+        type: "TOGGLE_EDIT_MODE",
+        payload: data
+    })
+}
+
+export {hydrateDashboard, fetchData, toggleEditMode}

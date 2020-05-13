@@ -81,13 +81,13 @@ p .btn {
 
 .btn-secondary {
   background: transparent;
-  border-color: rgba(255,255,255,.9);
-  color: rgba(255,255,255,.9);
+  border-color: var(--text-color);
+  color: var(--text-color);
 
 }
 .btn-secondary:hover {
-  background: var(--text-color);
-  border-color: var(--text-color);
+  background: linear-gradient(115.8deg, #6E30F2 0%, #86E2FF 100%);
+  border-color: var(--blue);
   color: white;
 }
 .btn-secondary.disabled {
@@ -374,7 +374,11 @@ div[class^="col"].parent {
 
 /* dashboard stuff */
 
-
+.dashboard {
+  display: flex;
+  top: 8%;
+  position: relative;
+}
 .dashboard__container {
   background: var(--dashboard-bg);
   position: relative;
@@ -383,6 +387,57 @@ div[class^="col"].parent {
   top: 8%;
   padding: 2em;
   padding-bottom: 5%;
+}
+
+.dashboard__sidebar {
+  height: 100%;
+  position: sticky;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+}
+.sidebar__item {
+  padding: 1em;
+  display: flex;
+  transition-duration: .3s;
+  cursor: pointer;
+}
+.sidebar__item p {
+  margin: 0;
+  padding: 0;
+}
+.sidebar__item-edit {
+  flex: 1 1 25%;
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+}
+.sidebar__item-info .sub {
+  font-weight: bold;
+}
+.addItem__container {
+  display: flex;
+  margin-top:1em;
+  justify-content: center;
+}
+#addItem {
+  align-items: center;
+  display: flex;
+}
+#addItem i {
+  margin: 0 0 0 .2em;
+  padding: 0;
+  font-size: 2em;
+  color: var(--purple);
+  transition-duration: .3s;
+}
+#addItem:hover,
+#addItem:hover i {
+  color: var(--text-color);
+}
+.sidebar__item:hover {
+  opacity: .5;
 }
 
 .dashboard__toolbar {
@@ -500,6 +555,10 @@ div[class^="col"].parent {
     width: 100%;
   }
   .dashboard__toolbar #select {margin-top: 1em;}
+  .dashboard {
+    top: 0;
+    flex-direction: column;
+  }
 }
 
 

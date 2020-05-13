@@ -70,7 +70,7 @@ const Toolbar: React.FC<toolbar> = (props) => {
                     </Col>
                 </Row>
             </Grid>
-            <Select
+            {/* <Select
                 id="select"
                 defaultValue={props.filterables[0]}
                 isMulti
@@ -78,7 +78,7 @@ const Toolbar: React.FC<toolbar> = (props) => {
                 options={props.filterables}
                 className="basic-multi-select"
                 classNamePrefix="select"
-            />
+            /> */}
         </div>
     )
 }

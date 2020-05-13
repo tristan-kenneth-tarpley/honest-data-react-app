@@ -3,6 +3,7 @@ import { Grid, Row, Col } from 'react-flexbox-grid';
 import Card from '../components/Card'
 import { Link } from 'react-router-dom';
 import Toolbar from '../components/Toolbar'
+import {ButtonPrimary, ButtonSecondary} from '../styles/Buttons'
 import {decamelize} from '../helpers'
 import {LINE_CHART, PIE_CHART, BAR_CHART, STACKED_BAR_CHART} from '../components/Charts'
 
@@ -22,6 +23,8 @@ const chartData = [
 
 interface dashboard {
     data: any
+    editMode: boolean
+    toggleEditMode: () => void
 }
 
 const Dashboard: React.FC<dashboard> = (props) => {
@@ -42,6 +45,9 @@ const Dashboard: React.FC<dashboard> = (props) => {
     return (
         <React.Fragment>
             <Grid fluid>
+                <ButtonSecondary onClick={props.toggleEditMode} id="toggleEditMode">
+                    { props.editMode ? 'Save' : 'Edit'}
+                </ButtonSecondary>
                 <Toolbar
                     source={data.source}
                     description={data.description}
