@@ -3,7 +3,7 @@ export enum searchTypes {
 }
 
 export interface chartItem {
-    uid: string
+    editing: boolean
     metrics: Array<string>
     chartType: string
     data: Array<{

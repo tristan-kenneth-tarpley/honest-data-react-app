@@ -1,28 +1,11 @@
 import React from 'react'
 import {ButtonTertiary} from '../styles/Buttons'
-
-interface sidebarItem {
-    children: React.ReactNode
-    chartType: string
-    uid: string
-}
-const SidebarItem: React.FC<sidebarItem> = (props) => {
-    return (
-        <div className="sidebar__item">
-            <div className="sidebar__item-info">
-                <p>{props.children}</p> 
-                <span className="helper sub chart-info">{props.chartType} chart</span>
-            </div>
-            <div className="sidebar__item-edit">
-                <i className="fad fa-edit"></i>
-            </div>
-        </div>
-        
-    )
-}
+import {SidebarItem} from '../components/SidebarItem'
+import { chartItem } from '../types'
 
 interface sidebar {
     charts: Array<any>
+    editChart: () => void
 }
 
 const DashboardSidebar: React.FC<sidebar> = (props) => {
@@ -34,19 +17,17 @@ const DashboardSidebar: React.FC<sidebar> = (props) => {
                 </ButtonTertiary>
             </div>
 
-            {props.charts.map((chart)=>{
-                return (
-                    <SidebarItem uid={chart.uid} chartType={chart.chartType}>
-                        {chart.metrics.map((metric: string, index:number)=> {
-                            return (
-                                `${metric}${index < chart.metrics.length - 1
-                                    ? ", "
-                                    : ''}`
-                            )
-                        })}
-                    </SidebarItem>
-                )
-            })}
+            {Object.keys(props.charts).map( (chart: any) => (
+                <SidebarItem editChart={props.editChart} uid={chart} chartType={props.charts[chart].chartType}>
+                    {props.charts[chart].metrics.map((metric: string, index:number)=> {
+                        return (
+                            `${metric}${index < props.charts[chart].metrics.length - 1
+                                ? ", "
+                                : ''}`
+                        )
+                    })}
+                </SidebarItem>
+            ))}
         </div>
     )
 }

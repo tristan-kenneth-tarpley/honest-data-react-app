@@ -44,6 +44,8 @@ const Dashboard: React.FC<dashboard> = (props) => {
         }
     }
 
+    const chartKeys = Object.keys(props.charts)
+
 
     return (
         <React.Fragment>
@@ -60,8 +62,9 @@ const Dashboard: React.FC<dashboard> = (props) => {
                     src={data.src} />
                 <Row>
                     {
-                        props.charts.length > 0 ? (
-                            props.charts.map(chart=>{
+                        chartKeys.length > 0 ? (
+                            chartKeys.map((_chart: any)=>{
+                                const chart = props.charts[_chart]
                                 return (
                                 <Col className="parent" lg={6} md={6}>
                                     <Card>   
@@ -72,7 +75,7 @@ const Dashboard: React.FC<dashboard> = (props) => {
                                                     : ''}`
                                             )
                                         })}</h5>
-                                        <LINE_CHART uid={chart.uid} data={chart.data} />
+                                        <LINE_CHART uid={_chart} data={chart.data} />
                                     </Card>
                                 </Col>
                                 )

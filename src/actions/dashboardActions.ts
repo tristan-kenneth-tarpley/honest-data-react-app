@@ -27,4 +27,15 @@ const toggleEditMode = (data: boolean) => {
     })
 }
 
-export {hydrateDashboard, fetchData, toggleEditMode, addChart}
+const editChart = (chart: any) => {
+    return ({
+        type: "EDIT_CHART",
+        payload: chart
+    })
+}
+
+export {
+    hydrateDashboard, fetchData,
+    toggleEditMode, addChart,
+    editChart
+}
