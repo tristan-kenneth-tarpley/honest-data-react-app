@@ -1,11 +1,11 @@
-import { chartItem } from '../types'
+import { chartListing } from '../types'
 import { v4 as uuidv4 } from 'uuid';
 
 interface initialstate {
     data: any | null,
     editMode: boolean,
     charts: {
-        [key: string]: chartItem
+        [key: string]: chartListing
     }
 }
 
@@ -15,25 +15,58 @@ const initialState: initialstate =  {
     charts: {
         [uuidv4()]: {
             editing: false,
-            metrics: ["uv", "pv"], 
+            metrics: [{
+                label: "pending",
+                value: "pending"
+            }, {
+                label: "positive",
+                value: "positive"
+            }], 
             chartType: "line",
             data: [
-                { name: 'Page K', uv: 1000, pv: 2400},
-                { name: 'Page L', uv: 300, pv: 4567},
-                { name: 'Page M', uv: 280, pv: 1398},
-                { name: 'Page N', uv: 200, pv: 9800},
-                { name: 'Page O', uv: 278, pv: 4300},
-                { name: 'Page P', uv: 20000, pv: 4800},
-                { name: 'Page Q', uv: 189, pv: 7350},
-                { name: 'Page R', uv: 7500, pv: 4800},
-                { name: 'Page S', uv: 189, pv: 200},
-                { name: 'Page T', uv: 189, pv: 4800},
-            ]  
+                { name: 'Page K', pending: 1000, positive: 2400},
+                { name: 'Page L', pending: 300, positive: 4567},
+                { name: 'Page M', pending: 280, positive: 1398},
+                { name: 'Page N', pending: 200, positive: 9800},
+                { name: 'Page O', pending: 278, positive: 4300},
+                { name: 'Page P', pending: 20000, positive: 4800},
+                { name: 'Page Q', pending: 189, positive: 7350},
+                { name: 'Page R', pending: 7500, positive: 4800},
+                { name: 'Page S', pending: 189, positive: 200},
+                { name: 'Page T', pending: 135, positive: 4800},
+            ]
+        },
+        [uuidv4()]: {
+            editing: false,
+            metrics: [{
+                label: "pending",
+                value: "pending"
+            }, {
+                label: "positive",
+                value: "positive"
+            }], 
+            chartType: "line",
+            data: [
+                { name: 'Page K', pending: 1000, positive: 2400},
+                { name: 'Page L', pending: 300, positive: 4567},
+                { name: 'Page M', pending: 280, positive: 1398},
+                { name: 'Page N', pending: 200, positive: 9800},
+                { name: 'Page O', pending: 278, positive: 4300},
+                { name: 'Page P', pending: 20000, positive: 4800},
+                { name: 'Page Q', pending: 189, positive: 7350},
+                { name: 'Page R', pending: 7500, positive: 4800},
+                { name: 'Page S', pending: 189, positive: 200},
+                { name: 'Page T', pending: 135, positive: 4800},
+            ]
         }
     }
 }
+interface _action {
+    type: string
+    payload: any
+}
 
-export const dashboardReducer = (state = initialState, action: any) => {
+export const dashboardReducer = (state = initialState, action: _action) => {
     switch (action.type) {
         case "HYDRATE_DASHBOARD":
             state = {
@@ -48,16 +81,35 @@ export const dashboardReducer = (state = initialState, action: any) => {
             }
             break
         case "EDIT_CHART":
-            state = state
-            break
-        case "ADD_CHART":
             state = {
                 ...state,
                 charts: {
                     ...state.charts,
-                    [action.payload.uid]: {
-                        // action.payload
+                    [action.payload.chartId]: {
+                        ...state.charts[action.payload.chartId],
+                        metrics: action.payload.filters
                     }
+                }
+            }
+            break
+        case "ADD_CHART":
+            action.payload.data = [
+                { name: 'Page K', pending: 1000, positive: 2400},
+                { name: 'Page L', pending: 300, positive: 4567},
+                { name: 'Page M', pending: 280, positive: 1398},
+                { name: 'Page N', pending: 200, positive: 9800},
+                { name: 'Page O', pending: 278, positive: 4300},
+                { name: 'Page P', pending: 20000, positive: 4800},
+                { name: 'Page Q', pending: 189, positive: 7350},
+                { name: 'Page R', pending: 7500, positive: 4800},
+                { name: 'Page S', pending: 189, positive: 200},
+                { name: 'Page T', pending: 135, positive: 4800},
+            ]
+            state = {
+                ...state,
+                charts: {
+                    ...state.charts,
+                    [uuidv4()]: action.payload
                 }
             }
             break

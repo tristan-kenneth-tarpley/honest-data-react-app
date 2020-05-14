@@ -5,27 +5,13 @@ import { Link } from 'react-router-dom';
 import Toolbar from '../components/Toolbar'
 import {ButtonPrimary, ButtonSecondary} from '../styles/Buttons'
 import {LINE_CHART, PIE_CHART, BAR_CHART, STACKED_BAR_CHART} from '../components/Charts'
-import {chartItem} from '../types'
-const chartData = [
-    { name: 'Page A', uv: 1000, pv: 2400},
-    { name: 'Page B', uv: 300, pv: 4567},
-    { name: 'Page C', uv: 280, pv: 1398},
-    { name: 'Page D', uv: 200, pv: 9800},
-    { name: 'Page E', uv: 278, pv: 4300},
-    { name: 'Page F', uv: 20000, pv: 4800},
-    { name: 'Page G', uv: 189, pv: 7350},
-    { name: 'Page H', uv: 7500, pv: 4800},
-    { name: 'Page I', uv: 189, pv: 200},
-    { name: 'Page J', uv: 189, pv: 4800},
-];
-
-
+import {chartListing, metric} from '../types'
 
 interface dashboard {
     data: any
     editMode: boolean
     toggleEditMode: () => void
-    charts: Array<chartItem>
+    charts: Array<chartListing>
 }
 
 const Dashboard: React.FC<dashboard> = (props) => {
@@ -52,9 +38,9 @@ const Dashboard: React.FC<dashboard> = (props) => {
                                 return (
                                 <Col className="parent" lg={6} md={6}>
                                     <Card>   
-                                        <h5>{chart.metrics.map((metric: string, index:number)=> {
+                                        <h5>{chart.metrics.map((metric_: metric, index:number)=> {
                                             return (
-                                                `${metric}${index < chart.metrics.length - 1
+                                                `${metric_.label}${index < chart.metrics.length - 1
                                                     ? ", "
                                                     : ''}`
                                             )

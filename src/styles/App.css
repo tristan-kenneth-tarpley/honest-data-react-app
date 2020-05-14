@@ -74,8 +74,7 @@ p .btn {
 }
 .btn-primary:hover { opacity: .7; }
 .btn-primary.disabled {
-  background-color: #919191;
-  color: #434343;
+  opacity: .5;
 }
 
 
@@ -224,6 +223,11 @@ h6 {
 }
 
 
+.form-control {
+  border: 1px solid var(--text-color);
+  padding: 1em;
+  border-radius: 10px;
+}
 
 
 /**** end ui kit ****/
@@ -246,7 +250,6 @@ h6 {
 		background-position: 0% 50%;
 	}
 } */
-
 
 
 #root .css-1pahdxg-control,
@@ -370,7 +373,9 @@ div[class^="col"].parent {
   margin:0;
 }
 
-
+.red {
+  color: #FF9586;
+}
 
 /* dashboard stuff */
 
@@ -378,7 +383,6 @@ div[class^="col"].parent {
   display: flex;
   top: 8%;
   position: relative;
-  height: 100%;
 }
 .dashboard__container {
   background: var(--dashboard-bg);
@@ -414,7 +418,11 @@ div[class^="col"].parent {
   justify-content: flex-end;
   transition-duration: .2s;
 }
-.sidebar__item-edit:hover {
+.sidebar__item-edit i {
+  margin-left: 1em;
+  transition-duration: .2s;
+}
+.sidebar__item-edit i:hover {
   opacity: .3;
 }
 .sidebar__item.editing {
@@ -423,12 +431,15 @@ div[class^="col"].parent {
 .sidebar__item-info .sub {
   font-weight: bold;
 }
+.sidebar__item .css-2b097c-container {
+  width: 100%;
+}
 .addItem__container {
   display: flex;
   margin-top:1em;
   justify-content: center;
 }
-#addItem {
+#addItem span {
   align-items: center;
   display: flex;
 }
@@ -463,6 +474,14 @@ div[class^="col"].parent {
 }
 
 
+.dashboard__sidebar-adding {
+  display: flex;
+  flex-direction: column;
+}
+.dashboard__sidebar-adding .btn {
+  width: 50%;
+  margin: 0 auto;
+}
 
 /*** chart styles ***/
 .metrics__selector {

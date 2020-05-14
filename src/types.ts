@@ -6,10 +6,13 @@ export interface filterable {
     value: string
     label: string
 }
-
-export interface chartItem {
+export interface metric {
+    value: string
+    label: string
+}
+export interface chartListing {
     editing: boolean
-    metrics: Array<string>
+    metrics: Array<metric>
     chartType: string
     data: Array<{
         [key: string]: string | number

@@ -3,13 +3,10 @@ import {useParams} from 'react-router'
 import Skeleton from 'react-loading-skeleton';
 import { connect } from 'react-redux'
 import {hydrateDashboard, fetchData, toggleEditMode,
-        addChart, editChart
+        addChart
 } from '../actions/dashboardActions'
 import Dashboard from '../components/Dashboard'
 import DashboardSidebar from '../containers/SidebarContainer'
-import {chartItem} from '../types'
-import {getFilterables} from '../apiUtils/filterables'
-import {filterable} from '../types'
 interface RouteParams {
     src: string
     singleOrMulti: string
@@ -63,8 +60,7 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         hydrateDashboard: (data: any) => dispatch(hydrateDashboard(data)),
         toggleEditMode: (data: boolean) => dispatch(toggleEditMode(data)),
-        addChart: (data: any) => dispatch(addChart(data)),
-        editChart: (chart: chartItem) => dispatch(editChart(chart))
+        addChart: (data: any) => dispatch(addChart(data))
     }
 }
 

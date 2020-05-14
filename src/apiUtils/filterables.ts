@@ -3,7 +3,7 @@ import {decamelize} from '../helpers'
 import {filterable} from '../types'
 
 export const getFilterables = (data: any) => {
-    let filterables: Array<filterable> = [{value: "all", label: "show all"}]
+    let filterables: Array<filterable> = [];
 
     for (let i of Object.keys(data.records[0])) {
         const root = data.records[0]

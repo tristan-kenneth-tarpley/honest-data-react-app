@@ -4,12 +4,15 @@ interface button {
     id: string
     children: React.ReactNode
     onClick?: () => void
+    disabled?: boolean
 }
 
 const ButtonPrimary: React.FC<button> = (props) => {
+    console.log(props.disabled)
     return (
-        <button onClick={props.onClick && props.onClick} id={props.id}
-            className="btn btn-primary">
+        <button onClick={props.onClick && props.onClick}
+                id={props.id}
+                className={`btn btn-primary ${props.disabled ? 'disabled' : ''}`}>
             {props.children}
         </button>
     )
@@ -17,8 +20,10 @@ const ButtonPrimary: React.FC<button> = (props) => {
 
 const ButtonSecondary: React.FC<button> = (props) => {
     return (
-        <button onClick={props.onClick && props.onClick} id={props.id}
-                className="btn btn-secondary">
+        <button disabled={props.disabled}
+                onClick={props.onClick && props.onClick}
+                id={props.id}
+                className={`btn btn-secondary ${props.disabled ? 'disabled' : ''}`}>
             {props.children}
         </button>
     )
@@ -26,8 +31,10 @@ const ButtonSecondary: React.FC<button> = (props) => {
 
 const ButtonTertiary: React.FC<button> = (props) => {
     return (
-        <button onClick={props.onClick && props.onClick} id={props.id}
-                className="btn btn-tertiary">
+        <button disabled={props.disabled}
+                onClick={props.onClick && props.onClick}
+                id={props.id}
+                className={`btn btn-tertiary ${props.disabled ? 'disabled' : ''}`}>
             {props.children}
         </button>
     )

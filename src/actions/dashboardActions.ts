@@ -1,4 +1,5 @@
 import apiClient from '../apiUtils/apiClient'
+import { metric, chartListing } from '../types'
 
 const fetchData = async (singleOrMulti: string, src: string, endpoint?: string) => {
     const api = new apiClient(singleOrMulti)
@@ -6,7 +7,12 @@ const fetchData = async (singleOrMulti: string, src: string, endpoint?: string) 
     return data
 }
 
-const addChart = (data: any) => {
+export interface initChart {
+    metrics: Array<metric>
+    chartType: string
+}
+const addChart = (data: initChart) => {
+    console.log(data)
     return ({
         type: "ADD_CHART",
         payload: data
@@ -27,7 +33,11 @@ const toggleEditMode = (data: boolean) => {
     })
 }
 
-const editChart = (chart: any) => {
+export interface editchart {
+    chartId: string
+    filters: Array<metric>
+}
+const editChart = (chart: editchart) => {
     return ({
         type: "EDIT_CHART",
         payload: chart
