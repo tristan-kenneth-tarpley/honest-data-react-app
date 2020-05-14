@@ -8,7 +8,8 @@ import {hydrateDashboard, fetchData, toggleEditMode,
 import Dashboard from '../components/Dashboard'
 import DashboardSidebar from '../containers/SidebarContainer'
 import {chartItem} from '../types'
-
+import {getFilterables} from '../apiUtils/filterables'
+import {filterable} from '../types'
 interface RouteParams {
     src: string
     singleOrMulti: string
@@ -19,7 +20,6 @@ const DashboardContainer: React.FC = (props: any) => {
     const params = useParams<RouteParams>();
     const {singleOrMulti, src, endpoint} = params
     const {editMode} = props
-
     useEffect(()=>{
         fetchData(singleOrMulti, src, endpoint)
             .then( data => props.hydrateDashboard(data) )
@@ -27,23 +27,26 @@ const DashboardContainer: React.FC = (props: any) => {
 
     return (
         <div className="dashboard">
-            { props.editMode && (
-                <DashboardSidebar
-                    charts={props.charts}
-                    editChart={props.editChart}
-                    /> 
+            { props.data ? (
+                <React.Fragment>
+
+                    {props.editMode ? (
+                        <DashboardSidebar
+                            data={props.data}
+                            />
+                     ) : ''}
+
+                    <div id="dashboard__container" className="dashboard__container">
+                        <Dashboard
+                            charts={props.charts}
+                            editMode={editMode}
+                            toggleEditMode={()=>props.toggleEditMode(!props.editMode)}
+                            data={props.data} />
+                    </div>
+                </React.Fragment>
+            ) : (
+                <Skeleton count={5} />
             )}
-            <div id="dashboard__container" className="dashboard__container">
-                { props.data ? (
-                    <Dashboard
-                        charts={props.charts}
-                        editMode={editMode}
-                        toggleEditMode={()=>props.toggleEditMode(!props.editMode)}
-                        data={props.data} />
-                ) : (
-                    <Skeleton count={5} />
-                ) }
-            </div>
         </div>
     )
 }

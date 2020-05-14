@@ -417,6 +417,9 @@ div[class^="col"].parent {
 .sidebar__item-edit:hover {
   opacity: .3;
 }
+.sidebar__item.editing {
+  flex-direction: column;
+}
 .sidebar__item-info .sub {
   font-weight: bold;
 }

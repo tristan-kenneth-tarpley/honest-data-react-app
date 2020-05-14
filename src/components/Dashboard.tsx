@@ -4,9 +4,8 @@ import Card from '../components/Card'
 import { Link } from 'react-router-dom';
 import Toolbar from '../components/Toolbar'
 import {ButtonPrimary, ButtonSecondary} from '../styles/Buttons'
-import {decamelize} from '../helpers'
 import {LINE_CHART, PIE_CHART, BAR_CHART, STACKED_BAR_CHART} from '../components/Charts'
-
+import {chartItem} from '../types'
 const chartData = [
     { name: 'Page A', uv: 1000, pv: 2400},
     { name: 'Page B', uv: 300, pv: 4567},
@@ -26,26 +25,12 @@ interface dashboard {
     data: any
     editMode: boolean
     toggleEditMode: () => void
-    charts: Array<any>
+    charts: Array<chartItem>
 }
 
 const Dashboard: React.FC<dashboard> = (props) => {
     const {data} = props
-
-    let filterables: any = [{value: "all", label: "show all"}]
-    for (let i of Object.keys(data.records[0])) {
-        const root = data.records[0]
-        const disallowedKeys = ["internal", "flag"]
-        if (i !== "uid" && !disallowedKeys.includes(root[i])) {
-            filterables = [...filterables, {
-                value: i,
-                label: decamelize(i)
-            }]
-        }
-    }
-
     const chartKeys = Object.keys(props.charts)
-
 
     return (
         <React.Fragment>
@@ -56,7 +41,6 @@ const Dashboard: React.FC<dashboard> = (props) => {
                 <Toolbar
                     source={data.source}
                     description={data.description}
-                    filterables={filterables}
                     title={data.title}
                     endpoints={data.endpoints}
                     src={data.src} />

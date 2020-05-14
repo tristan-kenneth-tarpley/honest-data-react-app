@@ -1,5 +1,4 @@
 import React from 'react'
-import Select from 'react-select'
 import {Listing} from '../components/SingleSourceSearchField'
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
@@ -9,7 +8,7 @@ interface endpoint {
 }
 interface toolbar {
     title: string
-    filterables: Array<any>
+    filterables?: Array<any>
     source: string
     description: string
     endpoints: Array<endpoint>
