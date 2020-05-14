@@ -3,7 +3,7 @@ import {ButtonPrimary, ButtonTertiary} from '../styles/Buttons'
 import {SidebarItem} from '../components/SidebarItem'
 import { connect } from 'react-redux'
 import Select from 'react-select'
-import {editChart, addChart, initChart
+import {editChart, addChart, initChart, deleteChart
 } from '../actions/dashboardActions'
 import {getFilterables} from '../apiUtils/filterables'
 import {chartListing, metric} from '../types'
@@ -13,11 +13,13 @@ interface sidebar {
     charts: Array<chartListing>
     editChart: any
     addChart: (chart: initChart) => void
+    deleteChart: (uid: string) => void
 }
 
 const DashboardSidebar: React.FC<sidebar> = (props) => {
     const filterables = getFilterables(props.data)
-    const [adding, toggleAdding] = useState(true)
+    const [adding, toggleAdding] = useState(false)
+    const [error, toggleError] = useState(false)
     let disabled = false
 
     const addButton = !adding ? (
@@ -34,11 +36,17 @@ const DashboardSidebar: React.FC<sidebar> = (props) => {
         })
     )}
     const onSave = () => {
-        console.log(filters)
-        props.addChart({
-            metrics: filters,
-            chartType: "line"
-        })
+        if (filters.length > 0) {
+            props.addChart({
+                metrics: filters,
+                chartType: "line"
+            })
+            toggleError(false)
+            toggleAdding(false)
+        } else {
+            toggleError(true)
+        }
+        
         disabled = true
     }
 
@@ -59,7 +67,7 @@ const DashboardSidebar: React.FC<sidebar> = (props) => {
                             onChange={add}
                             name="colors"
                             options={filterables}
-                            className="basic-multi-select"
+                            className={`basic-multi-select ${error ? 'error' : ''}`}
                             classNamePrefix="select"
                         />
                     </div>
@@ -76,6 +84,7 @@ const DashboardSidebar: React.FC<sidebar> = (props) => {
             {Object.keys(props.charts).map( (chart: any) => (
                 <SidebarItem
                     editChart={props.editChart}
+                    deleteChart={props.deleteChart}
                     uid={chart}
                     metrics={props.charts[chart].metrics}
                     chartType={props.charts[chart].chartType}
@@ -94,7 +103,8 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         editChart: (chart: any) => dispatch(editChart(chart)),
-        addChart: (chart: initChart) => dispatch(addChart(chart))
+        addChart: (chart: initChart) => dispatch(addChart(chart)),
+        deleteChart: (uid: string) => dispatch(deleteChart(uid))
     }
 }
 

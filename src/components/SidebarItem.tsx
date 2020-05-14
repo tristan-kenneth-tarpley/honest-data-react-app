@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {chartListing} from '../types'
 import Select from 'react-select'
 import {filterable, metric} from '../types'
-import { ButtonTertiary} from '../styles/Buttons'
+import { ButtonSecondary, ButtonTertiary } from '../styles/Buttons'
 import {editchart} from '../actions/dashboardActions'
 import { decamelize } from '../helpers'
 
@@ -11,6 +11,7 @@ interface sidebarItem {
     uid: string
     filterables: Array<filterable>
     editChart: (chart: editchart)=>void
+    deleteChart: (uid: string) => void
     metrics: Array<metric>
     editing?: boolean
 }
@@ -58,61 +59,75 @@ export const SidebarItem: React.FC<sidebarItem> = (props) => {
         toggleEditing(!editing)
     }
 
+    const onDelete = () => {
+        props.deleteChart(props.uid)
+        toggleDeleteConfirmation(false)
+    }
+
     return (
         <div className={`${editing ? 'editing' : ''} sidebar__item`}>
-            <div className="sidebar__item-info">
-
-                {!editing ? (
-                    <React.Fragment>
-
-{/* <i onClick={()=>toggleDeleteConfirmation(!deleteConfirmation)}
-                        className="red fad fa-backspace"></i> */}
+            { !deleteConfirmation ? (
+                <React.Fragment>
+                <div className="sidebar__item-info">
+                    {!editing ? (
                         <SidebarItemInfoView 
                             metrics={filters}
                             chartType={props.chartType}
                         />
-                    </React.Fragment>
-                ) : (
-                    <React.Fragment>
-                        {deleteConfirmation ? (
-                            <p>hi</p>
-                        ) : (
-                            <Select
-                                id="select"
-                                isMulti
-                                onChange={add}
-                                defaultValue={filters}
-                                name="colors"
-                                options={props.filterables}
-                                className="basic-multi-select"
-                                classNamePrefix="select"
-                            />
-                        )}
-                    </React.Fragment>
-                )}
-            </div>
-            <div className={`${editing ? 'editing' : ''} sidebar__item-edit`}>
-                {!editing ? (
-    
-                    <i onClick={()=>toggleEditing(!editing)}
-                        className="fad fa-edit">    
-                        </i>
-     
-                ) : (
-                    <React.Fragment>
-                        <ButtonTertiary
-                            onClick={()=>toggleEditing(!editing)}
-                            id="sidebar__item-save">
-                            Cancel
-                        </ButtonTertiary>
-                        <ButtonTertiary
-                            onClick={onSave}
-                            id="sidebar__item-save">
-                            Save
-                        </ButtonTertiary>
-                    </React.Fragment>
-                )}
-            </div>
-        </div>   
+                    ) : (
+                        <Select
+                            id="select"
+                            isMulti
+                            onChange={add}
+                            defaultValue={filters}
+                            name="colors"
+                            options={props.filterables}
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                        />
+                    )}
+                </div>
+                <div className="sidebar__item-edit">
+                    {!editing ? (
+                        <React.Fragment>
+                            <i onClick={()=>toggleDeleteConfirmation(true)}
+                            className="red far fa-times">    
+                            </i>
+                            <i onClick={()=>toggleEditing(!editing)}
+                                className="fad fa-edit">    
+                            </i>
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <ButtonTertiary
+                                onClick={()=>toggleEditing(!editing)}
+                                id="sidebar__item-save">
+                                Cancel
+                            </ButtonTertiary>
+                            <ButtonTertiary
+                                onClick={onSave}
+                                id="sidebar__item-save">
+                                Save
+                            </ButtonTertiary>
+                        </React.Fragment>
+                    )}
+                </div>
+                </React.Fragment>
+            ) : (
+                <div className="confirmation">
+                    <p>Are you sure you want to delete this chart?</p>
+                    <ButtonTertiary
+                        onClick={()=>toggleDeleteConfirmation(false)}
+                        id="cancel">
+                        Cancel
+                    </ButtonTertiary>
+                    <ButtonSecondary
+                        onClick={onDelete}
+                        id="confirm">
+                        Confirm
+                    </ButtonSecondary>
+                </div>
+            )}
+        </div>  
     )
 }

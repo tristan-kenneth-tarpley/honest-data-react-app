@@ -113,6 +113,29 @@ export const dashboardReducer = (state = initialState, action: _action) => {
                 }
             }
             break
+        case "DELETE_CHART":
+            const allowed = Object.keys(state.charts)
+                .filter(key=>key !== action.payload)
+
+            const filtered = Object.keys(state.charts)
+                .filter(key => allowed.includes(key))
+                .reduce((obj: any, key: any) => {
+                    obj[key] = state.charts[key];
+                    return obj;
+                }, {});
+
+            state = {
+                ...state,
+                charts: filtered
+            }
+            return state
+            // const clone = (({ action.payload, ...state.charts }) => o)(obj)
+            // state = {
+            //     ...state,
+            //     charts: {
+            //         clone
+            //     }
+            // }
         default:
             return state
     }

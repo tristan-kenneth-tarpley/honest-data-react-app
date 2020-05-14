@@ -3,11 +3,12 @@
   --purple: #8D34FF;
   --blue: #86E2FF;
   --green: #A2F4D7;
+  --red: #FF9586;
   --bg: #ffffff;
   --dashboard-bg: #F5F5F5;
   --dashboard-secondary: #e6e6e6;
-  --box-shadow: 20px 20px 60px #d9d9d9, 
-                -20px -20px 60px #ffffff;
+  --box-shadow: 10px 10px 30px #d9d9d9, 
+                -10px -10px 30px #ffffff;
     
 }
 
@@ -254,7 +255,7 @@ h6 {
 
 #root .css-1pahdxg-control,
 #root .css-yk16xz-control {
-  background: #F3F3F3 !important;
+  background: white !important;
   border-radius: 10px !important;
   border-color: transparent !important;
   padding: .5em;
@@ -374,7 +375,7 @@ div[class^="col"].parent {
 }
 
 .red {
-  color: #FF9586;
+  color: var(--red);
 }
 
 /* dashboard stuff */
@@ -402,6 +403,9 @@ div[class^="col"].parent {
   width: 50%;
 }
 .sidebar__item {
+  background: var(--dashboard-bg);
+  box-shadow: var(--box-shadow);
+  margin-bottom:1em;
   padding: 1em;
   display: flex;
   transition-duration: .3s;
@@ -498,6 +502,11 @@ div[class^="col"].parent {
   border-color: var(--text-color);
 }
 
+
+.basic-multi-select.error {
+  border: 2px solid var(--red);
+  border-radius: 10px;
+}
 
 @media only screen and (max-width: 775px) {
   .search__container {

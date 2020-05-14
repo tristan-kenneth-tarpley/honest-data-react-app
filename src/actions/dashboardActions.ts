@@ -44,8 +44,15 @@ const editChart = (chart: editchart) => {
     })
 }
 
+const deleteChart = (uid: string) => {
+    return ({
+        type: "DELETE_CHART",
+        payload: uid
+    })
+}
+
 export {
     hydrateDashboard, fetchData,
     toggleEditMode, addChart,
-    editChart
+    editChart, deleteChart
 }
