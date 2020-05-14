@@ -21,9 +21,9 @@ const Dashboard: React.FC<dashboard> = (props) => {
     return (
         <React.Fragment>
             <Grid fluid>
-                <ButtonSecondary onClick={props.toggleEditMode} id="toggleEditMode">
-                    { props.editMode ? 'Save' : 'Edit'}
-                </ButtonSecondary>
+                <ButtonPrimary onClick={props.toggleEditMode} id="toggleEditMode">
+                    { props.editMode ? 'Save' : <i className="fad fa-pen"></i>}
+                </ButtonPrimary>
                 <Toolbar
                     source={data.source}
                     description={data.description}

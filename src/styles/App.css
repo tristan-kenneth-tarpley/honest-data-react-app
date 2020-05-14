@@ -380,10 +380,23 @@ div[class^="col"].parent {
 
 /* dashboard stuff */
 
+#toggleEditMode {
+  position: fixed;
+  bottom: 5%;
+  right: 2%;
+  height: 75px;
+  width: 75px;
+  padding: 0;
+}
+#toggleEditMode i {
+  font-size: 1.5em;
+  color: white;
+}
 .dashboard {
   display: flex;
   top: 8%;
   position: relative;
+  height: 100%;
 }
 .dashboard__container {
   background: var(--dashboard-bg);
