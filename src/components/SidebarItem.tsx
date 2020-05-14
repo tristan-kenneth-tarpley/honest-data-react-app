@@ -36,6 +36,101 @@ const SidebarItemInfoView: React.FC<{
     )
 }
 
+const DeleteConfirmation: React.FC<{
+    toggleDeleteConfirmation: (cond: boolean) => void
+    onDelete: () => void
+}> = props => {
+    return (
+        <div className="confirmation">
+            <p>Are you sure you want to delete this chart?</p>
+            <ButtonTertiary
+                onClick={()=>props.toggleDeleteConfirmation(false)}
+                id="cancel">
+                Cancel
+            </ButtonTertiary>
+            <ButtonSecondary
+                onClick={props.onDelete}
+                id="confirm">
+                Confirm
+            </ButtonSecondary>
+        </div>
+    )
+}
+
+
+
+const SidebarEdit:React.FC<{
+    editing: boolean
+    toggleDeleteConfirmation: (cond: boolean) => void
+    toggleEditing: (cond: boolean) => void
+    onSave: () => void
+}> = props => {
+    return (
+        <div className="sidebar__item-edit">
+            {!props.editing ? (
+                <React.Fragment>
+                    <i onClick={()=>props.toggleDeleteConfirmation(true)}
+                    className="red far fa-times">    
+                    </i>
+                    <i onClick={()=>props.toggleEditing(!props.editing)}
+                        className="fad fa-edit">    
+                    </i>
+                </React.Fragment>
+            ) : (
+                <React.Fragment>
+                    <ButtonTertiary
+                        onClick={()=>props.toggleEditing(!props.editing)}
+                        id="sidebar__item-save">
+                        Cancel
+                    </ButtonTertiary>
+                    <ButtonTertiary
+                        onClick={props.onSave}
+                        id="sidebar__item-save">
+                        Save
+                    </ButtonTertiary>
+                </React.Fragment>
+            )}
+        </div>
+    )
+}
+
+
+const SidebarInfo: React.FC<{
+    editing: boolean
+    filters: sidebarItem["metrics"]
+    chartType: sidebarItem["chartType"]
+    add: (ev: any) => void
+    filterables: sidebarItem["filterables"]
+}> = props => {
+    return (
+        <div className="sidebar__item-info">
+        {!props.editing ? (
+            <SidebarItemInfoView 
+                metrics={props.filters}
+                chartType={props.chartType}
+            />
+        ) : (
+            <Select
+                id="select"
+                isMulti
+                onChange={props.add}
+                defaultValue={props.filters}
+                name="colors"
+                options={props.filterables}
+                className="basic-multi-select"
+                classNamePrefix="select"
+            />
+        )}
+        </div>
+    )
+}
+
+
+
+
+
+
+
 export const SidebarItem: React.FC<sidebarItem> = (props) => {
     const [editing, toggleEditing] = useState(false)
     const [deleteConfirmation, toggleDeleteConfirmation] = useState(false)
@@ -68,65 +163,25 @@ export const SidebarItem: React.FC<sidebarItem> = (props) => {
         <div className={`${editing ? 'editing' : ''} sidebar__item`}>
             { !deleteConfirmation ? (
                 <React.Fragment>
-                <div className="sidebar__item-info">
-                    {!editing ? (
-                        <SidebarItemInfoView 
-                            metrics={filters}
-                            chartType={props.chartType}
+                    <SidebarInfo
+                        editing={editing}
+                        filters={filters}
+                        chartType={props.chartType}
+                        add={add}
+                        filterables={props.filterables}
                         />
-                    ) : (
-                        <Select
-                            id="select"
-                            isMulti
-                            onChange={add}
-                            defaultValue={filters}
-                            name="colors"
-                            options={props.filterables}
-                            className="basic-multi-select"
-                            classNamePrefix="select"
+                    <SidebarEdit
+                        editing={editing}
+                        toggleDeleteConfirmation={toggleDeleteConfirmation}
+                        toggleEditing={toggleEditing}
+                        onSave={onSave}
                         />
-                    )}
-                </div>
-                <div className="sidebar__item-edit">
-                    {!editing ? (
-                        <React.Fragment>
-                            <i onClick={()=>toggleDeleteConfirmation(true)}
-                            className="red far fa-times">    
-                            </i>
-                            <i onClick={()=>toggleEditing(!editing)}
-                                className="fad fa-edit">    
-                            </i>
-                        </React.Fragment>
-                    ) : (
-                        <React.Fragment>
-                            <ButtonTertiary
-                                onClick={()=>toggleEditing(!editing)}
-                                id="sidebar__item-save">
-                                Cancel
-                            </ButtonTertiary>
-                            <ButtonTertiary
-                                onClick={onSave}
-                                id="sidebar__item-save">
-                                Save
-                            </ButtonTertiary>
-                        </React.Fragment>
-                    )}
-                </div>
                 </React.Fragment>
             ) : (
-                <div className="confirmation">
-                    <p>Are you sure you want to delete this chart?</p>
-                    <ButtonTertiary
-                        onClick={()=>toggleDeleteConfirmation(false)}
-                        id="cancel">
-                        Cancel
-                    </ButtonTertiary>
-                    <ButtonSecondary
-                        onClick={onDelete}
-                        id="confirm">
-                        Confirm
-                    </ButtonSecondary>
-                </div>
+                <DeleteConfirmation
+                    toggleDeleteConfirmation={toggleDeleteConfirmation}
+                    onDelete={onDelete}
+                    />
             )}
         </div>  
     )

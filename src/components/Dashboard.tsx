@@ -5,19 +5,26 @@ import { Link } from 'react-router-dom';
 import Toolbar from '../components/Toolbar'
 import {ButtonPrimary, ButtonSecondary} from '../styles/Buttons'
 import {LINE_CHART, PIE_CHART, BAR_CHART, STACKED_BAR_CHART} from '../components/Charts'
-import {chartListing, metric} from '../types'
+import {chartListing, metric, endpointsKeys, APIResponse, filterable} from '../types'
+import { ChartListing } from './ChartListing';
+import { filterData } from '../apiUtils/apiClient';
 
 interface dashboard {
-    data: any
+    source: string
+    src: string
+    description: string
+    title: string
+    endpoints: Array<endpointsKeys>
     editMode: boolean
     toggleEditMode: () => void
+    records: APIResponse["records"]
     charts: Array<chartListing>
 }
 
 const Dashboard: React.FC<dashboard> = (props) => {
-    const {data} = props
+    const {source, description, title, endpoints, src} = props
     const chartKeys = Object.keys(props.charts)
-
+    
     return (
         <React.Fragment>
             <Grid fluid>
@@ -25,29 +32,24 @@ const Dashboard: React.FC<dashboard> = (props) => {
                     { props.editMode ? 'Save' : <i className="fad fa-pen"></i>}
                 </ButtonPrimary>
                 <Toolbar
-                    source={data.source}
-                    description={data.description}
-                    title={data.title}
-                    endpoints={data.endpoints}
-                    src={data.src} />
+                    source={source}
+                    description={description}
+                    title={title}
+                    endpoints={endpoints}
+                    src={src} />
                 <Row>
                     {
                         chartKeys.length > 0 ? (
                             chartKeys.map((_chart: any)=>{
                                 const chart = props.charts[_chart]
+                                if (1 == 1) chart.metrics = [...chart.metrics, {value: "date", label: "date"}]
+                                const data = filterData(props.records, chart.metrics)
                                 return (
-                                <Col className="parent" lg={6} md={6}>
-                                    <Card>   
-                                        <h5>{chart.metrics.map((metric_: metric, index:number)=> {
-                                            return (
-                                                `${metric_.label}${index < chart.metrics.length - 1
-                                                    ? ", "
-                                                    : ''}`
-                                            )
-                                        })}</h5>
-                                        <LINE_CHART uid={_chart} data={chart.data} />
-                                    </Card>
-                                </Col>
+                                <ChartListing
+                                    metrics={chart.metrics}
+                                    data={data}
+                                    chartType="line"
+                                    uid={_chart} />
                                 )
                             })
                         ) : (

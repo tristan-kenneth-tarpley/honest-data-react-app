@@ -11,10 +11,59 @@ export interface metric {
     label: string
 }
 export interface chartListing {
-    editing: boolean
+    uid: string
+    editing?: boolean
     metrics: Array<metric>
     chartType: string
     data: Array<{
         [key: string]: string | number
     }>
+}
+
+
+
+
+// shared
+export type datetimeField = Date
+export type uid = string
+
+export type recordFields = datetimeField | string | number | boolean | uid
+export interface record {
+    [key: string]: recordFields
+}
+
+export enum viewTypes {
+    timeBased, snapshotBased
+}
+
+export interface APIResponse {
+    endpoints?: Array<endpointsKeys>
+    title: string
+    viewType: viewTypes // see viewTypes enum
+    source: string
+    records: Array<record>
+    description: string
+    acceptableCharts?: Array<number>
+}
+
+
+
+export enum charts {
+    bar, pie, treeMap,
+    scatterPlot, waterfall, line,
+    dualAxisLine, bullet, bubbleChart,
+    area, stacked
+}
+export enum dataTypes {
+    location, score, dateTime, metricLowIsGood, metricLowIsBad
+}
+export interface APIField {
+    dataType: dataTypes
+    value: string | number | null | undefined
+}
+
+
+export interface endpointsKeys {
+    key: string,
+    active: boolean
 }

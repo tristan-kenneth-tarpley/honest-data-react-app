@@ -1,14 +1,11 @@
-
 import {decamelize} from '../helpers'
 import {filterable} from '../types'
 
-export const getFilterables = (data: any) => {
+export const getFilterables = (recordKeys: any): Array<filterable> => {
     let filterables: Array<filterable> = [];
-
-    for (let i of Object.keys(data.records[0])) {
-        const root = data.records[0]
+    for (let i of recordKeys) {
         const disallowedKeys = ["internal", "flag"]
-        if (i !== "uid" && !disallowedKeys.includes(root[i])) {
+        if (i !== "uid" && !disallowedKeys.includes(i)) {
             filterables = [...filterables, {
                 value: i,
                 label: decamelize(i)

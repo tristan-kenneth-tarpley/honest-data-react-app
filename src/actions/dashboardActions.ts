@@ -1,5 +1,5 @@
 import apiClient from '../apiUtils/apiClient'
-import { metric, chartListing } from '../types'
+import { metric, APIResponse } from '../types'
 
 const fetchData = async (singleOrMulti: string, src: string, endpoint?: string) => {
     const api = new apiClient(singleOrMulti)
@@ -8,16 +8,11 @@ const fetchData = async (singleOrMulti: string, src: string, endpoint?: string) 
 }
 
 export interface initChart {
+    uid: string
     metrics: Array<metric>
     chartType: string
 }
-const addChart = (data: initChart) => {
-    console.log(data)
-    return ({
-        type: "ADD_CHART",
-        payload: data
-    })
-}
+
 
 const hydrateDashboard = (data: string) => {
     return ({
@@ -25,6 +20,14 @@ const hydrateDashboard = (data: string) => {
         payload: data
     })
 }
+
+const addChart = (data: initChart) => {
+    return ({
+        type: "ADD_CHART",
+        payload: data
+    })
+}
+
 
 const toggleEditMode = (data: boolean) => {
     return ({

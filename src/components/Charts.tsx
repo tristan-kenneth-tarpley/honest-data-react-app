@@ -4,6 +4,7 @@ import { ResponsiveContainer, LineChart, PieChart, Pie, BarChart, Bar, Sector, L
     ReferenceDot, Tooltip, CartesianGrid, Legend, Brush, ErrorBar, AreaChart, Area,
     Label, LabelList } from 'recharts';
 import Styles from '../styles/Styles'
+import {chartListing} from '../types'
 
 
 type value = string | number
@@ -35,10 +36,10 @@ const COLORS = [
     Styles.orange,
     Styles.fontColor,
 ];
-const filterData = (data: Array<chartRecord>) => Object.keys(data[0]).filter(x => x !== "name")
 
+const filterData = (data: Array<chartRecord>) => Object.keys(data[0]).filter(x => x !== "name")
 export const LINE_CHART: React.FC<chart> = (props) => {
-    const filtered = filterData(props.data)
+    console.log(props.data)
     return (
         <React.Fragment>
             <ResponsiveContainer width={'99%'} height={Styles.chartHeight}>
@@ -47,18 +48,21 @@ export const LINE_CHART: React.FC<chart> = (props) => {
                     height={250}
                     data={props.data}
                     margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-                    <XAxis axisLine={false} tickLine={false} dataKey="name" />
+                    <XAxis axisLine={false} interval="preserveEnd" tickLine={false} dataKey="date" />
                     <YAxis axisLine={false} tickLine={false} type="number" />
                     <Tooltip />
                     <Legend />
                     {
-                        filtered.map((row, index)=>{
+                        Object.keys(props.data[0])
+                            .filter(x=>x!=="date")
+                            .map((key, index)=> {
+                            // const line = props.data.map(record => record[key])
                             const color = COLORS[index % COLORS.length]
                             return (
                                 <Line type="monotone"
                                     dot={dotStyle(color)}
                                     strokeWidth={3}
-                                    dataKey={filtered[index]}
+                                    dataKey={key}
                                     stroke={color}
                                     yAxisId={0} />
                             )

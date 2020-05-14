@@ -5,30 +5,26 @@ import { connect } from 'react-redux'
 import Select from 'react-select'
 import {editChart, addChart, initChart, deleteChart
 } from '../actions/dashboardActions'
-import {getFilterables} from '../apiUtils/filterables'
-import {chartListing, metric} from '../types'
+import {chartListing, metric, APIResponse, filterable} from '../types'
+import { filterData } from '../apiUtils/apiClient'
+import { v4 as uuidv4 } from 'uuid';
 
-interface sidebar {
-    data: any
-    charts: Array<chartListing>
+interface sidebarContainer {
+    filterables: Array<filterable>
+    chartListings: {[key: string]: chartListing}
     editChart: any
-    addChart: (chart: initChart) => void
+    addChart: (chart: chartListing) => void
     deleteChart: (uid: string) => void
 }
 
-const DashboardSidebar: React.FC<sidebar> = (props) => {
-    const filterables = getFilterables(props.data)
+const SidebarContainer: React.FC<sidebarContainer> = (props) => {
+
+    const {chartListings} = props
+
     const [adding, toggleAdding] = useState(false)
     const [error, toggleError] = useState(false)
-    let disabled = false
 
-    const addButton = !adding ? (
-        <span>Add chart <i className="fad fa-plus-square"></i></span>
-    ) : (
-        <span>Cancel</span>
-    )
     let filters: Array<metric> = []
-
     const add = (ev: any) => {
         filters = ev.map((filter:metric)=>({
             label: filter.label,
@@ -37,25 +33,31 @@ const DashboardSidebar: React.FC<sidebar> = (props) => {
     )}
     const onSave = () => {
         if (filters.length > 0) {
-            props.addChart({
-                metrics: filters,
-                chartType: "line"
-            })
+            // props.addChart({
+            //     uid: uuidv4(),
+            //     metrics: filters,
+            //     chartType: "line",
+            //     // FIXME
+            //     data: [] 
+            //     // data: props.data
+            // })
             toggleError(false)
             toggleAdding(false)
         } else {
             toggleError(true)
         }
         
-        disabled = true
     }
-
 
     return (
         <div className="dashboard__sidebar">
             <div className="addItem__container">
                 <ButtonTertiary onClick={()=>toggleAdding(!adding)} id="addItem">
-                    { addButton }
+                    { !adding ? (
+                        <span>Add chart <i className="fad fa-plus-square"></i></span>
+                    ) : (
+                        <span>Cancel</span>
+                    ) }
                 </ButtonTertiary>
             </div>
             { adding && (
@@ -66,13 +68,12 @@ const DashboardSidebar: React.FC<sidebar> = (props) => {
                             isMulti
                             onChange={add}
                             name="colors"
-                            options={filterables}
+                            options={props.filterables}
                             className={`basic-multi-select ${error ? 'error' : ''}`}
                             classNamePrefix="select"
                         />
                     </div>
                     <ButtonPrimary
-                        disabled={disabled}
                         onClick={onSave}
                         id="addChart">
                         Save
@@ -81,14 +82,14 @@ const DashboardSidebar: React.FC<sidebar> = (props) => {
             )}
             
 
-            {Object.keys(props.charts).map( (chart: any) => (
+            { Object.keys(chartListings).map( (chart: string) => (
                 <SidebarItem
                     editChart={props.editChart}
                     deleteChart={props.deleteChart}
                     uid={chart}
-                    metrics={props.charts[chart].metrics}
-                    chartType={props.charts[chart].chartType}
-                    filterables={filterables} />
+                    metrics={chartListings[chart].metrics}
+                    chartType={chartListings[chart].chartType}
+                    filterables={props.filterables} />
             ))}
         </div>
     )
@@ -96,7 +97,7 @@ const DashboardSidebar: React.FC<sidebar> = (props) => {
 
 const mapStateToProps = (state: any) => {
     return {
-        charts: state.dashboardReducer.charts
+        chartListings: state.dashboardReducer.charts
     }
 }
 
@@ -108,5 +109,5 @@ const mapDispatchToProps = (dispatch: any) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardSidebar)
+export default connect(mapStateToProps, mapDispatchToProps)(SidebarContainer)
 
