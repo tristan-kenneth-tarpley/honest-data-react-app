@@ -37,6 +37,18 @@ const COLORS = [
     Styles.fontColor,
 ];
 
+const DataFormater = (number: number) => {
+    if(number > 1000000000){
+      return (number/1000000000).toString() + 'B';
+    }else if(number > 1000000){
+      return (number/1000000).toString() + 'M';
+    }else if(number > 1000){
+      return (number/1000).toString() + 'K';
+    }else{
+      return number.toString();
+    }
+}
+
 const filterData = (data: Array<chartRecord>) => Object.keys(data[0]).filter(x => x !== "name")
 export const LINE_CHART: React.FC<chart> = (props) => {
     console.log(props.data)
@@ -47,11 +59,23 @@ export const LINE_CHART: React.FC<chart> = (props) => {
                     width={400}
                     height={250}
                     data={props.data}
-                    margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-                    <XAxis axisLine={false} interval="preserveEnd" tickLine={false} dataKey="date" />
-                    <YAxis axisLine={false} tickLine={false} type="number" />
-                    <Tooltip />
-                    <Legend />
+                    margin={{ top: 5, right: 20, left: 0, bottom: 40 }}>
+                    <XAxis
+                        axisLine={false}
+                        interval="preserveEnd"
+                        tickLine={false}
+                        angle={-45}
+                        textAnchor="end"
+                        dataKey="date" />
+                    <YAxis
+                        tickFormatter={DataFormater}
+                        axisLine={false}
+                        tickLine={false}
+                        type="number" />
+                    <Tooltip
+                        formatter={(value: any) => new Intl.NumberFormat('en').format(value.toString())}                    
+                        />
+                    <Legend wrapperStyle={{top: 0, left: 25}} />
                     {
                         Object.keys(props.data[0])
                             .filter(x=>x!=="date")
