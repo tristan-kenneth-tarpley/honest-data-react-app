@@ -29,7 +29,10 @@ const Dashboard: React.FC<dashboard> = (props) => {
         <React.Fragment>
             <Grid fluid>
                 <ButtonPrimary onClick={props.toggleEditMode} id="toggleEditMode">
-                    { props.editMode ? 'Save' : <i className="fad fa-pen"></i>}
+                    { props.editMode
+                        ? <i className="fad fa-expand-arrows"></i>
+                        : <i className="fad fa-pen"></i>
+                    }
                 </ButtonPrimary>
                 <Toolbar
                     source={source}

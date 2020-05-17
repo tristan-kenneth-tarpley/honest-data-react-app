@@ -9,6 +9,7 @@ import {getFilterables} from '../apiUtils/filterables'
 import Dashboard from '../components/Dashboard'
 import SidebarContainer from '../containers/SidebarContainer'
 import { APIResponse, chartListing, filterable, dataTypes } from '../types';
+import { filterData } from '../apiUtils/apiClient';
 interface RouteParams {
     src: string
     singleOrMulti: string

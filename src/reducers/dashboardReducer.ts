@@ -48,6 +48,7 @@ interface _action {
 export const dashboardReducer = (state = initialState, action: _action) => {
     switch (action.type) {
         case "HYDRATE_DASHBOARD":
+            console.log(action.payload)
             state = {
                 ...state,
                 data: action.payload
@@ -60,13 +61,15 @@ export const dashboardReducer = (state = initialState, action: _action) => {
             }
             break
         case "EDIT_CHART":
+            const {chartId, filters} = action.payload
+            console.log(filters)
             state = {
                 ...state,
                 charts: {
                     ...state.charts,
-                    [action.payload.chartId]: {
-                        ...state.charts[action.payload.chartId],
-                        metrics: action.payload.filters
+                    [chartId]: {
+                        ...state.charts[chartId],
+                        metrics: filters
                     }
                 }
             }

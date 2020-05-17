@@ -51,7 +51,7 @@ const DataFormater = (number: number) => {
 
 const filterData = (data: Array<chartRecord>) => Object.keys(data[0]).filter(x => x !== "name")
 export const LINE_CHART: React.FC<chart> = (props) => {
-    console.log(props.data)
+    
     return (
         <React.Fragment>
             <ResponsiveContainer width={'99%'} height={Styles.chartHeight}>

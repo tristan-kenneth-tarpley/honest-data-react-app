@@ -43,12 +43,12 @@ export const filterData = (data: Array<any>, metrics: Array<metric>) => {
     const filters = metrics.map(m => m.value)
     const returned = data.map(d=>{ 
         let filtered: any = {};
-        for (let i of Object.keys(d)) {
-            if (filters.includes(i)) {
-                if (i === "date") filtered[i] = new Date(d[i].value)
+        for (let key of Object.keys(d)) {
+            if (filters.includes(key)) {
+                if (key === "date") filtered[key] = new Date(d[key])
                                                 .toLocaleDateString()
 
-                else filtered[i] = d[i].value
+                else filtered[key] = d[key]
             }
         }
         return filtered

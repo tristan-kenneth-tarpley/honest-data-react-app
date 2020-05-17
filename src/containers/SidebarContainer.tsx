@@ -20,7 +20,6 @@ interface sidebarContainer {
 const SidebarContainer: React.FC<sidebarContainer> = (props) => {
 
     const {chartListings} = props
-
     const [adding, toggleAdding] = useState(false)
     const [error, toggleError] = useState(false)
 

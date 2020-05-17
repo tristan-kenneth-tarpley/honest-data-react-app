@@ -132,6 +132,7 @@ const SidebarInfo: React.FC<{
 
 
 export const SidebarItem: React.FC<sidebarItem> = (props) => {
+    
     const [editing, toggleEditing] = useState(false)
     const [deleteConfirmation, toggleDeleteConfirmation] = useState(false)
     let filters: Array<metric> = props.metrics.map((_metric: metric): metric => {
