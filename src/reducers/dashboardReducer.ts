@@ -61,6 +61,18 @@ export const dashboardReducer = (state = initialState, action: _action) => {
                 }
             }
             break
+        case "EDIT_CHART_TYPE":
+            state = {
+                ...state,
+                charts: {
+                    ...state.charts,
+                    [action.payload.chartId]: {
+                        ...state.charts[action.payload.chartId],
+                        chartType: action.payload.chartType
+                    }
+                }
+            }
+            break
         case "ADD_CHART":
             state = {
                 ...state,

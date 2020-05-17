@@ -8,7 +8,6 @@ interface button {
 }
 
 const ButtonPrimary: React.FC<button> = (props) => {
-    console.log(props.disabled)
     return (
         <button onClick={props.onClick && props.onClick}
                 id={props.id}

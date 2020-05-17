@@ -54,13 +54,13 @@ const Dashboard: React.FC<dashboard> = (props) => {
                                     chart.metrics = chart.metrics.filter(m=>m.value !== "date")
                                 }
                                 const data = filterData(props.records, chart.metrics)
-                        
+                                
                                 return (
                                 <ChartListing
                                     metrics={chart.metrics}
                                     colWidth={chart.width}
                                     data={data}
-                                    chartType="line"
+                                    chartType={chart.chartType}
                                     uid={_chart} />
                                 )
                             })

@@ -3,7 +3,7 @@ import {ButtonPrimary, ButtonTertiary} from '../styles/Buttons'
 import {SidebarItem} from '../components/SidebarItem'
 import { connect } from 'react-redux'
 import Select from 'react-select'
-import {editChart, addChart, addChartInterface, deleteChart, editChartWidth
+import {editChart, addChart, addChartInterface, deleteChart, editChartWidth, editChartType
 } from '../actions/dashboardActions'
 import {chartListing, metric, filterable} from '../types'
 import { v4 as uuidv4 } from 'uuid';
@@ -15,6 +15,10 @@ interface sidebarContainer {
     addChart: (chart: addChartInterface) => void
     deleteChart: (uid: string) => void
     editChartWidth: (width: number, chartId:string) => void
+    editChartType: (chart: {
+        chartId: string
+        chartType: string
+    }) => void
 }
 
 const SidebarContainer: React.FC<sidebarContainer> = (props) => {
@@ -86,6 +90,7 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                     metrics={chartListings[chart].metrics}
                     chartWidth={chartListings[chart].width}
                     editChartWidth={props.editChartWidth}
+                    editChartType={props.editChartType}
                     chartType={chartListings[chart].chartType}
                     filterables={props.filterables} />
             ))}
@@ -102,6 +107,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         editChart: (chart: any) => dispatch(editChart(chart)),
+        editChartType: (chart: any) => dispatch(editChartType(chart)),
         addChart: (chart: addChartInterface) => dispatch(addChart(chart)),
         deleteChart: (uid: string) => dispatch(deleteChart(uid)),
         editChartWidth: (width: number, chartId:string) => dispatch(editChartWidth(width, chartId))

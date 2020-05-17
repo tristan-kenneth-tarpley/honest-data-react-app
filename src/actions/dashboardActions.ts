@@ -48,6 +48,16 @@ const editChart = (chart: editchart) => {
     })
 }
 
+const editChartType = (chart: {
+    chartId: string
+    chartType: string
+}) => {
+    return ({
+        type: "EDIT_CHART_TYPE",
+        payload: chart
+    })
+}
+
 const deleteChart = (uid: string) => {
     return ({
         type: "DELETE_CHART",
@@ -65,5 +75,5 @@ const editChartWidth = (width: number, chartId:string) => {
 export {
     hydrateDashboard, fetchData,
     toggleEditMode, addChart,
-    editChart, deleteChart, editChartWidth
+    editChart, deleteChart, editChartWidth, editChartType
 }

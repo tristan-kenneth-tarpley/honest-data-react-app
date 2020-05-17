@@ -19,7 +19,7 @@ const SidebarItemInfoView: React.FC = (props: any) => {
                 )
             })}
         </p>
-        <span className="helper sub chart-info">{props.chartType} chart</span>
+        <span className="helper sub chart-info">{decamelize(props.chartType)} chart</span>
     </React.Fragment>
     )
 }
@@ -186,6 +186,10 @@ interface sidebarItem {
     editChart: (chart: editchart)=>void
     deleteChart: (uid: string) => void
     editChartWidth: (width: number, chartId:string) => void
+    editChartType: (chart: {
+        chartId: string
+        chartType: string
+    }) => void
     metrics: Array<metric>
     editing?: boolean
     chartWidth: number
@@ -214,6 +218,10 @@ export const SidebarItem: React.FC<sidebarItem> = (props) => {
         props.editChart({
             chartId: props.uid,
             filters
+        })
+        props.editChartType({
+            chartId: props.uid,
+            chartType: activeChartType
         })
         props.editChartWidth(newChartWidth, props.uid)
         toggleEditing(!editing)

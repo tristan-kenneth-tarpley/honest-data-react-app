@@ -13,7 +13,7 @@ interface chartComponent {
     colWidth: number
 }
 export const ChartListing: React.FC<chartComponent> = props => {
-    // const filtered = filterData(props.data.records)
+    
     return (
         <Col className="parent" lg={props.colWidth} md={props.colWidth} sm={12}>
             <Card>   
