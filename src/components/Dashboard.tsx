@@ -46,16 +46,19 @@ const Dashboard: React.FC<dashboard> = (props) => {
                     {
                         chartKeys.length > 0 ? (
                             chartKeys.map((_chart: any)=>{
-                                const chart = props.charts[_chart]
+                                const chart = props.charts[_chart]                                
                                 if (props.viewTypes[props.viewType] === "timeSeries"
                                     && chart.metrics.findIndex(x => x.value==="date") === -1) {
                                     chart.metrics.push({value:"date", label: "date"})
-                                } else chart.metrics = chart.metrics.filter(m=>m.value !== "date")
-
+                                } else if (props.viewTypes[props.viewType] !== "timeSeries") {
+                                    chart.metrics = chart.metrics.filter(m=>m.value !== "date")
+                                }
                                 const data = filterData(props.records, chart.metrics)
+                        
                                 return (
                                 <ChartListing
                                     metrics={chart.metrics}
+                                    colWidth={chart.width}
                                     data={data}
                                     chartType="line"
                                     uid={_chart} />

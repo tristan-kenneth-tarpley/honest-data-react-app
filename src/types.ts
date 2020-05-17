@@ -7,17 +7,15 @@ export interface filterable {
     label: string
 }
 export interface metric {
-    value: string
+    value: string | number
     label: string
 }
 export interface chartListing {
     uid: string
     editing?: boolean
+    width: number
     metrics: Array<metric>
     chartType: string
-    data: Array<{
-        [key: string]: string | number
-    }>
 }
 
 

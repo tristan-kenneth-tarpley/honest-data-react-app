@@ -10,11 +10,12 @@ interface chartComponent {
     data: any
     uid: string
     chartType: string
+    colWidth: number
 }
 export const ChartListing: React.FC<chartComponent> = props => {
     // const filtered = filterData(props.data.records)
     return (
-        <Col className="parent" lg={12} md={12}>
+        <Col className="parent" lg={props.colWidth} md={props.colWidth} sm={12}>
             <Card>   
                 <h5>{props.metrics.map((metric_: metric, index:number)=> {
                     return (

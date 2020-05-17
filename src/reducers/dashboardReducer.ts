@@ -15,6 +15,7 @@ const initialState: initialstate =  {
     editMode: true,
     charts: {
         [initUID]: {
+            width: 12,
             uid: initUID,
             editing: false,
             metrics: [{
@@ -24,19 +25,7 @@ const initialState: initialstate =  {
                 label: "positive",
                 value: "positive"
             }], 
-            chartType: "line",
-            data: [
-                { name: 'Page K', pending: 1000, positive: 2400},
-                { name: 'Page L', pending: 300, positive: 4567},
-                { name: 'Page M', pending: 280, positive: 1398},
-                { name: 'Page N', pending: 200, positive: 9800},
-                { name: 'Page O', pending: 278, positive: 4300},
-                { name: 'Page P', pending: 20000, positive: 4800},
-                { name: 'Page Q', pending: 189, positive: 7350},
-                { name: 'Page R', pending: 7500, positive: 4800},
-                { name: 'Page S', pending: 189, positive: 200},
-                { name: 'Page T', pending: 135, positive: 4800},
-            ]
+            chartType: "line"
         }
     }
 }
@@ -61,7 +50,6 @@ export const dashboardReducer = (state = initialState, action: _action) => {
             break
         case "EDIT_CHART":
             const {chartId, filters} = action.payload
-            console.log(filters)
             state = {
                 ...state,
                 charts: {
@@ -74,23 +62,11 @@ export const dashboardReducer = (state = initialState, action: _action) => {
             }
             break
         case "ADD_CHART":
-            action.payload.data = [
-                { name: 'Page K', pending: 1000, positive: 2400},
-                { name: 'Page L', pending: 300, positive: 4567},
-                { name: 'Page M', pending: 280, positive: 1398},
-                { name: 'Page N', pending: 200, positive: 9800},
-                { name: 'Page O', pending: 278, positive: 4300},
-                { name: 'Page P', pending: 20000, positive: 4800},
-                { name: 'Page Q', pending: 189, positive: 7350},
-                { name: 'Page R', pending: 7500, positive: 4800},
-                { name: 'Page S', pending: 189, positive: 200},
-                { name: 'Page T', pending: 135, positive: 4800},
-            ]
             state = {
                 ...state,
                 charts: {
                     ...state.charts,
-                    [uuidv4()]: action.payload.data//action.payload
+                    [uuidv4()]: action.payload
                 }
             }
             break
@@ -110,13 +86,18 @@ export const dashboardReducer = (state = initialState, action: _action) => {
                 charts: filtered
             }
             return state
-            // const clone = (({ action.payload, ...state.charts }) => o)(obj)
-            // state = {
-            //     ...state,
-            //     charts: {
-            //         clone
-            //     }
-            // }
+        case "EDIT_CHART_WIDTH":
+            state = {
+                ...state,
+                charts: {
+                    ...state.charts,
+                    [action.payload.chartId]: {
+                        ...state.charts[action.payload.chartId],
+                        width: action.payload.width
+                    }
+                }
+            }
+            break
         default:
             return state
     }

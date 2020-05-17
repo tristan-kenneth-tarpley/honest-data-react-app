@@ -3,18 +3,18 @@ import {ButtonPrimary, ButtonTertiary} from '../styles/Buttons'
 import {SidebarItem} from '../components/SidebarItem'
 import { connect } from 'react-redux'
 import Select from 'react-select'
-import {editChart, addChart, initChart, deleteChart
+import {editChart, addChart, addChartInterface, deleteChart, editChartWidth
 } from '../actions/dashboardActions'
-import {chartListing, metric, APIResponse, filterable} from '../types'
-import { filterData } from '../apiUtils/apiClient'
+import {chartListing, metric, filterable} from '../types'
 import { v4 as uuidv4 } from 'uuid';
 
 interface sidebarContainer {
     filterables: Array<filterable>
     chartListings: {[key: string]: chartListing}
     editChart: any
-    addChart: (chart: chartListing) => void
+    addChart: (chart: addChartInterface) => void
     deleteChart: (uid: string) => void
+    editChartWidth: (width: number, chartId:string) => void
 }
 
 const SidebarContainer: React.FC<sidebarContainer> = (props) => {
@@ -32,14 +32,11 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
     )}
     const onSave = () => {
         if (filters.length > 0) {
-            // props.addChart({
-            //     uid: uuidv4(),
-            //     metrics: filters,
-            //     chartType: "line",
-            //     // FIXME
-            //     data: [] 
-            //     // data: props.data
-            // })
+            props.addChart({
+                uid: uuidv4(),
+                metrics: filters,
+                chartType: "line",
+            })
             toggleError(false)
             toggleAdding(false)
         } else {
@@ -87,6 +84,8 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                     deleteChart={props.deleteChart}
                     uid={chart}
                     metrics={chartListings[chart].metrics}
+                    chartWidth={chartListings[chart].width}
+                    editChartWidth={props.editChartWidth}
                     chartType={chartListings[chart].chartType}
                     filterables={props.filterables} />
             ))}
@@ -103,8 +102,9 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         editChart: (chart: any) => dispatch(editChart(chart)),
-        addChart: (chart: initChart) => dispatch(addChart(chart)),
-        deleteChart: (uid: string) => dispatch(deleteChart(uid))
+        addChart: (chart: addChartInterface) => dispatch(addChart(chart)),
+        deleteChart: (uid: string) => dispatch(deleteChart(uid)),
+        editChartWidth: (width: number, chartId:string) => dispatch(editChartWidth(width, chartId))
     }
 }
 
