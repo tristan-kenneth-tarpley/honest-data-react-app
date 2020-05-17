@@ -84,8 +84,8 @@ export const LINE_CHART: React.FC<chart> = (props) => {
                             const color = COLORS[index % COLORS.length]
                             return (
                                 <Line type="monotone"
-                                    dot={dotStyle(color)}
-                                    strokeWidth={1}
+                                    dot={false}
+                                    strokeWidth={3}
                                     dataKey={key}
                                     stroke={color}
                                     yAxisId={0} />
