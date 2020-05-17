@@ -48,7 +48,6 @@ interface _action {
 export const dashboardReducer = (state = initialState, action: _action) => {
     switch (action.type) {
         case "HYDRATE_DASHBOARD":
-            console.log(action.payload)
             state = {
                 ...state,
                 data: action.payload

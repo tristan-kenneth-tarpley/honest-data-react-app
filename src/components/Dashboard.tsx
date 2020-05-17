@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Toolbar from '../components/Toolbar'
 import {ButtonPrimary, ButtonSecondary} from '../styles/Buttons'
 import {LINE_CHART, PIE_CHART, BAR_CHART, STACKED_BAR_CHART} from '../components/Charts'
-import {chartListing, metric, endpointsKeys, APIResponse, filterable} from '../types'
+import {chartListing, metric, endpointsKeys, APIResponse, filterable, viewTypes} from '../types'
 import { ChartListing } from './ChartListing';
 import { filterData } from '../apiUtils/apiClient';
 
@@ -19,6 +19,8 @@ interface dashboard {
     toggleEditMode: () => void
     records: APIResponse["records"]
     charts: Array<chartListing>
+    viewType: number
+    viewTypes: any
 }
 
 const Dashboard: React.FC<dashboard> = (props) => {
@@ -45,7 +47,11 @@ const Dashboard: React.FC<dashboard> = (props) => {
                         chartKeys.length > 0 ? (
                             chartKeys.map((_chart: any)=>{
                                 const chart = props.charts[_chart]
-                                if (1 == 1) chart.metrics = [...chart.metrics, {value: "date", label: "date"}]
+                                if (props.viewTypes[props.viewType] === "timeSeries"
+                                    && chart.metrics.findIndex(x => x.value==="date") === -1) {
+                                    chart.metrics.push({value:"date", label: "date"})
+                                } else chart.metrics = chart.metrics.filter(m=>m.value !== "date")
+
                                 const data = filterData(props.records, chart.metrics)
                                 return (
                                 <ChartListing

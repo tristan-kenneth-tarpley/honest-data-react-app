@@ -45,13 +45,15 @@ const DashboardContainer: React.FC = (props: any) => {
         
     }, [endpoint]);
 
-    let source, description, title, endpoints, records;
+    let source, description, title, endpoints, records, viewType, viewTypes;
     if (props.data){
         source = props.data.source
         description = props.data.description
         title = props.data.title
         endpoints = props.data.endpoints
         records = props.data.records
+        viewType = props.data.viewType
+        viewTypes = props.data.viewTypes
     }
     return (
         <div className="dashboard">
@@ -74,6 +76,8 @@ const DashboardContainer: React.FC = (props: any) => {
                             description={description}
                             title={title}
                             endpoints={endpoints}
+                            viewType={viewType}
+                            viewTypes={viewTypes}
                             />
                     </div>
                 </React.Fragment>
