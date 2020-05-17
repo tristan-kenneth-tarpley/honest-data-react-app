@@ -44,8 +44,6 @@ export interface APIResponse {
     acceptableCharts?: Array<number>
 }
 
-
-
 export enum charts {
     bar, pie, treeMap,
     scatterPlot, waterfall, line,

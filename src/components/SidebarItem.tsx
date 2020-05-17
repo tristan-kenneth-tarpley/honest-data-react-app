@@ -1,15 +1,13 @@
 import React, {useState} from 'react'
 import Select from 'react-select'
-import {filterable, metric} from '../types'
+import {filterable, metric, charts} from '../types'
 import { ButtonSecondary, ButtonTertiary } from '../styles/Buttons'
 import {editchart, editChartWidth} from '../actions/dashboardActions'
 import { decamelize } from '../helpers'
+import {Text, Helper} from '../styles/Typography'
 
 
-const SidebarItemInfoView: React.FC<{
-    metrics: Array<metric>
-    chartType: string
-}> = (props) => {
+const SidebarItemInfoView: React.FC = (props: any) => {
     return (
     <React.Fragment>
         <p>
@@ -26,10 +24,7 @@ const SidebarItemInfoView: React.FC<{
     )
 }
 
-const DeleteConfirmation: React.FC<{
-    toggleDeleteConfirmation: (cond: boolean) => void
-    onDelete: () => void
-}> = props => {
+const DeleteConfirmation: React.FC = (props: any) => {
     return (
         <div className="confirmation">
             <p>Are you sure you want to delete this chart?</p>
@@ -49,13 +44,7 @@ const DeleteConfirmation: React.FC<{
 
 
 
-const SidebarEdit:React.FC<{
-    editing: boolean
-    toggleDeleteConfirmation: (cond: boolean) => void
-    toggleEditing: (cond: boolean) => void
-    onSave: () => void
-    chartWidth: number
-}> = props => {
+const SidebarEdit:React.FC = (props: any) => {
     return (
         <div className="sidebar__item-edit">
             {!props.editing ? (
@@ -63,7 +52,7 @@ const SidebarEdit:React.FC<{
                     <i onClick={()=>props.toggleDeleteConfirmation(true)}
                     className="red far fa-times">    
                     </i>
-                    <i onClick={()=>props.toggleEditing(!props.editing)}
+                    <i onClick={()=>{props.toggleEditing(!props.editing)}}
                         className="fad fa-edit">    
                     </i>
                 </React.Fragment>
@@ -84,17 +73,10 @@ const SidebarEdit:React.FC<{
         </div>
     )
 }
-// cleanup these interfaces and props
 
-const SidebarInfo: React.FC<{
-    editing: boolean
-    filters: sidebarItem["metrics"]
-    chartType: sidebarItem["chartType"]
-    add: (ev: any) => void
-    setNewChartWidth: (ev: number) => void
-    chartWidth: number
-    filterables: sidebarItem["filterables"]
-}> = props => {
+
+
+const Editing: React.FC = (props:any) => {
     const colWidths = [
         {label: "100%", value: 12},
         {label: "75%", value: 9},
@@ -103,38 +85,91 @@ const SidebarInfo: React.FC<{
         {label: "33%", value: 4},
         {label: "25%", value: 3},
     ]
+    const {activeChartType, setActiveChartType} = props
+
+    const ChartIcon = (props: any) => {
+        // console.log(props.)
+        return (
+            <div
+                onClick={() => props.onClick(props.chartType)}
+                className={`chartSelector__item
+                ${props.activeChartType === props.chartType ? 'active' : ''}`
+            }>
+                { props.icon }
+                <Helper>{props.displayName}</Helper>
+            </div> 
+        )
+    }
     
+    return (
+        <React.Fragment>
+            <Text size="sm" len="short">Chart type:</Text>
+            <div className="sidebar__item-edit-chartSelector">
+                <ChartIcon
+                    onClick={setActiveChartType}
+                    activeChartType={activeChartType}
+                    icon={<i className="fad fa-chart-line"></i>}
+                    displayName="Line Chart"
+                    chartType='line' />
+                <ChartIcon
+                    onClick={setActiveChartType}
+                    activeChartType={activeChartType}
+                    icon={<i className="fad fa-chart-bar"></i>}
+                    displayName="Bar chart"
+                    chartType='bar' />
+                <ChartIcon
+                    onClick={setActiveChartType}
+                    activeChartType={activeChartType}
+                    icon={<i className="fad fa-chart-pie"></i>}
+                    displayName="Pie Chart"
+                    chartType='pie' />
+                <ChartIcon
+                    onClick={setActiveChartType}
+                    activeChartType={activeChartType}
+                    icon={<i className="fad fa-chart-scatter"></i>}
+                    displayName="Scatter Plot"
+                    chartType='scatterPlot' />
+                <ChartIcon
+                    onClick={setActiveChartType}
+                    activeChartType={activeChartType}
+                    icon={<i className="fad fa-analytics"></i>}
+                    displayName="Dual Axis"
+                    chartType='dualAxisLine' />
+            </div>
+            <br />
+            <Text size="sm" len="short">Chart width:</Text>
+            <Select
+                id="select"
+                defaultValue={colWidths.filter(w=>w.value === props.chartWidth)[0]}
+                name="colors"
+                options={colWidths}
+                onChange={(e: any)=>props.setNewChartWidth(e.value)}
+                classNamePrefix="select"
+            />
+            <br/>
+            <Text size="sm" len="short">Select the fields to view:</Text>
+            <Select
+                id="select"
+                isMulti
+                onChange={props.add}
+                defaultValue={props.filters}
+                name="colors"
+                options={props.filterables}
+                className="basic-multi-select"
+                classNamePrefix="select"
+            />
+        </React.Fragment>
+    )
+}
+
+
+const SidebarInfo: React.FC = (props: any) => {
     return (
         <div className="sidebar__item-info">
         {!props.editing ? (
-            <SidebarItemInfoView 
-                metrics={props.filters}
-                chartType={props.chartType}
-            />
+            <SidebarItemInfoView {...props} />
         ) : (
-            <React.Fragment>
-                <p className="helper">Chart width:</p>
-                <Select
-                    id="select"
-                    defaultValue={colWidths.filter(w=>w.value === props.chartWidth)[0]}
-                    name="colors"
-                    options={colWidths}
-                    onChange={(e: any)=>props.setNewChartWidth(e.value)}
-                    classNamePrefix="select"
-                />
-                <br/>
-                <p className="helper">Select the fields to view:</p>
-                <Select
-                    id="select"
-                    isMulti
-                    onChange={props.add}
-                    defaultValue={props.filters}
-                    name="colors"
-                    options={props.filterables}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                />
-            </React.Fragment>
+            <Editing {...props} />
         )}
         </div>
     )
@@ -161,7 +196,8 @@ export const SidebarItem: React.FC<sidebarItem> = (props) => {
     const [editing, toggleEditing] = useState(false)
     const [deleteConfirmation, toggleDeleteConfirmation] = useState(false)
     const [newChartWidth, setNewChartWidth] = useState(props.chartWidth)
-
+    const [activeChartType, setActiveChartType] = useState('line')
+    
     let filters: Array<metric> = props.metrics.map((_metric: metric): metric => {
         return ({
             label: decamelize(_metric.label),
@@ -181,48 +217,28 @@ export const SidebarItem: React.FC<sidebarItem> = (props) => {
         })
         props.editChartWidth(newChartWidth, props.uid)
         toggleEditing(!editing)
-        // onWidthEdit()
     }
-
-
-    // const onWidthEdit = (ev?: any) => {
-    //     console.log(ev)
-    //     // props.editChartWidth({
-    //     //     width, chartId }
-    //     // })
-    // }
 
     const onDelete = () => {
         props.deleteChart(props.uid)
         toggleDeleteConfirmation(false)
     }
 
+    const addtlProps = {
+        editing, deleteConfirmation, newChartWidth, filters,
+        add, onSave, onDelete, toggleEditing, toggleDeleteConfirmation,
+        setNewChartWidth, activeChartType, setActiveChartType
+    }
+
     return (
         <div className={`${editing ? 'editing' : ''} sidebar__item`}>
             { !deleteConfirmation ? (
                 <React.Fragment>
-                    <SidebarInfo
-                        editing={editing}
-                        filters={filters}
-                        chartType={props.chartType}
-                        add={add}
-                        setNewChartWidth={setNewChartWidth}
-                        filterables={props.filterables}
-                        chartWidth={props.chartWidth}
-                        />
-                    <SidebarEdit
-                        editing={editing}
-                        toggleDeleteConfirmation={toggleDeleteConfirmation}
-                        toggleEditing={toggleEditing}
-                        onSave={onSave}
-                        chartWidth={props.chartWidth}
-                        />
+                    <SidebarInfo {...props} {...addtlProps} />
+                    <SidebarEdit {...props} {...addtlProps} />
                 </React.Fragment>
             ) : (
-                <DeleteConfirmation
-                    toggleDeleteConfirmation={toggleDeleteConfirmation}
-                    onDelete={onDelete}
-                    />
+                <DeleteConfirmation {...props} {...addtlProps} />
             )}
         </div>  
     )
