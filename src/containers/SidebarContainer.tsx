@@ -40,7 +40,7 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                 uid: uuidv4(),
                 metrics: filters,
                 chartType: "line",
-            })
+            }) 
             toggleError(false)
             toggleAdding(false)
         } else {

@@ -53,7 +53,10 @@ const Dashboard: React.FC<dashboard> = (props) => {
                                 } else if (props.viewTypes[props.viewType] !== "timeSeries") {
                                     chart.metrics = chart.metrics.filter(m=>m.value !== "date")
                                 }
-                                const data = filterData(props.records, chart.metrics)
+                                const data = filterData(
+                                    props.records, chart.metrics,
+                                    props.records.length > 15 ? true : false
+                                ).reverse()
                                 
                                 return (
                                 <ChartListing

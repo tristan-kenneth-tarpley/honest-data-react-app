@@ -25,7 +25,7 @@ const initialState: initialstate =  {
                 label: "positive",
                 value: "positive"
             }], 
-            chartType: "line"
+            chartType: "bar"
         }
     }
 }

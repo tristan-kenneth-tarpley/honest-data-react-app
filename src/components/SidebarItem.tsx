@@ -200,7 +200,8 @@ export const SidebarItem: React.FC<sidebarItem> = (props) => {
     const [editing, toggleEditing] = useState(false)
     const [deleteConfirmation, toggleDeleteConfirmation] = useState(false)
     const [newChartWidth, setNewChartWidth] = useState(props.chartWidth)
-    const [activeChartType, setActiveChartType] = useState('line')
+    const [activeChartType, setActiveChartType] = useState(props.chartType)
+    
     
     let filters: Array<metric> = props.metrics.map((_metric: metric): metric => {
         return ({

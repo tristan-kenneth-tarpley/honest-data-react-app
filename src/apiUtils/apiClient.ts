@@ -39,15 +39,19 @@ export default class APIClient {
     }
 }
 
-export const filterData = (data: Array<any>, metrics: Array<metric>) => {
+export const filterData = (data: Array<any>, metrics: Array<metric>, shrink=false) => {
     const filters = metrics.map(m => m.value)
-    const returned = data.map(d=>{ 
+    let base: any;
+    if (shrink) base = data.filter((x, index)=>index % 2 === 0)
+    else base = data
+
+    const returned = base.map((d: any)=>{ 
         let filtered: any = {};
         for (let key of Object.keys(d)) {
+            
             if (filters.includes(key)) {
                 if (key === "date") filtered[key] = new Date(d[key])
                                                 .toLocaleDateString()
-
                 else filtered[key] = d[key]
             }
         }

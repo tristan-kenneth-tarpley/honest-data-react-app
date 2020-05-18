@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { JSXElementConstructor } from 'react'
 import {Col} from 'react-flexbox-grid'
 import Card from './Card'
 import {chartListing, metric} from '../types'
-import {LINE_CHART} from './Charts'
+import {LINE_CHART, PIE_CHART, BAR_CHART} from './Charts'
 
 
 interface chartComponent {
@@ -13,7 +13,12 @@ interface chartComponent {
     colWidth: number
 }
 export const ChartListing: React.FC<chartComponent> = props => {
-    
+    const chartTable: any = {
+        line: <LINE_CHART uid={props.uid} data={props.data} />,
+        bar: <BAR_CHART uid={props.uid} data={props.data} />,
+        pie: <PIE_CHART uid={props.uid} data={props.data} />
+    }
+
     return (
         <Col className="parent" lg={props.colWidth} md={props.colWidth} sm={12}>
             <Card>   
@@ -24,7 +29,8 @@ export const ChartListing: React.FC<chartComponent> = props => {
                             : ''}`
                     )
                 })}</h5>
-                <LINE_CHART uid={props.uid} data={props.data} />
+                {chartTable[props.chartType]}
+                {/* <LINE_CHART uid={props.uid} data={props.data} /> */}
             </Card>
         </Col>
     )
