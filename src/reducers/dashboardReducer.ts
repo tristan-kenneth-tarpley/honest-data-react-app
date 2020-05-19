@@ -1,7 +1,10 @@
 import { chartListing } from '../types'
 import { v4 as uuidv4 } from 'uuid';
+import { DayRange } from 'react-modern-calendar-datepicker';
 
 interface initialstate {
+    from: DayRange['from']
+    to: DayRange['to']
     data: any | null,
     editMode: boolean,
     charts: {
@@ -11,6 +14,8 @@ interface initialstate {
 
 const initUID: string = uuidv4()
 const initialState: initialstate =  {
+    from: null,
+    to: null,
     data: null,
     editMode: true,
     charts: {
@@ -25,7 +30,7 @@ const initialState: initialstate =  {
                 label: "positive",
                 value: "positive"
             }], 
-            chartType: "bar"
+            chartType: "line"
         }
     }
 }
@@ -106,6 +111,27 @@ export const dashboardReducer = (state = initialState, action: _action) => {
                     [action.payload.chartId]: {
                         ...state.charts[action.payload.chartId],
                         width: action.payload.width
+                    }
+                }
+            }
+            break
+        case "SET_DATE_RANGE":
+            state = {
+                ...state,
+                from: action.payload.from,
+                to: action.payload.to,
+            }
+            break
+        case "SET_CHART_DATE_RANGE":
+            const {date_} = action.payload
+            state = {
+                ...state,
+                charts: {
+                    ...state.charts,
+                    [action.payload.chartId]: {
+                        ...state.charts[action.payload.chartId],
+                        from: date_.from,
+                        to: date_.to
                     }
                 }
             }

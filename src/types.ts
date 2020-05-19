@@ -1,3 +1,5 @@
+import { DayRange } from "react-modern-calendar-datepicker"
+
 export enum searchTypes {
     compareSources, singleSource
 }
@@ -12,10 +14,12 @@ export interface metric {
 }
 export interface chartListing {
     uid: string
-    editing?: boolean
     width: number
     metrics: Array<metric>
     chartType: string
+    from?: DayRange['from']
+    to?: DayRange['to']
+    editing?: boolean
 }
 
 
@@ -62,4 +66,12 @@ export interface APIField {
 export interface endpointsKeys {
     key: string,
     active: boolean
+}
+
+
+export type dateRange = DayRange
+export interface date {
+    day: number
+    month: number
+    year: number
 }

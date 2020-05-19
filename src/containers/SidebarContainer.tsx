@@ -3,15 +3,21 @@ import {ButtonPrimary, ButtonTertiary} from '../styles/Buttons'
 import {SidebarItem} from '../components/SidebarItem'
 import { connect } from 'react-redux'
 import Select from 'react-select'
-import {editChart, addChart, addChartInterface, deleteChart, editChartWidth, editChartType
+import {
+    editChart, addChart, addChartInterface, deleteChart,
+    editChartWidth, editChartType, setChartDateRange
 } from '../actions/dashboardActions'
 import {chartListing, metric, filterable} from '../types'
 import { v4 as uuidv4 } from 'uuid';
+import { DayRange } from 'react-modern-calendar-datepicker'
 
 interface sidebarContainer {
     filterables: Array<filterable>
     chartListings: {[key: string]: chartListing}
     editChart: any
+    viewType: number
+    from: DayRange['from']
+    to: DayRange['to']
     addChart: (chart: addChartInterface) => void
     deleteChart: (uid: string) => void
     editChartWidth: (width: number, chartId:string) => void
@@ -19,6 +25,7 @@ interface sidebarContainer {
         chartId: string
         chartType: string
     }) => void
+    setChartDateRange: (_date: DayRange, chartId:string) => void
 }
 
 const SidebarContainer: React.FC<sidebarContainer> = (props) => {
@@ -82,30 +89,49 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
             )}
             
 
-            { Object.keys(chartListings).map( (chart: string) => (
+            { Object.keys(chartListings).map( (chart: string) => {
+                
+                return (
                 <SidebarItem
                     editChart={props.editChart}
+                    key={chart}
                     deleteChart={props.deleteChart}
                     uid={chart}
+                    from={
+                        chartListings[chart].from
+                            ? chartListings[chart].from
+                            : props.from
+                    }
+                    to={
+                        chartListings[chart].to
+                            ? chartListings[chart].to
+                            : props.to
+                    }
+                    viewType={props.viewType}
                     metrics={chartListings[chart].metrics}
                     chartWidth={chartListings[chart].width}
                     editChartWidth={props.editChartWidth}
                     editChartType={props.editChartType}
+                    setChartDateRange={props.setChartDateRange}
                     chartType={chartListings[chart].chartType}
                     filterables={props.filterables} />
-            ))}
+                )
+            })}
         </div>
     )
 }
 
 const mapStateToProps = (state: any) => {
     return {
-        chartListings: state.dashboardReducer.charts
+        chartListings: state.dashboardReducer.charts,
+        from: state.dashboardReducer.from,
+        to: state.dashboardReducer.to
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
+        setChartDateRange: (_date: DayRange, chartId:string) => dispatch(setChartDateRange(_date, chartId)),
         editChart: (chart: any) => dispatch(editChart(chart)),
         editChartType: (chart: any) => dispatch(editChartType(chart)),
         addChart: (chart: addChartInterface) => dispatch(addChart(chart)),

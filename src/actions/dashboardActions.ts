@@ -1,6 +1,7 @@
 import apiClient from '../apiUtils/apiClient'
-import { metric } from '../types'
-import { stringify } from 'querystring'
+import { metric, dateRange } from '../types'
+import {date} from '../types'
+import { DayRange } from 'react-modern-calendar-datepicker'
 
 const fetchData = async (singleOrMulti: string, src: string, endpoint?: string) => {
     const api = new apiClient(singleOrMulti)
@@ -28,7 +29,6 @@ const addChart = (data: addChartInterface) => {
         payload: data
     })
 }
-
 
 const toggleEditMode = (data: boolean) => {
     return ({
@@ -72,8 +72,32 @@ const editChartWidth = (width: number, chartId:string) => {
     })
 }
 
+const setDateRange = (date_: DayRange) => {
+    return ({
+        type: "SET_DATE_RANGE",
+        payload: {
+            from: date_.from,
+            to: date_.to
+        }
+    })
+}
+
+const setChartDateRange = (date_: DayRange, chartId: string) => {
+    return ({
+        type: "SET_CHART_DATE_RANGE",
+        payload: {
+            chartId,
+            date_
+        }
+    })
+}
+
+
+
+
 export {
     hydrateDashboard, fetchData,
     toggleEditMode, addChart,
-    editChart, deleteChart, editChartWidth, editChartType
+    editChart, deleteChart, editChartWidth, editChartType,
+    setDateRange, setChartDateRange
 }

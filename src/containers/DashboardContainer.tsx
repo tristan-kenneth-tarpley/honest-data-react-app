@@ -10,6 +10,7 @@ import Dashboard from '../components/Dashboard'
 import SidebarContainer from '../containers/SidebarContainer'
 import { APIResponse, chartListing, filterable, dataTypes } from '../types';
 import { filterData } from '../apiUtils/apiClient';
+import { DayRange } from 'react-modern-calendar-datepicker';
 interface RouteParams {
     src: string
     singleOrMulti: string
@@ -18,6 +19,8 @@ interface RouteParams {
 
 interface DashboardContainer {
     data: APIResponse
+    from: DayRange
+    to: DayRange
     editMode: ()=>void
     chartListings: {
         [key: string]: chartListing
@@ -62,6 +65,7 @@ const DashboardContainer: React.FC = (props: any) => {
                     {props.editMode ? (
                         <SidebarContainer
                             filterables={filterables}
+                            viewType={viewType}
                         />
                      ) : ''}
 
@@ -73,6 +77,8 @@ const DashboardContainer: React.FC = (props: any) => {
                             toggleEditMode={()=>props.toggleEditMode(!props.editMode)}
                             source={source}
                             src={src}
+                            to={props.to}
+                            from={props.from}
                             description={description}
                             title={title}
                             endpoints={endpoints}
@@ -92,7 +98,9 @@ const mapStateToProps = (state: any) => {
     return {
         data: state.dashboardReducer.data,
         editMode: state.dashboardReducer.editMode,
-        chartListings: state.dashboardReducer.charts
+        chartListings: state.dashboardReducer.charts,
+        to: state.dashboardReducer.to,
+        from: state.dashboardReducer.from
     }
 }
 

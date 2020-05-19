@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, ReactText} from 'react'
 import { ResponsiveContainer, LineChart, PieChart, Pie, BarChart, Bar, Sector, Line,
     XAxis, YAxis, Cell, ReferenceLine, ReferenceArea,
     ReferenceDot, Tooltip, CartesianGrid, Legend, Brush, ErrorBar, AreaChart, Area,
@@ -15,7 +15,10 @@ interface chart {
     uid: string
     data: Array<chartRecord>
     numLines?: number
-    dataKey?: string
+}
+
+interface pieChart extends chart {
+    dataKey: any
 }
 
 const dotStyle = (color: string) => {
@@ -72,7 +75,8 @@ const ResponsiveContainerParent = (props: any) => {
 
 const filterData = (data: Array<chartRecord>) => Object.keys(data[0]).filter(x => x !== "name")
 export const LINE_CHART: React.FC<chart> = (props) => {
-    
+    const lengths: Array<number> = props.data.map((x:any)=>Object.keys(x).length)
+    const max = Math.max.apply(Math, lengths)
     return (
         <ResponsiveContainerParent>
             <LineChart
@@ -97,7 +101,7 @@ export const LINE_CHART: React.FC<chart> = (props) => {
                 />
             <Legend wrapperStyle={{top: -10, left: 25}} />
                 {
-                    Object.keys(props.data[0])
+                    Object.keys(props.data.filter(x=>Object.keys(x).length >= max)[0])
                         .filter(x=>x!=="date")
                         .map((key, index)=> {
                         // const line = props.data.map(record => record[key])
@@ -105,6 +109,7 @@ export const LINE_CHART: React.FC<chart> = (props) => {
                         return (
                             <Line type="monotone"
                                 dot={false}
+                                key={index}
                                 strokeWidth={3}
                                 dataKey={key}
                                 stroke={color}
@@ -117,30 +122,30 @@ export const LINE_CHART: React.FC<chart> = (props) => {
     )
 }
 
-export const PIE_CHART: React.FC<chart> = (props) => {
-    const filtered = filterData(props.data)
-    let [activeMetric, changeMetric] = useState(props.dataKey || filtered[0])
-
+export const PIE_CHART: React.FC<pieChart> = (props) => {
+    let [activeMetric, changeMetric] = useState(props.dataKey)
+    const lengths: Array<number> = props.data.map((x:any)=>Object.keys(x).length)
+    const max = Math.max.apply(Math, lengths)
+    const filtered = props.data.filter(x=>Object.keys(x).length >= max)[0]
+    const filteredKeys = Object.keys(filtered).filter(x=>x!=="date")
     return (
         <React.Fragment>
             <div className="metrics__selector">
                 Viewing:
-                {
-                    filtered.length > 1 && (  
-                        
-                        filtered.map(filter=>{
-                            const isActive = activeMetric === filter ? true : false
-                            return (
-                                <span
-                                    onClick={()=>changeMetric(filter)}
-                                    className={isActive ? 'active' : ""}
-                                    >
-                                    {filter}
-                                </span>
-                            )
-                        })
-                    ) 
-                }
+                { Object.keys(filtered).length > 0 && (  
+                    filteredKeys.map((filter: string, index:number)=>{
+                        const isActive = activeMetric === filter ? true : false
+                        return (
+                            <span
+                                key={index}
+                                onClick={()=>changeMetric(filter)}
+                                className={isActive ? 'active' : ""}
+                                >
+                                {filter}
+                            </span>
+                        )
+                    })
+                )}
             </div>
             <ResponsiveContainerParent>
                 <PieChart width={Styles.chartWidth} height={Styles.chartHeight} >
@@ -157,22 +162,13 @@ export const PIE_CHART: React.FC<chart> = (props) => {
                         paddingAngle={2}
                         >
                         {
-                        Object.keys(props.data[0])
-                        .filter(x=>x!=="date")
-                        .map((key, index)=> {
-                            const color = COLORS[index % COLORS.length]
-                            return (
-                                <Cell fill={color}/>
-                                // <Line type="monotone"
-                                //     dot={false}
-                                //     strokeWidth={3}
-                                //     dataKey={key}
-                                //     stroke={color}
-                                //     yAxisId={0} />
-                            )
-                        })
-                        
-                    }
+                            filteredKeys.map((key, index)=> {
+                                const color = COLORS[index % COLORS.length]
+                                return (
+                                    <Cell key={key} fill={color}/>
+                                )
+                            })
+                        }
                     </Pie>
                 </PieChart>
             </ResponsiveContainerParent>
@@ -217,7 +213,7 @@ export const BAR_CHART: React.FC<chart> = (props) => {
                         .map((key, index)=> {
                             const color = COLORS[index % COLORS.length]
                             return (
-                                <Bar dataKey={key} fill={color} />
+                                <Bar key={index} dataKey={key} fill={color} />
                                 // <Line type="monotone"
                                 //     dot={false}
                                 //     strokeWidth={3}

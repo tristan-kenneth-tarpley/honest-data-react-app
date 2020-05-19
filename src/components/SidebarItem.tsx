@@ -1,10 +1,12 @@
 import React, {useState} from 'react'
 import Select from 'react-select'
-import {filterable, metric, charts} from '../types'
+import {filterable, metric, charts, viewTypes} from '../types'
 import { ButtonSecondary, ButtonTertiary } from '../styles/Buttons'
 import {editchart, editChartWidth} from '../actions/dashboardActions'
 import { decamelize } from '../helpers'
 import {Text, Helper} from '../styles/Typography'
+import { DateRange } from './DateRange'
+import { DayRange } from 'react-modern-calendar-datepicker'
 
 
 const SidebarItemInfoView: React.FC = (props: any) => {
@@ -14,12 +16,18 @@ const SidebarItemInfoView: React.FC = (props: any) => {
             {props.metrics.map((metric_: metric, index:number)=> {
                 return (
                     `${metric_.label}${index < props.metrics.length - 1
-                        ? ", "
+                        ? " + "
                         : ''}`
                 )
             })}
         </p>
         <span className="helper sub chart-info">{decamelize(props.chartType)} chart</span>
+        { (props.from && props.to) && (
+            <span className="helper sub chart-info">
+                {`${props.from.month}-${props.from.day}-${props.from.year} `}
+                to {`${props.to.month}-${props.to.day}-${props.to.year}`}
+            </span>  
+        )}
     </React.Fragment>
     )
 }
@@ -86,6 +94,19 @@ const Editing: React.FC = (props:any) => {
         {label: "25%", value: 3},
     ]
     const {activeChartType, setActiveChartType} = props
+    const [date, renderDate] = useState({
+        from: props.from,
+        to: props.to
+    })
+
+    const onSet = () => {
+        props.setChartDateRange({
+            from: undefined,
+            to: undefined
+        }, props.uid)
+        renderDate({from: undefined, to: undefined})
+    }
+
 
     const ChartIcon = (props: any) => {
         // console.log(props.)
@@ -103,6 +124,16 @@ const Editing: React.FC = (props:any) => {
     
     return (
         <React.Fragment>
+            <Text size="sm" len="long">
+                Date range:
+                <span onClick={()=> onSet() } className="reset">reset to default </span>
+            </Text>
+            <DateRange
+                from={date.from}
+                to={date.to}
+                chartId={props.uid}
+                setDateRange={props.setChartDateRange} />
+                
             <Text size="sm" len="short">Chart type:</Text>
             <div className="sidebar__item-edit-chartSelector">
                 <ChartIcon
@@ -117,12 +148,15 @@ const Editing: React.FC = (props:any) => {
                     icon={<i className="fad fa-chart-bar"></i>}
                     displayName="Bar chart"
                     chartType='bar' />
-                <ChartIcon
-                    onClick={setActiveChartType}
-                    activeChartType={activeChartType}
-                    icon={<i className="fad fa-chart-pie"></i>}
-                    displayName="Pie Chart"
-                    chartType='pie' />
+                    
+                { viewTypes[props.viewType] === "categorized" && 
+                    <ChartIcon
+                        onClick={setActiveChartType}
+                        activeChartType={activeChartType}
+                        icon={<i className="fad fa-chart-pie"></i>}
+                        displayName="Pie Chart"
+                        chartType='pie' />
+                }
                 <ChartIcon
                     onClick={setActiveChartType}
                     activeChartType={activeChartType}
@@ -183,6 +217,10 @@ interface sidebarItem {
     chartType: string
     uid: string
     filterables: Array<filterable>
+    viewType: number
+    from: DayRange['from']
+    to: DayRange['to']
+    setChartDateRange: (_date: DayRange, chartId:string) => void
     editChart: (chart: editchart)=>void
     deleteChart: (uid: string) => void
     editChartWidth: (width: number, chartId:string) => void

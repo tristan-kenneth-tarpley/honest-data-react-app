@@ -1,13 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
+
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import Card from '../components/Card'
-import { Link } from 'react-router-dom';
 import Toolbar from '../components/Toolbar'
-import {ButtonPrimary, ButtonSecondary} from '../styles/Buttons'
-import {LINE_CHART, PIE_CHART, BAR_CHART, STACKED_BAR_CHART} from '../components/Charts'
-import {chartListing, metric, endpointsKeys, APIResponse, filterable, viewTypes} from '../types'
+import {ButtonPrimary} from '../styles/Buttons'
+import {chartListing, endpointsKeys, APIResponse} from '../types'
 import { ChartListing } from './ChartListing';
 import { filterData } from '../apiUtils/apiClient';
+
+import {DateRange} from './DateRange'
+import { DayRange } from 'react-modern-calendar-datepicker';
 
 interface dashboard {
     source: string
@@ -16,6 +17,8 @@ interface dashboard {
     title: string
     endpoints: Array<endpointsKeys>
     editMode: boolean
+    from: DayRange['from']
+    to: DayRange['to']
     toggleEditMode: () => void
     records: APIResponse["records"]
     charts: Array<chartListing>
@@ -26,7 +29,7 @@ interface dashboard {
 const Dashboard: React.FC<dashboard> = (props) => {
     const {source, description, title, endpoints, src} = props
     const chartKeys = Object.keys(props.charts)
-    
+
     return (
         <React.Fragment>
             <Grid fluid>
@@ -57,12 +60,20 @@ const Dashboard: React.FC<dashboard> = (props) => {
                                     props.records, chart.metrics,
                                     props.records.length > 15 ? true : false
                                 ).reverse()
-                                
+                                console.log(props.to)
+                                console.log(chart.to)
                                 return (
                                 <ChartListing
+                                    key={_chart}
+                                    viewType={props.viewType}
                                     metrics={chart.metrics}
                                     colWidth={chart.width}
                                     data={data}
+                                    to={ chart.to
+                                        ? chart.to
+                                        : props.to
+                                    }
+                                    from={ chart.from ? chart.from : props.from}
                                     chartType={chart.chartType}
                                     uid={_chart} />
                                 )
