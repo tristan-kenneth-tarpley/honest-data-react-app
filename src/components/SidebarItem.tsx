@@ -157,7 +157,7 @@ const Editing: React.FC = (props:any) => {
                         displayName="Pie Chart"
                         chartType='pie' />
                 }
-                <ChartIcon
+                {/* <ChartIcon
                     onClick={setActiveChartType}
                     activeChartType={activeChartType}
                     icon={<i className="fad fa-chart-scatter"></i>}
@@ -168,7 +168,7 @@ const Editing: React.FC = (props:any) => {
                     activeChartType={activeChartType}
                     icon={<i className="fad fa-analytics"></i>}
                     displayName="Dual Axis"
-                    chartType='dualAxisLine' />
+                    chartType='dualAxisLine' /> */}
             </div>
             <br />
             <Text size="sm" len="short">Chart width:</Text>
