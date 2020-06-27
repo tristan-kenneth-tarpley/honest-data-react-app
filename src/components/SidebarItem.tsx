@@ -7,6 +7,7 @@ import { decamelize } from '../helpers'
 import {Text, Helper} from '../styles/Typography'
 import { DateRange } from './DateRange'
 import { DayRange } from 'react-modern-calendar-datepicker'
+import { ChartSelection } from './charts/ChartSelection'
 
 
 const SidebarItemInfoView: React.FC = (props: any) => {
@@ -106,21 +107,6 @@ const Editing: React.FC = (props:any) => {
         }, props.uid)
         renderDate({from: undefined, to: undefined})
     }
-
-
-    const ChartIcon = (props: any) => {
-        // console.log(props.)
-        return (
-            <div
-                onClick={() => props.onClick(props.chartType)}
-                className={`chartSelector__item
-                ${props.activeChartType === props.chartType ? 'active' : ''}`
-            }>
-                { props.icon }
-                <Helper>{props.displayName}</Helper>
-            </div> 
-        )
-    }
     
     return (
         <React.Fragment>
@@ -136,39 +122,11 @@ const Editing: React.FC = (props:any) => {
                 
             <Text size="sm" len="short">Chart type:</Text>
             <div className="sidebar__item-edit-chartSelector">
-                <ChartIcon
-                    onClick={setActiveChartType}
+                <ChartSelection
+                    dataViewType={props.dataViewType}
+                    setActiveChartType={setActiveChartType}
                     activeChartType={activeChartType}
-                    icon={<i className="fad fa-chart-line"></i>}
-                    displayName="Line Chart"
-                    chartType='line' />
-                <ChartIcon
-                    onClick={setActiveChartType}
-                    activeChartType={activeChartType}
-                    icon={<i className="fad fa-chart-bar"></i>}
-                    displayName="Bar chart"
-                    chartType='bar' />
-                    
-                { viewTypes[props.viewType] === "categorized" && 
-                    <ChartIcon
-                        onClick={setActiveChartType}
-                        activeChartType={activeChartType}
-                        icon={<i className="fad fa-chart-pie"></i>}
-                        displayName="Pie Chart"
-                        chartType='pie' />
-                }
-                {/* <ChartIcon
-                    onClick={setActiveChartType}
-                    activeChartType={activeChartType}
-                    icon={<i className="fad fa-chart-scatter"></i>}
-                    displayName="Scatter Plot"
-                    chartType='scatterPlot' />
-                <ChartIcon
-                    onClick={setActiveChartType}
-                    activeChartType={activeChartType}
-                    icon={<i className="fad fa-analytics"></i>}
-                    displayName="Dual Axis"
-                    chartType='dualAxisLine' /> */}
+                />
             </div>
             <br />
             <Text size="sm" len="short">Chart width:</Text>
@@ -220,6 +178,7 @@ interface sidebarItem {
     viewType: number
     from: DayRange['from']
     to: DayRange['to']
+    dataViewType: viewTypes
     setChartDateRange: (_date: DayRange, chartId:string) => void
     editChart: (chart: editchart)=>void
     deleteChart: (uid: string) => void

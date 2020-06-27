@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, SyntheticEvent} from 'react'
 import {ButtonPrimary, ButtonTertiary} from '../styles/Buttons'
 import {SidebarItem} from '../components/SidebarItem'
 import { connect } from 'react-redux'
@@ -7,9 +7,10 @@ import {
     editChart, addChart, addChartInterface, deleteChart,
     editChartWidth, editChartType, setChartDateRange
 } from '../actions/dashboardActions'
-import {chartListing, metric, filterable} from '../types'
+import {chartListing, metric, filterable, viewTypes} from '../types'
 import { v4 as uuidv4 } from 'uuid';
 import { DayRange } from 'react-modern-calendar-datepicker'
+import AddChart from '../components/AddChart'
 
 interface sidebarContainer {
     filterables: Array<filterable>
@@ -18,6 +19,7 @@ interface sidebarContainer {
     viewType: number
     from: DayRange['from']
     to: DayRange['to']
+    dataViewType: viewTypes
     addChart: (chart: addChartInterface) => void
     deleteChart: (uid: string) => void
     editChartWidth: (width: number, chartId:string) => void
@@ -53,7 +55,6 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
         } else {
             toggleError(true)
         }
-        
     }
 
     return (
@@ -68,53 +69,43 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                 </ButtonTertiary>
             </div>
             { adding && (
-                <div className="dashboard__sidebar-adding">
-                    <div className="sidebar__item">
-                        <Select
-                            id="select"
-                            isMulti
-                            onChange={add}
-                            name="colors"
-                            options={props.filterables}
-                            className={`basic-multi-select ${error ? 'error' : ''}`}
-                            classNamePrefix="select"
-                        />
-                    </div>
-                    <ButtonPrimary
-                        onClick={onSave}
-                        id="addChart">
-                        Save
-                    </ButtonPrimary>
-                </div>
+                <AddChart
+                    add={add}
+                    filterables={props.filterables}
+                    error={error}
+                    onSave={onSave}
+                    dataViewType={props.dataViewType}
+                />
             )}
             
 
             { Object.keys(chartListings).map( (chart: string) => {
-                
                 return (
-                <SidebarItem
-                    editChart={props.editChart}
-                    key={chart}
-                    deleteChart={props.deleteChart}
-                    uid={chart}
-                    from={
-                        chartListings[chart].from
-                            ? chartListings[chart].from
-                            : props.from
-                    }
-                    to={
-                        chartListings[chart].to
-                            ? chartListings[chart].to
-                            : props.to
-                    }
-                    viewType={props.viewType}
-                    metrics={chartListings[chart].metrics}
-                    chartWidth={chartListings[chart].width}
-                    editChartWidth={props.editChartWidth}
-                    editChartType={props.editChartType}
-                    setChartDateRange={props.setChartDateRange}
-                    chartType={chartListings[chart].chartType}
-                    filterables={props.filterables} />
+                    <SidebarItem
+                        editChart={props.editChart}
+                        key={chart}
+                        deleteChart={props.deleteChart}
+                        uid={chart}
+                        from={
+                            chartListings[chart].from
+                                ? chartListings[chart].from
+                                : props.from
+                        }
+                        to={
+                            chartListings[chart].to
+                                ? chartListings[chart].to
+                                : props.to
+                        }
+                        viewType={props.viewType}
+                        metrics={chartListings[chart].metrics}
+                        chartWidth={chartListings[chart].width}
+                        editChartWidth={props.editChartWidth}
+                        editChartType={props.editChartType}
+                        setChartDateRange={props.setChartDateRange}
+                        chartType={chartListings[chart].chartType}
+                        filterables={props.filterables}
+                        dataViewType={props.dataViewType}
+                    />
                 )
             })}
         </div>
@@ -125,7 +116,8 @@ const mapStateToProps = (state: any) => {
     return {
         chartListings: state.dashboardReducer.charts,
         from: state.dashboardReducer.from,
-        to: state.dashboardReducer.to
+        to: state.dashboardReducer.to,
+        dataViewType: state.dashboardReducer.dataViewType
     }
 }
 

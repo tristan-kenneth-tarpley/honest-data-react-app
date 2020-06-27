@@ -72,6 +72,7 @@ p .btn {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
   background-repeat: no-repeat;
   color: white;
+  border: none;
 }
 .btn-primary:hover { opacity: .7; }
 .btn-primary.disabled {
@@ -455,10 +456,6 @@ div[class^="col"].parent {
 .sidebar__item .css-2b097c-container {
   width: 100%;
 }
-.sidebar__item-edit-chartSelector {
-  display: flex;
-  flex-wrap: wrap;
-}
 .chartSelector__item {
   width: 33%;
   margin:.5em 0;
@@ -537,6 +534,13 @@ div[class^="col"].parent {
 .dashboard__sidebar-adding .btn {
   width: 50%;
   margin: 0 auto;
+}
+.dashboard__sidebar-adding .sidebar__item {
+  flex-direction: column;
+}
+
+.chartSelection__container {
+  display: flex;
 }
 
 /*** chart styles ***/

@@ -2,7 +2,7 @@ import React from 'react'
 import {Col} from 'react-flexbox-grid'
 import Card from './Card'
 import {metric} from '../types'
-import {LINE_CHART, PIE_CHART, BAR_CHART} from './Charts'
+import {LINE_CHART, PIE_CHART, BAR_CHART} from './charts/Charts'
 import { DayRange } from 'react-modern-calendar-datepicker'
 
 

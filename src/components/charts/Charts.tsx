@@ -3,8 +3,8 @@ import { ResponsiveContainer, LineChart, PieChart, Pie, BarChart, Bar, Sector, L
     XAxis, YAxis, Cell, ReferenceLine, ReferenceArea,
     ReferenceDot, Tooltip, CartesianGrid, Legend, Brush, ErrorBar, AreaChart, Area,
     Label, LabelList } from 'recharts';
-import Styles from '../styles/Styles'
-import {chartListing} from '../types'
+import Styles from '../../styles/Styles'
+import {chartListing} from '../../types'
 
 
 type value = string | number
@@ -21,12 +21,6 @@ interface pieChart extends chart {
     dataKey: any
 }
 
-const dotStyle = (color: string) => {
-    return {
-        fill: color,
-        strokeWidth: 1
-    }
-}
 const COLORS = [
     Styles.purple,
     Styles.blue,
