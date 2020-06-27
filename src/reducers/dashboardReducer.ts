@@ -1,12 +1,13 @@
-import { chartListing } from '../types'
+import { chartListing, viewTypes } from '../types'
 import { v4 as uuidv4 } from 'uuid';
 import { DayRange } from 'react-modern-calendar-datepicker';
 
 interface initialstate {
     from: DayRange['from']
     to: DayRange['to']
-    data: any | null,
-    editMode: boolean,
+    data: any | null
+    editMode: boolean
+    dataViewType: viewTypes
     charts: {
         [key: string]: chartListing
     }
@@ -18,6 +19,7 @@ const initialState: initialstate =  {
     to: null,
     data: null,
     editMode: true,
+    dataViewType: viewTypes.timeSeries,
     charts: {
         [initUID]: {
             width: 12,
@@ -134,6 +136,12 @@ export const dashboardReducer = (state = initialState, action: _action) => {
                         to: date_.to
                     }
                 }
+            }
+            break
+        case "SET_DATA_VIEW_TYPE":
+            state = {
+                ...state,
+                dataViewType: action.payload
             }
             break
         default:

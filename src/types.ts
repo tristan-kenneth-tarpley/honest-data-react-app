@@ -35,7 +35,7 @@ export interface record {
 }
 
 export enum viewTypes {
-    timeBased, snapshotBased
+    timeSeries, categorized
 }
 
 export interface APIResponse {

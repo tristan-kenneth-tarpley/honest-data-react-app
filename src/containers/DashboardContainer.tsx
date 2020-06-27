@@ -2,13 +2,17 @@ import React, {useEffect, useState} from 'react'
 import {useParams} from 'react-router'
 import Skeleton from 'react-loading-skeleton';
 import { connect } from 'react-redux'
-import {hydrateDashboard, fetchData, toggleEditMode,
-        addChart
+import {
+    hydrateDashboard,
+    toggleEditMode,
+    addChart,
+    setDataViewType
 } from '../actions/dashboardActions'
+import { fetchData } from '../services/api'
 import {getFilterables} from '../apiUtils/filterables'
 import Dashboard from '../components/Dashboard'
 import SidebarContainer from '../containers/SidebarContainer'
-import { APIResponse, chartListing, filterable } from '../types';
+import { APIResponse, chartListing, filterable, viewTypes } from '../types';
 import { DayRange } from 'react-modern-calendar-datepicker';
 interface RouteParams {
     src: string
@@ -30,6 +34,10 @@ interface DashboardContainer {
 }
 
 const DashboardContainer: React.FC = (props: any) => {
+    const {
+        hydrateDashboard,
+        setDataViewType
+    } = props
     const params = useParams<RouteParams>();
     const {singleOrMulti, src, endpoint} = params
     const {editMode} = props
@@ -37,15 +45,16 @@ const DashboardContainer: React.FC = (props: any) => {
     const [filterables, updateFilterables] = useState(filterablesDefinition);
 
     useEffect(()=>{
-        fetchData(singleOrMulti, src, endpoint)
-            .then( data => {
-                updateFilterables(
-                    getFilterables(Object.keys(data.records[0]))
-                )
-                props.hydrateDashboard(data)
-            })
-        
-    }, [endpoint]);
+        const init = async () => {
+            const data = await fetchData(singleOrMulti, src, endpoint);
+            updateFilterables(
+                getFilterables(Object.keys(data.records[0]))
+            )
+            hydrateDashboard(data)
+            setDataViewType(data.viewType)
+        }
+        init()
+    }, []);
 
     let source, description, title, endpoints, records, viewType, viewTypes;
     if (props.data){
@@ -83,7 +92,7 @@ const DashboardContainer: React.FC = (props: any) => {
                             endpoints={endpoints}
                             viewType={viewType}
                             viewTypes={viewTypes}
-                            />
+                        />
                     </div>
                 </React.Fragment>
             ) : (
@@ -99,7 +108,8 @@ const mapStateToProps = (state: any) => {
         editMode: state.dashboardReducer.editMode,
         chartListings: state.dashboardReducer.charts,
         to: state.dashboardReducer.to,
-        from: state.dashboardReducer.from
+        from: state.dashboardReducer.from,
+        dataViewType: state.dashboardReducer.dataViewType
     }
 }
 
@@ -107,7 +117,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         hydrateDashboard: (data: string) => dispatch(hydrateDashboard(data)),
         toggleEditMode: (data: boolean) => dispatch(toggleEditMode(data)),
-        addChart: (data: any) => dispatch(addChart(data))
+        addChart: (data: any) => dispatch(addChart(data)),
+        setDataViewType: (viewType: viewTypes) => dispatch(setDataViewType(viewType))
     }
 }
 
