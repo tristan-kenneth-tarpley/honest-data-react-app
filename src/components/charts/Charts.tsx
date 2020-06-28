@@ -1,10 +1,19 @@
-import React, {useState, ReactText} from 'react'
-import { ResponsiveContainer, LineChart, PieChart, Pie, BarChart, Bar, Sector, Line,
-    XAxis, YAxis, Cell, ReferenceLine, ReferenceArea,
-    ReferenceDot, Tooltip, CartesianGrid, Legend, Brush, ErrorBar, AreaChart, Area,
-    Label, LabelList } from 'recharts';
+import React, {useState} from 'react'
+import { 
+    ResponsiveContainer,
+    LineChart,
+    PieChart,
+    Pie,
+    BarChart,
+    Bar,
+    Line,
+    XAxis,
+    YAxis,
+    Cell, 
+    Tooltip,
+    Legend 
+} from 'recharts';
 import Styles from '../../styles/Styles'
-import {chartListing} from '../../types'
 
 
 type value = string | number

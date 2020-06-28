@@ -1,5 +1,5 @@
 import { DayRange, Day } from "react-modern-calendar-datepicker"
-import { metric, viewTypes } from "../types"
+import { metric } from "../types"
 
 interface __filterData {
     records: Array<any>

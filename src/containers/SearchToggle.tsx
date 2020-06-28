@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {toggleSearchType} from '../actions/searchActions';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Row, Col } from 'react-flexbox-grid';
 import {searchTypes} from '../types'
 import {CompareSearch} from '../components/ComparableSearchField'
 import {SingleSourceSearchField} from '../components/SingleSourceSearchField'

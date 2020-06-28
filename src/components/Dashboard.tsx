@@ -7,8 +7,9 @@ import {chartListing, endpointsKeys, APIResponse, viewTypes} from '../types'
 import { ChartListing } from './ChartListing';
 import { DayRange } from 'react-modern-calendar-datepicker';
 import { DataViewModel } from '../apiUtils/DataViewModel';
+import Loader from './Loader';
 
-interface dashboard {
+interface IDashboard {
     source: string
     src: string
     description: string
@@ -19,12 +20,15 @@ interface dashboard {
     to: DayRange['to']
     toggleEditMode: () => void
     records: APIResponse["records"]
+    isLoaded: boolean
     charts: Array<chartListing>
-    viewType: number
+    viewType: viewTypes
     viewTypes: any
 }
 
-const Dashboard: React.FC<dashboard> = (props) => {
+const Dashboard: React.FC<IDashboard> = (props) => {
+    if (!props.isLoaded) return <Loader />
+
     const {source, description, title, endpoints, src} = props
     const chartKeys = Object.keys(props.charts)
 
@@ -42,45 +46,46 @@ const Dashboard: React.FC<dashboard> = (props) => {
                     description={description}
                     title={title}
                     endpoints={endpoints}
-                    src={src} />
+                    src={src}
+                    dataViewType={props.viewType}
+                />
                 <Row>
-                    {
-                        chartKeys.length > 0 ? (
-                            chartKeys.map((_chart: any)=>{
-                                const chart = props.charts[_chart]                        
-                                const viewtype = viewTypes[props.viewType]
-                                const {from, to} = chart
-                                const data = new DataViewModel({
-                                    records: props.records,
-                                    metrics: chart.metrics,
-                                    shrink: props.records.length > 15 ? true : false,
-                                    from: from ? from : props.from,
-                                    to: to ? to : props.to,
-                                    viewType: viewtype
-                                })
-                                
-                                return (
-                                    <ChartListing
-                                        key={_chart}
-                                        viewType={props.viewType}
-                                        metrics={chart.metrics}
-                                        colWidth={chart.width}
-                                        data={data.clean()}
-                                        to={ chart.to
-                                            ? chart.to
-                                            : props.to
-                                        }
-                                        from={ chart.from ? chart.from : props.from}
-                                        chartType={chart.chartType}
-                                        uid={_chart} />
-                                )
+                    { chartKeys.length > 0 ? (
+                        chartKeys.map((_chart: any)=>{
+                            const chart = props.charts[_chart]                        
+                            const viewtype = viewTypes[props.viewType]
+                            const {from, to} = chart
+                            const data = new DataViewModel({
+                                records: props.records,
+                                metrics: chart.metrics,
+                                shrink: props.records.length > 15 ? true : false,
+                                from: from ? from : props.from,
+                                to: to ? to : props.to,
+                                viewType: viewtype
                             })
-                        ) : (
-                            <Col style={{marginTop: '1em',textAlign:'center'}} lg={12}>
-                                <h5>Dashboard is empty. Start by adding some charts on the left!</h5>
-                            </Col>
-                        )
-                    }
+                            
+                            return (
+                                <ChartListing
+                                    key={_chart}
+                                    viewType={props.viewType}
+                                    metrics={chart.metrics}
+                                    colWidth={chart.width}
+                                    data={data.clean()}
+                                    to={ chart.to
+                                        ? chart.to
+                                        : props.to
+                                    }
+                                    from={ chart.from ? chart.from : props.from}
+                                    chartType={chart.chartType}
+                                    uid={_chart} />
+                            )
+                        })
+                    ) : (
+                        <Col style={{marginTop: '1em',textAlign:'center'}} lg={12}>
+                            <h5>Dashboard is empty. Start by adding some charts on the left!</h5>
+                        </Col>
+                    )}
+                    
                 </Row>
             </Grid>
         </React.Fragment>

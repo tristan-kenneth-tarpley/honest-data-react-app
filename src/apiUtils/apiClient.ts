@@ -1,4 +1,4 @@
-import { APIResponse, filterable, metric } from "../types";
+import { metric } from "../types";
 import { DayRange } from "react-modern-calendar-datepicker";
 
 export default class APIClient {

@@ -1,10 +1,8 @@
 import React, {useState} from 'react'
 import Styles from '../styles/Styles'
-import {Helper} from '../styles/Typography'
 // date picker
-import DatePicker, { DayValue, DayRange, Day } from 'react-modern-calendar-datepicker'
+import DatePicker, { DayRange } from 'react-modern-calendar-datepicker'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
-import { ButtonTertiary } from '../styles/Buttons';
 import { date } from '../types'
 
 interface dateRange {
@@ -19,11 +17,10 @@ export const DateRange: React.FC<dateRange> = (props) => {
         from: props.from,
         to: props.to
     });
-    const [showSave, toggleShowSave] = useState(false)
     const parseDate = ({ day, month, year }: date) => `${month}-${day}-${year}`
-    const onSelect = ({from, to}: DayRange) => {
+    const onSelect = async ({from, to}: DayRange) => {
         setDayRange({from, to})
-        toggleShowSave(true)
+        return
     }
 
     const customEl = ({ref}: any) => {
@@ -48,8 +45,7 @@ export const DateRange: React.FC<dateRange> = (props) => {
                     outline: 'none',
                 }}
                 className="custom-range-input" // a styling class
-        />
-
+            />
         )
     }
 
@@ -65,7 +61,6 @@ export const DateRange: React.FC<dateRange> = (props) => {
                 to: dayRange.to
             })
         }
-        toggleShowSave(false)
     }
 
     return (
@@ -74,11 +69,11 @@ export const DateRange: React.FC<dateRange> = (props) => {
                 <DatePicker
                     value={dayRange} 
                     renderInput={customEl}
-                    onChange={onSelect} />
+                    onChange={async ({from, to})=>{
+                        await onSelect({from, to});
+                        setDate()
+                    }} />
             </div>
-            { showSave && (
-                <ButtonTertiary onClick={() => setDate()} id="saveDate">Save</ButtonTertiary> 
-            )}
         </div>
     )
 }

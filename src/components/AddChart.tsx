@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Select from 'react-select'
 import { filterable, viewTypes } from '../types'
 import { ButtonPrimary } from '../styles/Buttons'
-import { getAllowableChartTypes, ChartSelection } from './charts/ChartSelection'
+import { ChartSelection } from './charts/ChartSelection'
 
 const AddChart: React.FC<{
     add: (ev: any) => void
@@ -35,12 +35,12 @@ const AddChart: React.FC<{
                     activeChartType={activeChartType}
                     setActiveChartType={setActiveChartType}
                 />
+                <ButtonPrimary
+                    onClick={onSave}
+                    id="addChart">
+                    Save
+                </ButtonPrimary>
             </div>
-            <ButtonPrimary
-                onClick={onSave}
-                id="addChart">
-                Save
-            </ButtonPrimary>
         </div>
     )
 }

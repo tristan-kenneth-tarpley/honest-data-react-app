@@ -1,8 +1,7 @@
-import React, {useState, SyntheticEvent} from 'react'
-import {ButtonPrimary, ButtonTertiary} from '../styles/Buttons'
+import React, {useState} from 'react'
+import {ButtonTertiary} from '../styles/Buttons'
 import {SidebarItem} from '../components/SidebarItem'
 import { connect } from 'react-redux'
-import Select from 'react-select'
 import {
     editChart, addChart, addChartInterface, deleteChart,
     editChartWidth, editChartType, setChartDateRange

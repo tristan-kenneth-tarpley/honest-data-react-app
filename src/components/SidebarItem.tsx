@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 import Select from 'react-select'
-import {filterable, metric, charts, viewTypes} from '../types'
+import {filterable, metric, viewTypes} from '../types'
 import { ButtonSecondary, ButtonTertiary } from '../styles/Buttons'
-import {editchart, editChartWidth} from '../actions/dashboardActions'
+import {editchart} from '../actions/dashboardActions'
 import { decamelize } from '../helpers'
-import {Text, Helper} from '../styles/Typography'
+import {Text} from '../styles/Typography'
 import { DateRange } from './DateRange'
 import { DayRange } from 'react-modern-calendar-datepicker'
 import { ChartSelection } from './charts/ChartSelection'
@@ -110,16 +110,20 @@ const Editing: React.FC = (props:any) => {
     
     return (
         <React.Fragment>
-            <Text size="sm" len="long">
-                Date range:
-                <span onClick={()=> onSet() } className="reset">reset to default </span>
-            </Text>
-            <DateRange
-                from={date.from}
-                to={date.to}
-                chartId={props.uid}
-                setDateRange={props.setChartDateRange} />
-                
+            { props.dataViewType === viewTypes.timeSeries && (
+                <React.Fragment>
+                    <Text size="sm" len="long">
+                        Date range:
+                        <span onClick={()=> onSet() } className="reset">reset to default </span>
+                    </Text>
+                    <DateRange
+                        from={date.from}
+                        to={date.to}
+                        chartId={props.uid}
+                        setDateRange={props.setChartDateRange}
+                    />  
+                </React.Fragment>
+            )}  
             <Text size="sm" len="short">Chart type:</Text>
             <div className="sidebar__item-edit-chartSelector">
                 <ChartSelection
