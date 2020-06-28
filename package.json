@@ -19,6 +19,7 @@
     "@types/recharts": "^1.8.10",
     "@types/uuid": "^7.0.3",
     "@wojtekmaj/react-daterange-picker": "^3.0.0",
+    "classnames": "^2.2.6",
     "date-fns": "^2.14.0",
     "lodash": "^4.17.15",
     "react": "^16.13.1",

@@ -1,19 +1,38 @@
 import { metric } from "../types";
 import { DayRange } from "react-modern-calendar-datepicker";
 
+
+interface IAPIOptions {
+
+}
 export default class APIClient {
-    baseUrl: string
-
-    constructor(singleOrMulti: string){
-
+    url: string
+    options: IAPIOptions
+    constructor(){
         let url;
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
             url = 'http://127.0.0.1:5000'
         } else {
             url = 'https://api.honestdata.world'
         }
+        this.url = url
 
+        this.options = {
+            
+        }
+    }
 
+    mergeOptions(options?: IAPIOptions){
+        return {...this.options, ...options}
+    }
+
+    async get(endpoint: string, options?: IAPIOptions) {
+        const res = await fetch(this.url + endpoint, this.mergeOptions(options))
+        const json = await res.json()
+        return json
+    }
+
+    async query(src: string, endpoint: string | undefined, singleOrMulti: string) {
         let searchType;
         switch(singleOrMulti) {
             case 'single':
@@ -26,11 +45,7 @@ export default class APIClient {
                 throw new Error()
         }
 
-        this.baseUrl = `${url}/${searchType}`
-    }
-
-    async query(src: string, endpoint: string | undefined) {
-        let url = `${this.baseUrl}/${src}`
+        let url = `${this.url}/${searchType}/${src}`
         if (endpoint) url += `/${endpoint}`
 
         const res = await fetch(url)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {Listing} from '../components/SingleSourceSearchField'
+import {Listing} from './Listing'
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { DateRange } from './DateRange';
 import { Helper } from '../styles/Typography';
@@ -37,14 +37,15 @@ const RelatedData: React.FC<{
         <div className="related-data__container">
             <Helper>Related data:</Helper>    
             <div className="sources">
-            { endpoints.map((endpoint: endpoint, index: number) => (
+            { endpoints.map((_endpoint: endpoint, index: number) => (
                 <Listing 
                     key={index}
                     uid={index}
-                    route={endpoint.key}
-                    value={endpoint.key}
+                    endpoint={_endpoint.key}
+                    value={_endpoint.key}
                     src={src}
-                    active={endpoint.active}
+                    active={_endpoint.active}
+                    decamelize={true}
                 />
             ))}
             </div>

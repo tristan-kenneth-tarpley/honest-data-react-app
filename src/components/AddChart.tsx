@@ -38,7 +38,7 @@ const AddChart: React.FC<{
                 <ButtonPrimary
                     onClick={onSave}
                     id="addChart">
-                    Save
+                    Add
                 </ButtonPrimary>
             </div>
         </div>

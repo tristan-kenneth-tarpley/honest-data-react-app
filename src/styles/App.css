@@ -279,6 +279,7 @@ h6 {
 
 .searchToggle__controller {
   display: flex;
+  justify-content: center;
   flex-basis: 50%;
   width: 50%;
   margin: 1em auto;
@@ -320,6 +321,11 @@ h6 {
 .listing.active, 
 .listing:hover {
   background: linear-gradient(115.8deg, #6E30F2 0%, #86E2FF 100%);
+}
+.listing.active p,
+.listing.active a,
+.listing:hover p,
+.listing:hover a {
   color: white;
 }
 
@@ -622,6 +628,19 @@ div[class^="col"].parent {
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+.listing .title {
+  font-weight: bold;
+}
+.listing.expanded {
+  flex-basis: 50%;
+  width: 100%;
+  padding: 1.5em;
+  justify-content: flex-start;
+}
+
+.listing.expanded .expanded {
+  text-align:left;
 }
 
 .loading__container {
