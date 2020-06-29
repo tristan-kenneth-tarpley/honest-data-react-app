@@ -430,6 +430,11 @@ div[class^="col"].parent {
   justify-content: flex-end;
   transition-duration: .2s;
 }
+.sidebar__item-edit .confirm__container {
+  justify-content: center;
+  display: flex;
+  width: 100%;
+}
 .sidebar__item-edit i {
   margin-left: 1em;
   transition-duration: .2s;
@@ -479,7 +484,7 @@ div[class^="col"].parent {
 }
 
 
-.addItem__container {
+.addItem__container-action {
   display: flex;
   margin-top:1em;
   justify-content: center;
@@ -500,6 +505,7 @@ div[class^="col"].parent {
   color: var(--text-color);
 }
 
+
 .dashboard__toolbar {
   display: flex;
   flex-direction:column;
@@ -517,27 +523,34 @@ div[class^="col"].parent {
 .dashboard__container .info {
   width: 100%;
 }
+.chartSelection__container {
+  display: flex;
+}
 
-
-.dashboard__sidebar-adding {
+.dashboard__sidebar-adding-toggle {
+  display: flex;
+  justify-content: center;
+}
+.chart-item-editing__container.adding {
+  padding: 1em;
   display: flex;
   flex-direction: column;
+  background: var(--dashboard-bg);
   padding-bottom: 1em;
+  border-left: 5px solid var(--green);
+  border-right: 5px solid var(--green);
   box-shadow: var(--box-shadow);
+  margin-bottom: 1em;
 }
-.dashboard__sidebar-adding .btn {
+.chart-item-editing__container.adding .btn {
   width: 50%;
   margin: 0 auto;
 }
-.dashboard__sidebar-adding .sidebar__item {
-  flex-direction: column;
-  box-shadow: none;
-  border-left: 5px solid var(--green);
-  margin-bottom: 1em;
-}
 
-.chartSelection__container {
+.chart-item-editing__container .confirm__container {
   display: flex;
+  justify-content: center;
+  margin-top: 1em;
 }
 
 /*** chart styles ***/

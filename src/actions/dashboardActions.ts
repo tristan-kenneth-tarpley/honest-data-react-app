@@ -62,6 +62,8 @@ export const editChartWidth = (width: number, chartId:string) => {
     })
 }
 
+
+
 export const setDateRange = (date_: DayRange) => {
     return ({
         type: "SET_DATE_RANGE",

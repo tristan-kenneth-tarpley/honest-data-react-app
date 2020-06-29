@@ -1,5 +1,5 @@
 import { DayRange, Day } from "react-modern-calendar-datepicker"
-import { metric } from "../types"
+import { metric, viewTypes } from "../types"
 
 interface __filterData {
     records: Array<any>
@@ -7,7 +7,7 @@ interface __filterData {
     shrink: boolean,
     from: DayRange['from']
     to: DayRange['to']
-    viewType: string
+    viewType: viewTypes
 }
 
 export class DataViewModel {
@@ -17,7 +17,7 @@ export class DataViewModel {
     protected readonly from: __filterData['from']
     protected readonly to: __filterData['to']
     protected readonly reverse: boolean
-    protected readonly viewType: string
+    protected readonly viewType: viewTypes
 
     constructor({records, metrics, shrink, from, to, viewType}: __filterData){
         this.records = records
@@ -30,13 +30,11 @@ export class DataViewModel {
     }
 
     groupCategory(_metrics: __filterData['metrics']){
-        let metrics: Array<metric> = [];
-        if (this.viewType === "timeBased"
-        && _metrics.findIndex(x => x.value==="date") === -1) {
-            metrics = [..._metrics, {value:"date", label: "date"}]
-        } else if (this.viewType !== "timeBased") {
-            metrics = _metrics.filter((m:any)=>m.value !== "date")
-        }
+        const metrics: Array<metric> = (
+            this.viewType === viewTypes.timeSeries
+                ? [..._metrics, {value: "date", label: "date"}]
+                : _metrics.filter((m: any)=>m.value !== "date")
+        )
 
         return metrics
     }
@@ -50,9 +48,11 @@ export class DataViewModel {
     }
 
     evalDate(_from: Date, _to: Date, targetDate: Date) {
-        console.log(targetDate.getTime(), _from.getTime(), _to.getTime())
-        if(targetDate.getTime() <= _to.getTime() && targetDate.getTime() >= _from.getTime()) return true
-        else return false
+        if(
+            targetDate.getTime() <= _to.getTime()
+            && targetDate.getTime() >= _from.getTime()
+        ) return true
+        return false
     }
   
     clean() {

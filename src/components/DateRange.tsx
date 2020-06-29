@@ -4,24 +4,23 @@ import Styles from '../styles/Styles'
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
 import { date } from '../types'
+const classNames = require('classnames')
 
-interface dateRange {
+interface IDateRange {
     setDateRange: (_date: DayRange, chartId?: string) => void
     from?: DayRange['from']
     to?: DayRange['to']
     chartId?: string
     padding?: boolean
 }
-export const DateRange: React.FC<dateRange> = (props) => {
-    const [dayRange, setDayRange] = useState<DayRange>({
-        from: props.from,
-        to: props.to
-    });
+export const DateRange: React.FC<IDateRange> = ({
+    setDateRange,
+    from,
+    to,
+    chartId,
+    padding
+}) => {
     const parseDate = ({ day, month, year }: date) => `${month}-${day}-${year}`
-    const onSelect = async ({from, to}: DayRange) => {
-        setDayRange({from, to})
-        return
-    }
 
     const customEl = ({ref}: any) => {
         return (
@@ -29,8 +28,8 @@ export const DateRange: React.FC<dateRange> = (props) => {
                 readOnly
                 ref={ref} // necessary
                 placeholder="I'm a custom input"
-                value={dayRange.from && dayRange.to ? (
-                    `${parseDate(dayRange.from)} to ${parseDate(dayRange.to)}`
+                value={from && to ? (
+                    `${parseDate(from)} to ${parseDate(to)}`
                 ) : (
                     `...... to ......`
                 )}
@@ -49,30 +48,32 @@ export const DateRange: React.FC<dateRange> = (props) => {
         )
     }
 
-    const setDate = () => {
-        if (props.chartId) { 
-            props.setDateRange({
-                from: dayRange.from,
-                to: dayRange.to
-            }, props.chartId)
-        } else {
-            props.setDateRange({
-                from: dayRange.from,
-                to: dayRange.to
-            })
-        }
+    const setDate = (dayRange: DayRange) => {
+        if (chartId) { 
+            setDateRange(
+                {from: dayRange.from, to: dayRange.to},
+                chartId
+            )
+            return
+        } 
+
+        setDateRange({
+            from: dayRange.from,
+            to: dayRange.to
+        })
     }
 
     return (
-        <div className={`dateRange__container ${props.padding ? 'padding' : ''}`}>
+        <div className={classNames({
+            'dateRange__container': true,
+            'padding': padding ? true : false
+        })}>
             <div className="dateRange__container-flex">
                 <DatePicker
-                    value={dayRange} 
+                    value={{ from, to }} 
                     renderInput={customEl}
-                    onChange={async ({from, to})=>{
-                        await onSelect({from, to});
-                        setDate()
-                    }} />
+                    onChange={setDate}
+                />
             </div>
         </div>
     )

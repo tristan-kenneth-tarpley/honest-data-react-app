@@ -1,13 +1,10 @@
 import React, {useState} from 'react'
-import Select from 'react-select'
 import {filterable, metric, viewTypes} from '../types'
 import { ButtonSecondary, ButtonTertiary } from '../styles/Buttons'
 import {editchart} from '../actions/dashboardActions'
 import { decamelize } from '../helpers'
-import {Text} from '../styles/Typography'
-import { DateRange } from './DateRange'
 import { DayRange } from 'react-modern-calendar-datepicker'
-import { ChartSelection } from './charts/ChartSelection'
+import { ChartItemEditing } from './ChartItemEditing'
 
 
 const SidebarItemInfoView: React.FC = (props: any) => {
@@ -52,130 +49,7 @@ const DeleteConfirmation: React.FC = (props: any) => {
 }
 
 
-
-const SidebarEdit:React.FC = (props: any) => {
-    return (
-        <div className="sidebar__item-edit">
-            {!props.editing ? (
-                <React.Fragment>
-                    <i onClick={()=>props.toggleDeleteConfirmation(true)}
-                    className="red far fa-times">    
-                    </i>
-                    <i onClick={()=>{props.toggleEditing(!props.editing)}}
-                        className="fad fa-edit">    
-                    </i>
-                </React.Fragment>
-            ) : (
-                <React.Fragment>
-                    <ButtonTertiary
-                        onClick={()=>props.toggleEditing(!props.editing)}
-                        id="sidebar__item-save">
-                        Cancel
-                    </ButtonTertiary>
-                    <ButtonTertiary
-                        onClick={props.onSave}
-                        id="sidebar__item-save">
-                        Save
-                    </ButtonTertiary>
-                </React.Fragment>
-            )}
-        </div>
-    )
-}
-
-
-
-const Editing: React.FC = (props:any) => {
-    const colWidths = [
-        {label: "100%", value: 12},
-        {label: "75%", value: 9},
-        {label: "66%", value: 8},
-        {label: "50%", value: 6},
-        {label: "33%", value: 4},
-        {label: "25%", value: 3},
-    ]
-    const {activeChartType, setActiveChartType} = props
-    const [date, renderDate] = useState({
-        from: props.from,
-        to: props.to
-    })
-
-    const onSet = () => {
-        props.setChartDateRange({
-            from: undefined,
-            to: undefined
-        }, props.uid)
-        renderDate({from: undefined, to: undefined})
-    }
-    
-    return (
-        <React.Fragment>
-            { props.dataViewType === viewTypes.timeSeries && (
-                <React.Fragment>
-                    <Text size="sm" len="long">
-                        Date range:
-                        <span onClick={()=> onSet() } className="reset">reset to default </span>
-                    </Text>
-                    <DateRange
-                        from={date.from}
-                        to={date.to}
-                        chartId={props.uid}
-                        setDateRange={props.setChartDateRange}
-                    />  
-                </React.Fragment>
-            )}  
-            <Text size="sm" len="short">Chart type:</Text>
-            <div className="sidebar__item-edit-chartSelector">
-                <ChartSelection
-                    dataViewType={props.dataViewType}
-                    setActiveChartType={setActiveChartType}
-                    activeChartType={activeChartType}
-                />
-            </div>
-            <br />
-            <Text size="sm" len="short">Chart width:</Text>
-            <Select
-                id="select"
-                defaultValue={colWidths.filter(w=>w.value === props.chartWidth)[0]}
-                name="colors"
-                options={colWidths}
-                onChange={(e: any)=>props.setNewChartWidth(e.value)}
-                classNamePrefix="select"
-            />
-            <br/>
-            <Text size="sm" len="short">Select the fields to view:</Text>
-            <Select
-                id="select"
-                isMulti
-                onChange={props.add}
-                defaultValue={props.filters}
-                name="colors"
-                options={props.filterables}
-                className="basic-multi-select"
-                classNamePrefix="select"
-            />
-        </React.Fragment>
-    )
-}
-
-
-const SidebarInfo: React.FC = (props: any) => {
-    return (
-        <div className="sidebar__item-info">
-        {!props.editing ? (
-            <SidebarItemInfoView {...props} />
-        ) : (
-            <Editing {...props} />
-        )}
-        </div>
-    )
-}
-
-
-
-
-
-interface sidebarItem {
+export const SidebarItem: React.FC<{
     chartType: string
     uid: string
     filterables: Array<filterable>
@@ -194,15 +68,11 @@ interface sidebarItem {
     metrics: Array<metric>
     editing?: boolean
     chartWidth: number
-}
-
-export const SidebarItem: React.FC<sidebarItem> = (props) => {
-    
+}> = (props) => {
     const [editing, toggleEditing] = useState(false)
     const [deleteConfirmation, toggleDeleteConfirmation] = useState(false)
     const [newChartWidth, setNewChartWidth] = useState(props.chartWidth)
     const [activeChartType, setActiveChartType] = useState(props.chartType)
-    
     
     let filters: Array<metric> = props.metrics.map((_metric: metric): metric => {
         return ({
@@ -244,8 +114,38 @@ export const SidebarItem: React.FC<sidebarItem> = (props) => {
         <div className={`${editing ? 'editing' : ''} sidebar__item`}>
             { !deleteConfirmation ? (
                 <React.Fragment>
-                    <SidebarInfo {...props} {...addtlProps} />
-                    <SidebarEdit {...props} {...addtlProps} />
+                    <div className="sidebar__item-info">
+                        {!editing ? (
+                            <SidebarItemInfoView {...props} />
+                        ) : (
+                            <ChartItemEditing
+                                uid={props.uid}
+                                from={props.from}
+                                to={props.to}
+                                activeChartType={activeChartType}
+                                dataViewType={props.dataViewType}
+                                chartWidth={props.chartWidth}
+                                add={add}
+                                filters={filters}
+                                filterables={props.filterables}
+                                setActiveChartType={setActiveChartType}
+                                setChartDateRange={props.setChartDateRange}
+                                setNewChartWidth={setNewChartWidth}
+                                toggleEditing={()=>toggleEditing(!editing)}
+                                onSave={onSave}
+                            />
+                        )}
+                    </div>
+                    {!editing && (
+                        <div className="sidebar__item-edit">
+                            <i onClick={()=>toggleDeleteConfirmation(true)}
+                            className="red far fa-times">    
+                            </i>
+                            <i onClick={()=>{toggleEditing(!editing)}}
+                                className="fad fa-edit">    
+                            </i>
+                        </div>
+                    )}
                 </React.Fragment>
             ) : (
                 <DeleteConfirmation {...props} {...addtlProps} />

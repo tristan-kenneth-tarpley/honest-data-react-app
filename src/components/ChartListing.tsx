@@ -24,7 +24,6 @@ export const ChartListing: React.FC<chartComponent> = props => {
         bar: <BAR_CHART uid={props.uid} data={props.data} />,
         pie: <PIE_CHART uid={props.uid} data={props.data} dataKey={dataKey} />
     }
-
     return (
         <Col className="parent" lg={props.colWidth} md={props.colWidth} sm={12}>
             <Card>   

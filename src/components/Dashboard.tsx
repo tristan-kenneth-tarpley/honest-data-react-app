@@ -31,7 +31,6 @@ const Dashboard: React.FC<IDashboard> = (props) => {
 
     const {source, description, title, endpoints, src} = props
     const chartKeys = Object.keys(props.charts)
-
     return (
         <React.Fragment>
             <Grid fluid>
@@ -52,8 +51,7 @@ const Dashboard: React.FC<IDashboard> = (props) => {
                 <Row>
                     { chartKeys.length > 0 ? (
                         chartKeys.map((_chart: any)=>{
-                            const chart = props.charts[_chart]                        
-                            const viewtype = viewTypes[props.viewType]
+                            const chart = props.charts[_chart]            
                             const {from, to} = chart
                             const data = new DataViewModel({
                                 records: props.records,
@@ -61,9 +59,8 @@ const Dashboard: React.FC<IDashboard> = (props) => {
                                 shrink: props.records.length > 15 ? true : false,
                                 from: from ? from : props.from,
                                 to: to ? to : props.to,
-                                viewType: viewtype
+                                viewType: props.viewType
                             })
-                            
                             return (
                                 <ChartListing
                                     key={_chart}
@@ -77,7 +74,8 @@ const Dashboard: React.FC<IDashboard> = (props) => {
                                     }
                                     from={ chart.from ? chart.from : props.from}
                                     chartType={chart.chartType}
-                                    uid={_chart} />
+                                    uid={_chart}
+                                />
                             )
                         })
                     ) : (

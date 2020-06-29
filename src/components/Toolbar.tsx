@@ -88,14 +88,14 @@ const Toolbar: React.FC<toolbar> = (props) => {
                     </Col>
                     { props.dataViewType === viewTypes.timeSeries && (
                         <Col lg={6} md={6} sm={12}> 
-                        <br />
-                        <Helper>Default date range:</Helper>   
-                        <DateRange
-                            from={props.from}
-                            to={props.to}
-                            setDateRange={props.setDateRange}
-                            padding={true}
-                        />
+                            <br />
+                            <Helper>Default date range:</Helper>   
+                            <DateRange
+                                from={props.from}
+                                to={props.to}
+                                setDateRange={props.setDateRange}
+                                padding={true}
+                            />
                         </Col>
                     ) }
                 </Row>

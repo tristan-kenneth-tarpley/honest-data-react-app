@@ -9,7 +9,7 @@ import {
 import {chartListing, metric, filterable, viewTypes} from '../types'
 import { v4 as uuidv4 } from 'uuid';
 import { DayRange } from 'react-modern-calendar-datepicker'
-import AddChart from '../components/AddChart'
+import AddChart, { ChartItemEditing } from '../components/ChartItemEditing'
 
 interface sidebarContainer {
     filterables: Array<filterable>
@@ -58,7 +58,7 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
 
     return (
         <div className="dashboard__sidebar">
-            <div className="addItem__container">
+            <div className="dashboard__sidebar-adding-toggle">
                 <ButtonTertiary onClick={()=>toggleAdding(!adding)} id="addItem">
                     { !adding ? (
                         <span>Add chart <i className="fad fa-plus-square"></i></span>
@@ -68,12 +68,18 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                 </ButtonTertiary>
             </div>
             { adding && (
-                <AddChart
-                    add={add}
+                <ChartItemEditing
                     filterables={props.filterables}
                     error={error}
-                    onSave={onSave}
                     dataViewType={props.dataViewType}
+                    from={props.from}
+                    to={props.to}
+                    setActiveChartType={() => console.log('hi')}
+                    setChartDateRange={() => console.log('hi')}
+                    setNewChartWidth={() => console.log('hi')}
+                    add={add}
+                    onSave={onSave}
+                    adding={adding}
                 />
             )}
             
