@@ -39,7 +39,7 @@ export const DateRange: React.FC<IDateRange> = ({
                     padding: '1rem',
                     border: `none`,
                     borderRadius: '10px',
-                    width: '20em',
+                    width: '100%',
                     color: Styles.purple,
                     outline: 'none',
                 }}

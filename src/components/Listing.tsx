@@ -40,7 +40,6 @@ export const Listing: React.FC<listing> = (props) => {
                 <Text size="lg" len="short">
                     { displayValue }
                 </Text>
-                
             </div>
 
             {props.expand && (
