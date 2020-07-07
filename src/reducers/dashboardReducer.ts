@@ -1,20 +1,21 @@
-import { chartListing, viewTypes } from '../types'
-import { v4 as uuidv4 } from 'uuid';
-import { DayRange } from 'react-modern-calendar-datepicker';
+import { chartListing, viewTypes } from "../types";
+import { v4 as uuidv4 } from "uuid";
+import { DayRange } from "react-modern-calendar-datepicker";
 
 interface initialstate {
-    from: DayRange['from']
-    to: DayRange['to']
-    data: any | null
-    editMode: boolean
-    dataViewType: viewTypes
+    from: DayRange["from"];
+    to: DayRange["to"];
+    data: any | null;
+    editMode: boolean;
+    dataViewType: viewTypes;
     charts: {
-        [key: string]: chartListing
-    }
+        [key: string]: chartListing;
+    };
 }
 
-const initUID: string = uuidv4()
-const initialState: initialstate =  {
+const initUID: string = uuidv4();
+const secondUID: string = uuidv4();
+const initialState: initialstate = {
     from: null,
     to: null,
     data: null,
@@ -22,23 +23,44 @@ const initialState: initialstate =  {
     dataViewType: viewTypes.timeSeries,
     charts: {
         [initUID]: {
+            orderOnPage: 1,
             width: 12,
             uid: initUID,
             editing: false,
-            metrics: [{
-                label: "negative",
-                value: "negative"
-            }, {
-                label: "positive",
-                value: "positive"
-            }], 
-            chartType: "line"
-        }
-    }
-}
+            metrics: [
+                {
+                    label: "negative",
+                    value: "negative",
+                },
+                {
+                    label: "positive",
+                    value: "positive",
+                },
+            ],
+            chartType: "line",
+        },
+        [secondUID]: {
+            orderOnPage: 2,
+            width: 6,
+            uid: secondUID,
+            editing: false,
+            metrics: [
+                {
+                    label: "negative",
+                    value: "negative",
+                },
+                {
+                    label: "positive",
+                    value: "positive",
+                },
+            ],
+            chartType: "bar",
+        },
+    },
+};
 interface _action {
-    type: string
-    payload: any
+    type: string;
+    payload: any;
 }
 
 export const dashboardReducer = (state = initialState, action: _action) => {
@@ -46,28 +68,28 @@ export const dashboardReducer = (state = initialState, action: _action) => {
         case "HYDRATE_DASHBOARD":
             state = {
                 ...state,
-                data: action.payload
-            }
-            break
+                data: action.payload,
+            };
+            break;
         case "TOGGLE_EDIT_MODE":
             state = {
                 ...state,
-                editMode: action.payload
-            }
-            break
+                editMode: action.payload,
+            };
+            break;
         case "EDIT_CHART":
-            const {chartId, filters} = action.payload
+            const { chartId, filters } = action.payload;
             state = {
                 ...state,
                 charts: {
                     ...state.charts,
                     [chartId]: {
                         ...state.charts[chartId],
-                        metrics: filters
-                    }
-                }
-            }
-            break
+                        metrics: filters,
+                    },
+                },
+            };
+            break;
         case "EDIT_CHART_TYPE":
             state = {
                 ...state,
@@ -75,26 +97,27 @@ export const dashboardReducer = (state = initialState, action: _action) => {
                     ...state.charts,
                     [action.payload.chartId]: {
                         ...state.charts[action.payload.chartId],
-                        chartType: action.payload.chartType
-                    }
-                }
-            }
-            break
+                        chartType: action.payload.chartType,
+                    },
+                },
+            };
+            break;
         case "ADD_CHART":
             state = {
                 ...state,
                 charts: {
                     ...state.charts,
-                    [uuidv4()]: action.payload
-                }
-            }
-            break
+                    [uuidv4()]: action.payload,
+                },
+            };
+            break;
         case "DELETE_CHART":
-            const allowed = Object.keys(state.charts)
-                .filter(key=>key !== action.payload)
+            const allowed = Object.keys(state.charts).filter(
+                (key) => key !== action.payload
+            );
 
             const filtered = Object.keys(state.charts)
-                .filter(key => allowed.includes(key))
+                .filter((key) => allowed.includes(key))
                 .reduce((obj: any, key: any) => {
                     obj[key] = state.charts[key];
                     return obj;
@@ -102,9 +125,9 @@ export const dashboardReducer = (state = initialState, action: _action) => {
 
             state = {
                 ...state,
-                charts: filtered
-            }
-            return state
+                charts: filtered,
+            };
+            return state;
         case "EDIT_CHART_WIDTH":
             state = {
                 ...state,
@@ -112,20 +135,20 @@ export const dashboardReducer = (state = initialState, action: _action) => {
                     ...state.charts,
                     [action.payload.chartId]: {
                         ...state.charts[action.payload.chartId],
-                        width: action.payload.width
-                    }
-                }
-            }
-            break
+                        width: action.payload.width,
+                    },
+                },
+            };
+            break;
         case "SET_DATE_RANGE":
             state = {
                 ...state,
                 from: action.payload.from,
                 to: action.payload.to,
-            }
-            break
+            };
+            break;
         case "SET_CHART_DATE_RANGE":
-            const {date_} = action.payload
+            const { date_ } = action.payload;
             state = {
                 ...state,
                 charts: {
@@ -133,19 +156,31 @@ export const dashboardReducer = (state = initialState, action: _action) => {
                     [action.payload.chartId]: {
                         ...state.charts[action.payload.chartId],
                         from: date_.from,
-                        to: date_.to
-                    }
-                }
-            }
-            break
+                        to: date_.to,
+                    },
+                },
+            };
+            break;
         case "SET_DATA_VIEW_TYPE":
             state = {
                 ...state,
-                dataViewType: action.payload
-            }
-            break
+                dataViewType: action.payload,
+            };
+            break;
+        case "SET_CHART_ORDER_ON_PAGE":
+            state = {
+                ...state,
+                charts: {
+                    ...state.charts,
+                    [action.payload.chartId]: {
+                        ...state.charts[action.payload.chartId],
+                        orderOnPage: action.payload.desiredOrder,
+                    },
+                },
+            };
+            break;
         default:
-            return state
+            return state;
     }
 
     return state;

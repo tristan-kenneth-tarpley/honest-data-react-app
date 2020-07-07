@@ -542,6 +542,10 @@ div[class^="col"].parent {
   box-shadow: var(--box-shadow);
   margin-bottom: 1em;
 }
+.chart-item-editing__container.adding p {
+  margin: 0;
+  padding: 0;
+}
 .chart-item-editing__container.adding .btn {
   width: 50%;
   margin: 0 auto;
