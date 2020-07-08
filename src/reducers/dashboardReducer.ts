@@ -50,8 +50,8 @@ const initialState: initialstate = {
                     value: "negative",
                 },
                 {
-                    label: "positive",
-                    value: "positive",
+                    label: "pending",
+                    value: "pending",
                 },
             ],
             chartType: "bar",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { ButtonTertiary } from "../styles/Buttons";
 import { SidebarItem } from "../components/SidebarItem";
 import { connect } from "react-redux";
@@ -17,6 +17,8 @@ import { v4 as uuidv4 } from "uuid";
 import { DayRange } from "react-modern-calendar-datepicker";
 import { ChartItemEditing } from "../components/ChartItemEditing";
 import { sortChartKeys } from "../utils/sortChartKeys";
+import _ from "lodash";
+
 interface sidebarContainer {
     filterables: Array<filterable>;
     chartListings: { [key: string]: chartListing };
@@ -66,6 +68,77 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
         }
     };
 
+    const moveSidebarItem = useCallback(
+        (
+            currentIndexOfDragged: number,
+            targetIndex: number,
+            chartUid: string
+        ) => {
+            const before = _.pickBy(
+                Object.keys(chartListings).filter(
+                    (x) => chartListings[x].orderOnPage < targetIndex
+                ),
+                (v, k) => {
+                    return k !== chartUid;
+                }
+            );
+
+            const after = _.pickBy(
+                Object.keys(chartListings).filter(
+                    (x) => chartListings[x].orderOnPage > targetIndex
+                ),
+                (v, k) => {
+                    return k !== chartUid;
+                }
+            );
+            console.log(before, after, currentIndexOfDragged, targetIndex);
+            // const dragCard = cards[dragIndex]
+            // setCards(
+            //     update(cards, {
+            //     $splice: [
+            //         [dragIndex, 1],
+            //         [hoverIndex, 0, dragCard],
+            //     ],
+            //     }),
+            // )
+        },
+        [chartListings]
+    );
+
+    const renderItems = () =>
+        sortedChartKeys.map((chart: string) => {
+            return (
+                <SidebarItem
+                    editChart={props.editChart}
+                    key={chart}
+                    deleteChart={props.deleteChart}
+                    uid={chart}
+                    from={
+                        chartListings[chart].from
+                            ? chartListings[chart].from
+                            : props.from
+                    }
+                    to={
+                        chartListings[chart].to
+                            ? chartListings[chart].to
+                            : props.to
+                    }
+                    moveSidebarItem={moveSidebarItem}
+                    viewType={props.viewType}
+                    metrics={chartListings[chart].metrics}
+                    chartWidth={chartListings[chart].width}
+                    editChartWidth={props.editChartWidth}
+                    editChartType={props.editChartType}
+                    setChartDateRange={props.setChartDateRange}
+                    setChartOrderOnPage={props.setChartOrderOnPage}
+                    chartOrderOnPage={chartListings[chart].orderOnPage}
+                    chartType={chartListings[chart].chartType}
+                    filterables={props.filterables}
+                    dataViewType={props.dataViewType}
+                />
+            );
+        });
+
     return (
         <div className="dashboard__sidebar">
             <div className="dashboard__sidebar-adding-toggle">
@@ -98,36 +171,7 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                 />
             )}
 
-            {sortedChartKeys.map((chart: string) => {
-                return (
-                    <SidebarItem
-                        editChart={props.editChart}
-                        key={chart}
-                        deleteChart={props.deleteChart}
-                        uid={chart}
-                        from={
-                            chartListings[chart].from
-                                ? chartListings[chart].from
-                                : props.from
-                        }
-                        to={
-                            chartListings[chart].to
-                                ? chartListings[chart].to
-                                : props.to
-                        }
-                        viewType={props.viewType}
-                        metrics={chartListings[chart].metrics}
-                        chartWidth={chartListings[chart].width}
-                        editChartWidth={props.editChartWidth}
-                        editChartType={props.editChartType}
-                        setChartDateRange={props.setChartDateRange}
-                        setChartOrderOnPage={props.setChartOrderOnPage}
-                        chartType={chartListings[chart].chartType}
-                        filterables={props.filterables}
-                        dataViewType={props.dataViewType}
-                    />
-                );
-            })}
+            {renderItems()}
         </div>
     );
 };
