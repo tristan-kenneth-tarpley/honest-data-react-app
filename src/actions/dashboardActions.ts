@@ -2,102 +2,104 @@ import { metric, viewTypes } from "../types";
 import { DayRange } from "react-modern-calendar-datepicker";
 
 export const hydrateDashboard = (data: string) => {
-    return {
-        type: "HYDRATE_DASHBOARD",
-        payload: data,
-    };
+  return {
+    type: "HYDRATE_DASHBOARD",
+    payload: data,
+  };
 };
 
 export interface addChartInterface {
-    uid: string;
-    metrics: Array<metric>;
-    chartType: string;
+  uid: string;
+  metrics: Array<metric>;
+  chartType: string;
 }
 export const addChart = (data: addChartInterface) => {
-    return {
-        type: "ADD_CHART",
-        payload: data,
-    };
+  return {
+    type: "ADD_CHART",
+    payload: data,
+  };
 };
 
 export const toggleEditMode = (data: boolean) => {
-    return {
-        type: "TOGGLE_EDIT_MODE",
-        payload: data,
-    };
+  return {
+    type: "TOGGLE_EDIT_MODE",
+    payload: data,
+  };
 };
 
 export interface editchart {
-    chartId: string;
-    filters: Array<metric>;
+  chartId: string;
+  filters: Array<metric>;
 }
 export const editChart = (chart: editchart) => {
-    return {
-        type: "EDIT_CHART",
-        payload: chart,
-    };
+  return {
+    type: "EDIT_CHART",
+    payload: chart,
+  };
 };
 
 export const editChartType = (chart: {
-    chartId: string;
-    chartType: string;
+  chartId: string;
+  chartType: string;
 }) => {
-    return {
-        type: "EDIT_CHART_TYPE",
-        payload: chart,
-    };
+  return {
+    type: "EDIT_CHART_TYPE",
+    payload: chart,
+  };
 };
 
 export const deleteChart = (uid: string) => {
-    return {
-        type: "DELETE_CHART",
-        payload: uid,
-    };
+  return {
+    type: "DELETE_CHART",
+    payload: uid,
+  };
 };
 
 export const editChartWidth = (width: number, chartId: string) => {
-    return {
-        type: "EDIT_CHART_WIDTH",
-        payload: { width, chartId },
-    };
+  return {
+    type: "EDIT_CHART_WIDTH",
+    payload: { width, chartId },
+  };
 };
 
 export const setDateRange = (date_: DayRange) => {
-    return {
-        type: "SET_DATE_RANGE",
-        payload: {
-            from: date_.from,
-            to: date_.to,
-        },
-    };
+  return {
+    type: "SET_DATE_RANGE",
+    payload: {
+      from: date_.from,
+      to: date_.to,
+    },
+  };
 };
 
 export const setChartDateRange = (date_: DayRange, chartId: string) => {
-    return {
-        type: "SET_CHART_DATE_RANGE",
-        payload: {
-            chartId,
-            date_,
-        },
-    };
+  return {
+    type: "SET_CHART_DATE_RANGE",
+    payload: {
+      chartId,
+      date_,
+    },
+  };
 };
 
 export const setDataViewType = (viewType: viewTypes) => {
-    return {
-        type: "SET_DATA_VIEW_TYPE",
-        payload: viewType,
-    };
+  return {
+    type: "SET_DATA_VIEW_TYPE",
+    payload: viewType,
+  };
 };
 
 export const setChartOrderOnPage = ({
-    desiredOrder,
-    chartId,
+  previousOrder,
+  desiredOrder,
+  chartId,
 }: {
-    desiredOrder: number;
-    chartId: string;
+  previousOrder: number;
+  desiredOrder: number;
+  chartId: string;
 }) => {
-    return {
-        type: "SET_CHART_ORDER_ON_PAGE",
-        payload: { desiredOrder, chartId },
-    };
+  return {
+    type: "SET_CHART_ORDER_ON_PAGE",
+    payload: { previousOrder, desiredOrder, chartId },
+  };
 };

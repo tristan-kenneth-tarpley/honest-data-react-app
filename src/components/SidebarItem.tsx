@@ -59,13 +59,6 @@ export const SidebarItem: React.FC<{
   deleteChart: (uid: string) => void;
   editChartWidth: (width: number, chartId: string) => void;
   editChartType: (chart: { chartId: string; chartType: string }) => void;
-  setChartOrderOnPage: ({
-    desiredOrder,
-    chartId,
-  }: {
-    desiredOrder: number;
-    chartId: string;
-  }) => void;
   chartOrderOnPage: number;
   metrics: Array<metric>;
   editing?: boolean;
