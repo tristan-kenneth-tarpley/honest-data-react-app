@@ -79,7 +79,6 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
             chartListings[chart].from ? chartListings[chart].from : props.from
           }
           to={chartListings[chart].to ? chartListings[chart].to : props.to}
-          moveSidebarItem={moveSidebarItem}
           viewType={props.viewType}
           metrics={chartListings[chart].metrics}
           chartWidth={chartListings[chart].width}
