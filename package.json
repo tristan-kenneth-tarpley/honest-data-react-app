@@ -49,7 +49,10 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "juni"
+    "extends": [
+      "react-app",
+      "juni"
+    ]
   },
   "browserslist": {
     "production": [
