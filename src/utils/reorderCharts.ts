@@ -14,6 +14,8 @@ export default (
   const chartsLength = Object.keys(charts).length;
   const chartsCopy = { ...charts };
   chartsCopy[draggedChartId].orderOnPage = desiredOrder;
+
+  // TODO refactor this disgusting loop
   Object.keys(chartsCopy).forEach((chart: string) => {
     if (chart === draggedChartId) return;
     if (

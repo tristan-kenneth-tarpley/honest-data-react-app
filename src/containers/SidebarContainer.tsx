@@ -61,8 +61,9 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
       value: filter.value,
     }));
   };
-  const onSave = () => {
+  const onSave = (chartToAdd: chartListing) => {
     if (filters.length > 0) {
+      //   props.addChart(chartToAdd);
       props.addChart({
         uid: uuidv4(),
         metrics: filters,
