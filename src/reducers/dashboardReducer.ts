@@ -124,12 +124,13 @@ export const dashboardReducer = (state = initialState, action: _action) => {
       };
       break;
     case "ADD_CHART":
+      const uid = Object.keys(payload)[0];
       state = {
         ...state,
         charts: {
           ...state.charts,
-          [uuidv4()]: {
-            ...action.payload,
+          [uid]: {
+            ...payload[uid],
             orderOnPage: Object.keys(state.charts).length,
           },
         },
@@ -205,7 +206,6 @@ export const dashboardReducer = (state = initialState, action: _action) => {
         charts,
       };
 
-      console.log(charts);
       break;
     default:
       return state;

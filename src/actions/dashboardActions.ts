@@ -1,4 +1,4 @@
-import { metric, viewTypes } from "../types";
+import { metric, viewTypes, ISafeChartListing } from "../types";
 import { DayRange } from "react-modern-calendar-datepicker";
 
 export const hydrateDashboard = (data: string) => {
@@ -13,7 +13,7 @@ export interface addChartInterface {
   metrics: Array<metric>;
   chartType: string;
 }
-export const addChart = (data: addChartInterface) => {
+export const addChart = (data: ISafeChartListing) => {
   return {
     type: "ADD_CHART",
     payload: data,

@@ -38,7 +38,7 @@ interface sidebarContainer {
   from: DayRange["from"];
   to: DayRange["to"];
   dataViewType: viewTypes;
-  addChart: (chart: addChartInterface) => void;
+  addChart: (chart: ISafeChartListing) => void;
   deleteChart: (uid: string) => void;
   editChartWidth: (width: number, chartId: string) => void;
   editChartType: (chart: { chartId: string; chartType: string }) => void;
@@ -95,18 +95,13 @@ const BuildChartReducer = (
         [uid]: {
           ...state[uid],
           uid,
-          metrics:
-            state[uid] && state[uid].metrics
-              ? [...state[uid].metrics, payload.filterableToAdd]
-              : [...payload.filterableToAdd],
+          metrics: [...payload.filterableToAdd],
         },
       };
       break;
     default:
       return state;
   }
-
-  console.log(state);
 
   return state;
 };
@@ -133,14 +128,8 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
   );
 
   const onSave = () => {
-    if (newChartState[newChartUID].metrics.length > 0) {
-      console.log(newChartState);
-      //   props.addChart(chartToAdd);
-      //   props.addChart({
-      //     uid: uuidv4(),
-      //     metrics: filters,
-      //     chartType: "line",
-      //   });
+    if (newChartState[newChartUID]?.metrics.length > 0) {
+      props.addChart(newChartState);
       toggleError(false);
       toggleAdding(false);
     } else {
@@ -292,7 +281,7 @@ const mapDispatchToProps = (dispatch: any) => {
       dispatch(setChartDateRange(_date, chartId)),
     editChart: (chart: any) => dispatch(editChart(chart)),
     editChartType: (chart: any) => dispatch(editChartType(chart)),
-    addChart: (data: addChartInterface) => dispatch(addChart(data)),
+    addChart: (data: ISafeChartListing) => dispatch(addChart(data)),
     deleteChart: (uid: string) => dispatch(deleteChart(uid)),
     editChartWidth: (width: number, chartId: string) =>
       dispatch(editChartWidth(width, chartId)),
