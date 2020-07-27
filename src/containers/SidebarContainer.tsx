@@ -72,12 +72,13 @@ const BuildChartReducer = (
       };
       break;
     case "CHART_DATE_RANGE":
+      console.log(payload);
       state = {
         [uid]: {
           ...state[uid],
           uid,
           from: payload.dateRange.from,
-          to: payload.dateRange._to,
+          to: payload.dateRange.to,
         },
       };
       break;
@@ -130,6 +131,7 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
   const onSave = () => {
     if (newChartState[newChartUID]?.metrics.length > 0) {
       props.addChart(newChartState);
+      console.log(newChartState);
       toggleError(false);
       toggleAdding(false);
     } else {

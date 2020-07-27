@@ -77,8 +77,10 @@ export const ChartItemEditing: React.FC<{
             to={date.to ? date.to : props.to}
             chartId={props.uid}
             setDateRange={(_date: DayRange) => {
-              props.setChartDateRange(_date);
               renderDate({ from: _date.from, to: _date.to });
+              if (_date.from && _date.to) {
+                props.setChartDateRange(_date, props.uid);
+              }
             }}
           />
         </React.Fragment>
