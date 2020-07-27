@@ -1,7 +1,5 @@
 import { IChartListing, ViewTypes } from "../types";
-import { v4 as uuidv4 } from "uuid";
 import { DayRange } from "react-modern-calendar-datepicker";
-import { stat } from "fs";
 import reorderCharts from "../utils/reorderCharts";
 
 interface initialstate {

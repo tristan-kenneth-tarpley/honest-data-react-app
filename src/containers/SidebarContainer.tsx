@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import {
   editChart,
   addChart,
-  addChartInterface,
   deleteChart,
   editChartWidth,
   editChartType,

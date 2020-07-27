@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { IFilterable, IMetric, ViewTypes } from "../types";
 import { ButtonSecondary, ButtonTertiary } from "../styles/Buttons";
 import { editchart } from "../actions/dashboardActions";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Styles from "../styles/Styles";
 // date picker
 import DatePicker, { DayRange } from "react-modern-calendar-datepicker";
