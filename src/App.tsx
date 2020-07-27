@@ -5,7 +5,7 @@ import Search from "./components/Search";
 import Navbar from "./components/Navbar";
 import DashboardContainer from "./containers/DashboardContainer";
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Navbar />
@@ -26,6 +26,6 @@ function App() {
       </Switch>
     </Router>
   );
-}
+};
 
 export default App;

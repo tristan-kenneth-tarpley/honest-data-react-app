@@ -1,5 +1,5 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
-import { filterable, viewTypes, chartListing } from "../types";
+import { filterable, viewTypes } from "../types";
 import { ButtonPrimary, ButtonTertiary } from "../styles/Buttons";
 import { ChartSelection } from "./charts/ChartSelection";
 import Select from "react-select";
@@ -15,11 +15,11 @@ export const ChartItemEditing: React.FC<{
   dataViewType: viewTypes;
   filterables: Array<filterable>;
   error?: boolean;
-  setActiveChartType: (() => void) | Dispatch<SetStateAction<string>>;
-  setChartDateRange: ({ from, to }: DayRange, chartId: string) => void;
+  setActiveChartType: any; //(() => void) | Dispatch<SetStateAction<string>>;
+  setChartDateRange: any; //({ from, to }: DayRange, chartId: string) => void;
   setNewChartWidth: (newChartWidth: number) => void;
-  onSave: (chartToAdd: chartListing) => void;
-  add: (ev: any) => void;
+  onSave: () => void;
+  addFilterableToList: (ev: any) => void;
   chartWidth?: number;
   activeChartType?: string;
   uid?: string;
@@ -27,7 +27,6 @@ export const ChartItemEditing: React.FC<{
   toggleEditing?: () => void;
   filters?: Array<any>;
 }> = (props) => {
-  const [localActiveChartType, localSetActiveChartType] = useState("line");
   const [date, renderDate] = useState<{
     from?: DayRange["from"];
     to?: DayRange["to"];
@@ -35,10 +34,6 @@ export const ChartItemEditing: React.FC<{
     from: props.from,
     to: props.to,
   });
-
-  const setActiveChartType = () => null;
-  const setChartDateRange = ({ from, to }: DayRange, chartId: string) => null;
-  const setNewChartWidth = (newChartWidth: number) => null;
 
   const onResetDate = () => {
     if (props.uid)
@@ -81,8 +76,8 @@ export const ChartItemEditing: React.FC<{
             from={date.from ? date.from : props.from}
             to={date.to ? date.to : props.to}
             chartId={props.uid}
-            setDateRange={(_date: DayRange, chartId?: string) => {
-              if (chartId) props.setChartDateRange(_date, chartId);
+            setDateRange={(_date: DayRange) => {
+              props.setChartDateRange(_date);
               renderDate({ from: _date.from, to: _date.to });
             }}
           />
@@ -94,12 +89,8 @@ export const ChartItemEditing: React.FC<{
       <div className="sidebar__item-edit-chartSelector">
         <ChartSelection
           dataViewType={props.dataViewType}
-          setActiveChartType={
-            props.adding ? localSetActiveChartType : props.setActiveChartType
-          }
-          activeChartType={
-            props.adding ? localActiveChartType : props.activeChartType!
-          }
+          setActiveChartType={props.setActiveChartType}
+          activeChartType={props.activeChartType!}
         />
       </div>
       <br />
@@ -121,7 +112,7 @@ export const ChartItemEditing: React.FC<{
       <Select
         id="select"
         isMulti
-        onChange={props.add}
+        onChange={props.addFilterableToList}
         defaultValue={props.filters}
         name="colors"
         options={props.filterables}

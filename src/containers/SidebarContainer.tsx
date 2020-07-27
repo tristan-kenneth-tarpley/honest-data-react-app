@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useReducer, useMemo } from "react";
 import { ButtonTertiary } from "../styles/Buttons";
 import { SidebarItem } from "../components/SidebarItem";
 import { connect } from "react-redux";
@@ -12,7 +12,13 @@ import {
   setChartDateRange,
   setChartOrderOnPage,
 } from "../actions/dashboardActions";
-import { chartListing, metric, filterable, viewTypes } from "../types";
+import {
+  chartListing,
+  ISafeChartListing,
+  metric,
+  filterable,
+  viewTypes,
+} from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { DayRange } from "react-modern-calendar-datepicker";
 import { ChartItemEditing } from "../components/ChartItemEditing";
@@ -48,27 +54,93 @@ interface sidebarContainer {
   }) => void;
 }
 
+const BuildChartReducer = (
+  state: ISafeChartListing,
+  action: { type: string; payload: any }
+): ISafeChartListing => {
+  const { type, payload } = action;
+  const { uid } = payload;
+
+  switch (type) {
+    case "CHART_TYPE":
+      state = {
+        [uid]: {
+          ...state[uid],
+          uid,
+          chartType: payload.chartType,
+        },
+      };
+      break;
+    case "CHART_DATE_RANGE":
+      state = {
+        [uid]: {
+          ...state[uid],
+          uid,
+          from: payload.dateRange.from,
+          to: payload.dateRange._to,
+        },
+      };
+      break;
+    case "CHART_WIDTH":
+      state = {
+        [uid]: {
+          ...state[uid],
+          uid,
+          width: payload.width,
+        },
+      };
+      break;
+    case "ADD_FILTERABLE":
+      state = {
+        [uid]: {
+          ...state[uid],
+          uid,
+          metrics:
+            state[uid] && state[uid].metrics
+              ? [...state[uid].metrics, payload.filterableToAdd]
+              : [...payload.filterableToAdd],
+        },
+      };
+      break;
+    default:
+      return state;
+  }
+
+  console.log(state);
+
+  return state;
+};
+
 const SidebarContainer: React.FC<sidebarContainer> = (props) => {
   const { chartListings } = props;
   const sortedChartKeys = sortChartKeys(chartListings);
   const [adding, toggleAdding] = useState(false);
   const [error, toggleError] = useState(false);
 
-  let filters: Array<metric> = [];
-  const add = (ev: any) => {
-    filters = ev.map((filter: metric) => ({
-      label: filter.label,
-      value: filter.value,
-    }));
-  };
-  const onSave = (chartToAdd: chartListing) => {
-    if (filters.length > 0) {
+  const newChartUID = useMemo(() => uuidv4(), [adding]);
+  const initialChartState = useMemo(
+    () => ({
+      [newChartUID]: {
+        uid: newChartUID,
+        metrics: [],
+      },
+    }),
+    [adding]
+  );
+  const [newChartState, dispatchNewChart] = useReducer(
+    BuildChartReducer,
+    initialChartState
+  );
+
+  const onSave = () => {
+    if (newChartState[newChartUID].metrics.length > 0) {
+      console.log(newChartState);
       //   props.addChart(chartToAdd);
-      props.addChart({
-        uid: uuidv4(),
-        metrics: filters,
-        chartType: "line",
-      });
+      //   props.addChart({
+      //     uid: uuidv4(),
+      //     metrics: filters,
+      //     chartType: "line",
+      //   });
       toggleError(false);
       toggleAdding(false);
     } else {
@@ -77,9 +149,7 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
   };
 
   const onDragEnd = (result: DropResult) => {
-    // dropped outside the list
     if (!result.destination) return;
-
     const chartId = result.draggableId;
     const desiredOrder = result.destination.index;
     const previousOrder = result.source.index;
@@ -115,12 +185,48 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                 filterables={props.filterables}
                 error={error}
                 dataViewType={props.dataViewType}
-                from={props.from}
-                to={props.to}
-                setActiveChartType={() => console.log("hi")}
-                setChartDateRange={() => console.log("hi")}
-                setNewChartWidth={() => console.log("hi")}
-                add={add}
+                from={newChartState[newChartUID]?.from}
+                to={newChartState[newChartUID]?.to}
+                activeChartType={newChartState[newChartUID]?.chartType}
+                setActiveChartType={(chartType: string) =>
+                  dispatchNewChart({
+                    type: "CHART_TYPE",
+                    payload: {
+                      chartType,
+                      uid: newChartUID,
+                    },
+                  })
+                }
+                setChartDateRange={(_date: DayRange) =>
+                  dispatchNewChart({
+                    type: "CHART_DATE_RANGE",
+                    payload: {
+                      dateRange: _date,
+                      uid: newChartUID,
+                    },
+                  })
+                }
+                setNewChartWidth={(width: number) =>
+                  dispatchNewChart({
+                    type: "CHART_WIDTH",
+                    payload: {
+                      width,
+                      uid: newChartUID,
+                    },
+                  })
+                }
+                addFilterableToList={(ev: any) =>
+                  dispatchNewChart({
+                    type: "ADD_FILTERABLE",
+                    payload: {
+                      filterableToAdd: ev.map((filter: metric) => ({
+                        label: filter.label,
+                        value: filter.value,
+                      })),
+                      uid: newChartUID,
+                    },
+                  })
+                }
                 onSave={onSave}
                 adding={adding}
               />
@@ -186,7 +292,7 @@ const mapDispatchToProps = (dispatch: any) => {
       dispatch(setChartDateRange(_date, chartId)),
     editChart: (chart: any) => dispatch(editChart(chart)),
     editChartType: (chart: any) => dispatch(editChartType(chart)),
-    addChart: (chart: addChartInterface) => dispatch(addChart(chart)),
+    addChart: (data: addChartInterface) => dispatch(addChart(data)),
     deleteChart: (uid: string) => dispatch(deleteChart(uid)),
     editChartWidth: (width: number, chartId: string) =>
       dispatch(editChartWidth(width, chartId)),

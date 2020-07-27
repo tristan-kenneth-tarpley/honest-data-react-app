@@ -70,12 +70,10 @@ export const SidebarItem: React.FC<{
   const [activeChartType, setActiveChartType] = useState(props.chartType);
 
   let filters: Array<metric> = props.metrics.map(
-    (_metric: metric): metric => {
-      return {
-        label: decamelize(_metric.label),
-        value: _metric.value,
-      };
-    }
+    (_metric: metric): metric => ({
+      label: decamelize(_metric.label),
+      value: _metric.value,
+    })
   );
   const add = (ev: any) => {
     filters = ev.map((filter: metric) => ({
@@ -134,7 +132,7 @@ export const SidebarItem: React.FC<{
                 activeChartType={activeChartType}
                 dataViewType={props.dataViewType}
                 chartWidth={props.chartWidth}
-                add={add}
+                addFilterableToList={add}
                 filters={filters}
                 filterables={props.filterables}
                 setActiveChartType={setActiveChartType}
