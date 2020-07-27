@@ -1,22 +1,22 @@
 import { DayRange } from "react-modern-calendar-datepicker";
 
-export enum searchTypes {
+export enum SearchTypes {
   compareSources,
   singleSource,
 }
 
-export interface filterable {
+export interface IFilterable {
   value: string;
   label: string;
 }
-export interface metric {
+export interface IMetric {
   value: string | number;
   label: string;
 }
-export interface chartListing {
+export interface IChartListing {
   uid: string;
   width: number;
-  metrics: Array<metric>;
+  metrics: Array<IMetric>;
   chartType: string;
   orderOnPage: number;
   from?: DayRange["from"];
@@ -27,7 +27,7 @@ export interface chartListing {
 export interface ISafeChartListing {
   [uid: string]: {
     uid: string;
-    metrics: Array<metric>;
+    metrics: Array<IMetric>;
     width?: number;
     chartType?: string;
     orderOnPage?: number;
@@ -46,22 +46,22 @@ export interface record {
   [key: string]: recordFields;
 }
 
-export enum viewTypes {
+export enum ViewTypes {
   timeSeries,
   categorized,
 }
 
 export interface APIResponse {
-  endpoints?: Array<endpointsKeys>;
+  endpoints?: Array<IEndpointsKeys>;
   title: string;
-  viewType: viewTypes; // see viewTypes enum
+  viewType: ViewTypes; // see viewTypes enum
   source: string;
   records: Array<record>;
   description: string;
   acceptableCharts?: Array<number>;
 }
 
-export enum charts {
+export enum Charts {
   bar,
   pie,
   treeMap,
@@ -74,25 +74,25 @@ export enum charts {
   area,
   stacked,
 }
-export enum dataTypes {
+export enum DataTypes {
   location,
   score,
   dateTime,
   metricLowIsGood,
   metricLowIsBad,
 }
-export interface APIField {
-  dataType: dataTypes;
+export interface IAPIField {
+  dataType: DataTypes;
   value: string | number | null | undefined;
 }
 
-export interface endpointsKeys {
+export interface IEndpointsKeys {
   key: string;
   active: boolean;
 }
 
 export type dateRange = DayRange;
-export interface date {
+export interface IDate {
   day: number;
   month: number;
   year: number;

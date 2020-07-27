@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Row, Col } from "react-flexbox-grid";
 import "../styles/App.css";
-import { searchTypes } from "../types";
+import { SearchTypes } from "../types";
 import { CompareSearch } from "./ComparableSearchField";
 import { SingleSourceSearchField } from "./SingleSourceSearchField";
 import APIClient from "../services/apiClient";
@@ -10,7 +10,7 @@ const classNames = require("classnames");
 
 const Search: React.FC = () => {
   const [activeSearchField, setActiveSearchField] = useState(
-    searchTypes.singleSource
+    SearchTypes.singleSource
   );
   const [availableEndpoints, setAvailableEndpoints] = useState<Array<any>>([]);
 
@@ -36,21 +36,21 @@ const Search: React.FC = () => {
             <Col lg={12}>
               <ul className="searchToggle__controller">
                 <li
-                  onClick={() => setActiveSearchField(searchTypes.singleSource)}
+                  onClick={() => setActiveSearchField(SearchTypes.singleSource)}
                   className={classNames({
                     active__search:
-                      activeSearchField === searchTypes.singleSource,
+                      activeSearchField === SearchTypes.singleSource,
                   })}
                 >
                   Browse available data
                 </li>
                 <li
                   onClick={() =>
-                    setActiveSearchField(searchTypes.compareSources)
+                    setActiveSearchField(SearchTypes.compareSources)
                   }
                   className={classNames({
                     active__search:
-                      activeSearchField === searchTypes.compareSources,
+                      activeSearchField === SearchTypes.compareSources,
                   })}
                 >
                   Compare two data sources
@@ -58,10 +58,10 @@ const Search: React.FC = () => {
               </ul>
             </Col>
 
-            {activeSearchField === searchTypes.compareSources && (
+            {activeSearchField === SearchTypes.compareSources && (
               <CompareSearch />
             )}
-            {activeSearchField === searchTypes.singleSource && (
+            {activeSearchField === SearchTypes.singleSource && (
               <SingleSourceSearchField sources={availableEndpoints} />
             )}
           </Row>

@@ -1,5 +1,5 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
-import { filterable, viewTypes } from "../types";
+import React, { useState } from "react";
+import { IFilterable, ViewTypes } from "../types";
 import { ButtonPrimary, ButtonTertiary } from "../styles/Buttons";
 import { ChartSelection } from "./charts/ChartSelection";
 import Select from "react-select";
@@ -12,8 +12,8 @@ const classNames = require("classnames");
 export const ChartItemEditing: React.FC<{
   from: DayRange["from"];
   to: DayRange["to"];
-  dataViewType: viewTypes;
-  filterables: Array<filterable>;
+  dataViewType: ViewTypes;
+  filterables: Array<IFilterable>;
   error?: boolean;
   setActiveChartType: any; //(() => void) | Dispatch<SetStateAction<string>>;
   setChartDateRange: any; //({ from, to }: DayRange, chartId: string) => void;
@@ -36,7 +36,7 @@ export const ChartItemEditing: React.FC<{
   });
 
   const onResetDate = () => {
-    if (props.uid)
+    if (props.uid) {
       props.setChartDateRange(
         {
           from: undefined,
@@ -44,6 +44,7 @@ export const ChartItemEditing: React.FC<{
         },
         props.uid
       );
+    }
     renderDate({ from: undefined, to: undefined });
   };
 
@@ -64,7 +65,7 @@ export const ChartItemEditing: React.FC<{
         editing: !props.adding,
       })}
     >
-      {props.dataViewType === viewTypes.timeSeries && (
+      {props.dataViewType === ViewTypes.timeSeries && (
         <React.Fragment>
           <Text size="sm" len="long">
             Date range:

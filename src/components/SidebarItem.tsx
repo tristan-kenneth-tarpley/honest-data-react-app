@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { filterable, metric, viewTypes } from "../types";
+import { IFilterable, IMetric, ViewTypes } from "../types";
 import { ButtonSecondary, ButtonTertiary } from "../styles/Buttons";
 import { editchart } from "../actions/dashboardActions";
 import { decamelize } from "../helpers";
@@ -10,7 +10,7 @@ const SidebarItemInfoView: React.FC = (props: any) => {
   return (
     <React.Fragment>
       <p>
-        {props.metrics.map((metric_: metric, index: number) => {
+        {props.metrics.map((metric_: IMetric, index: number) => {
           return `${metric_.label}${
             index < props.metrics.length - 1 ? " + " : ""
           }`;
@@ -49,18 +49,18 @@ const DeleteConfirmation: React.FC = (props: any) => {
 export const SidebarItem: React.FC<{
   chartType: string;
   uid: string;
-  filterables: Array<filterable>;
+  filterables: Array<IFilterable>;
   viewType: number;
   from: DayRange["from"];
   to: DayRange["to"];
-  dataViewType: viewTypes;
+  dataViewType: ViewTypes;
   setChartDateRange: (_date: DayRange, chartId: string) => void;
   editChart: (chart: editchart) => void;
   deleteChart: (uid: string) => void;
   editChartWidth: (width: number, chartId: string) => void;
   editChartType: (chart: { chartId: string; chartType: string }) => void;
   chartOrderOnPage: number;
-  metrics: Array<metric>;
+  metrics: Array<IMetric>;
   editing?: boolean;
   chartWidth: number;
 }> = (props) => {
@@ -69,14 +69,14 @@ export const SidebarItem: React.FC<{
   const [newChartWidth, setNewChartWidth] = useState(props.chartWidth);
   const [activeChartType, setActiveChartType] = useState(props.chartType);
 
-  let filters: Array<metric> = props.metrics.map(
-    (_metric: metric): metric => ({
+  let filters: Array<IMetric> = props.metrics.map(
+    (_metric: IMetric): IMetric => ({
       label: decamelize(_metric.label),
       value: _metric.value,
     })
   );
   const add = (ev: any) => {
-    filters = ev.map((filter: metric) => ({
+    filters = ev.map((filter: IMetric) => ({
       label: filter.label,
       value: filter.value,
     }));
@@ -119,9 +119,6 @@ export const SidebarItem: React.FC<{
       {!deleteConfirmation ? (
         <React.Fragment>
           <div className="sidebar__item-info">
-            {/* <button onClick={() => alert("testing")}>
-                            Click me
-                        </button> */}
             {!editing ? (
               <SidebarItemInfoView {...props} />
             ) : (

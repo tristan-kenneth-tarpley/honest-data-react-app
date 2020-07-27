@@ -13,11 +13,11 @@ import {
   setChartOrderOnPage,
 } from "../actions/dashboardActions";
 import {
-  chartListing,
+  IChartListing,
   ISafeChartListing,
-  metric,
-  filterable,
-  viewTypes,
+  IMetric,
+  IFilterable,
+  ViewTypes,
 } from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { DayRange } from "react-modern-calendar-datepicker";
@@ -31,13 +31,13 @@ import {
 } from "react-beautiful-dnd";
 
 interface sidebarContainer {
-  filterables: Array<filterable>;
-  chartListings: { [key: string]: chartListing };
+  filterables: Array<IFilterable>;
+  chartListings: { [key: string]: IChartListing };
   editChart: any;
   viewType: number;
   from: DayRange["from"];
   to: DayRange["to"];
-  dataViewType: viewTypes;
+  dataViewType: ViewTypes;
   addChart: (chart: ISafeChartListing) => void;
   deleteChart: (uid: string) => void;
   editChartWidth: (width: number, chartId: string) => void;
@@ -210,7 +210,7 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                   dispatchNewChart({
                     type: "ADD_FILTERABLE",
                     payload: {
-                      filterableToAdd: ev.map((filter: metric) => ({
+                      filterableToAdd: ev.map((filter: IMetric) => ({
                         label: filter.label,
                         value: filter.value,
                       })),

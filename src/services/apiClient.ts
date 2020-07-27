@@ -1,4 +1,4 @@
-import { metric } from "../types";
+import { IMetric } from "../types";
 import { DayRange } from "react-modern-calendar-datepicker";
 
 interface IAPIOptions {}
@@ -56,7 +56,7 @@ export default class APIClient {
 
 interface __filterData {
   data: Array<any>;
-  metrics: Array<metric>;
+  metrics: Array<IMetric>;
   shrink: boolean;
   from: DayRange["from"];
   to: DayRange["to"];

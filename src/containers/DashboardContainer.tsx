@@ -11,7 +11,7 @@ import { fetchData } from "../services/api";
 import { getFilterables } from "../apiUtils/filterables";
 import Dashboard from "../components/Dashboard";
 import SidebarContainer from "../containers/SidebarContainer";
-import { APIResponse, chartListing, filterable, viewTypes } from "../types";
+import { APIResponse, IChartListing, IFilterable, ViewTypes } from "../types";
 import { DayRange } from "react-modern-calendar-datepicker";
 
 interface RouteParams {
@@ -26,7 +26,7 @@ interface DashboardContainer {
   to: DayRange;
   editMode: () => void;
   chartListings: {
-    [key: string]: chartListing;
+    [key: string]: IChartListing;
   };
   hydrateDashboard: (data: APIResponse | null) => APIResponse;
   toggleEditMode: (data: boolean) => void;
@@ -49,7 +49,7 @@ const mapDispatchToProps = (dispatch: any) => {
     hydrateDashboard: (data: string) => dispatch(hydrateDashboard(data)),
     toggleEditMode: (data: boolean) => dispatch(toggleEditMode(data)),
     addChart: (data: any) => dispatch(addChart(data)),
-    setDataViewType: (viewType: viewTypes) =>
+    setDataViewType: (viewType: ViewTypes) =>
       dispatch(setDataViewType(viewType)),
   };
 };
@@ -59,7 +59,7 @@ const DashboardContainer: React.FC = (props: any) => {
   const params = useParams<RouteParams>();
   const { singleOrMulti, src, endpoint } = params;
   const { editMode } = props;
-  const filterablesDefinition: Array<filterable> = [];
+  const filterablesDefinition: Array<IFilterable> = [];
   const [filterables, updateFilterables] = useState(filterablesDefinition);
 
   useEffect(() => {

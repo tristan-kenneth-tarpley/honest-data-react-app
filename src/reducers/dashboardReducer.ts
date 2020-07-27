@@ -1,4 +1,4 @@
-import { chartListing, viewTypes } from "../types";
+import { IChartListing, ViewTypes } from "../types";
 import { v4 as uuidv4 } from "uuid";
 import { DayRange } from "react-modern-calendar-datepicker";
 import { stat } from "fs";
@@ -9,9 +9,9 @@ interface initialstate {
   to: DayRange["to"];
   data: any | null;
   editMode: boolean;
-  dataViewType: viewTypes;
+  dataViewType: ViewTypes;
   charts: {
-    [key: string]: chartListing;
+    [key: string]: IChartListing;
   };
 }
 
@@ -23,7 +23,7 @@ const initialState: initialstate = {
   to: null,
   data: null,
   editMode: true,
-  dataViewType: viewTypes.timeSeries,
+  dataViewType: ViewTypes.timeSeries,
   charts: {
     [initUID]: {
       orderOnPage: 0,

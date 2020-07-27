@@ -1,8 +1,8 @@
-import { chartListing } from "../types";
+import { IChartListing } from "../types";
 
 export default (
   draggedChartId: string,
-  charts: { [key: string]: chartListing },
+  charts: { [key: string]: IChartListing },
   desiredOrder: number,
   previousOrder: number
 ) => {
