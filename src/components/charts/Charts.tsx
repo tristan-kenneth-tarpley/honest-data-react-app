@@ -14,19 +14,16 @@ import {
   Legend,
 } from "recharts";
 import Styles from "../../styles/Styles";
+import { IFilterable } from "../../types";
 
 type value = string | number;
 type chartRecord = {
   [key: string]: value;
 };
-interface chart {
+interface IChart {
   uid: string;
   data: Array<chartRecord>;
   numLines?: number;
-}
-
-interface pieChart extends chart {
-  dataKey: any;
 }
 
 const COLORS = [
@@ -82,7 +79,7 @@ const ResponsiveContainerParent = (props: any) => {
 
 const filterData = (data: Array<chartRecord>) =>
   Object.keys(data[0]).filter((x) => x !== "name");
-export const LINE_CHART: React.FC<chart> = (props) => {
+export const LINE_CHART: React.FC<IChart> = (props) => {
   const lengths: Array<number> = props.data.map(
     (x: any) => Object.keys(x).length
   );
@@ -137,32 +134,21 @@ export const LINE_CHART: React.FC<chart> = (props) => {
   );
 };
 
-export const PIE_CHART: React.FC<pieChart> = (props) => {
+interface IPieChart extends IChart {
+  dataKey: any;
+  groupedBy: Array<IFilterable>;
+  groupingKey?: string;
+}
+export const PIE_CHART: React.FC<IPieChart> = (props) => {
   let [activeMetric, changeMetric] = useState(props.dataKey);
   const lengths: Array<number> = props.data.map(
     (x: any) => Object.keys(x).length
   );
   const max = Math.max.apply(Math, lengths);
-  const filtered = props.data.filter((x) => Object.keys(x).length >= max)[0];
-  const filteredKeys = Object.keys(filtered).filter((x) => x !== "date");
+  const filtered = props.data.filter((x) => Object.keys(x).length >= max);
+
   return (
     <React.Fragment>
-      <div className="metrics__selector">
-        Viewing:
-        {Object.keys(filtered).length > 0 &&
-          filteredKeys.map((filter: string, index: number) => {
-            const isActive = activeMetric === filter ? true : false;
-            return (
-              <span
-                key={index}
-                onClick={() => changeMetric(filter)}
-                className={isActive ? "active" : ""}
-              >
-                {filter}
-              </span>
-            );
-          })}
-      </div>
       <ResponsiveContainerParent>
         <PieChart width={Styles.chartWidth} height={Styles.chartHeight}>
           <Tooltip
@@ -173,15 +159,19 @@ export const PIE_CHART: React.FC<pieChart> = (props) => {
           <Legend wrapperStyle={{ top: -10, left: 25 }} />
           <Pie
             data={props.data}
-            dataKey={activeMetric}
+            dataKey={
+              Object.keys(props.data[0]).filter(
+                (key: string) => key !== "name"
+              )[0]
+            }
             innerRadius={30}
             outerRadius={75}
-            fill="#8884d8"
+            fill={Styles.blue}
             paddingAngle={2}
           >
-            {filteredKeys.map((key, index) => {
+            {props.data.map((key, index) => {
               const color = COLORS[index % COLORS.length];
-              return <Cell key={key} fill={color} />;
+              return <Cell key={key.label} fill={color} />;
             })}
           </Pie>
         </PieChart>
@@ -190,7 +180,7 @@ export const PIE_CHART: React.FC<pieChart> = (props) => {
   );
 };
 
-export const BAR_CHART: React.FC<chart> = (props) => {
+export const BAR_CHART: React.FC<IChart> = (props) => {
   const lengths: Array<number> = props.data.map(
     (x: any) => Object.keys(x).length
   );
@@ -257,7 +247,7 @@ export const BAR_CHART: React.FC<chart> = (props) => {
   );
 };
 
-export const STACKED_BAR_CHART: React.FC<chart> = (props) => {
+export const STACKED_BAR_CHART: React.FC<IChart> = (props) => {
   const filtered = filterData(props.data);
   return (
     <ResponsiveContainerParent>

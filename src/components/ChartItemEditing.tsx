@@ -99,8 +99,10 @@ export const ChartItemEditing: React.FC<IChartItemEditing> = (props) => {
       </Text>
       <Select
         id="select"
-        isMulti
-        onChange={props.addFilterableToList}
+        isMulti={props.activeChartType !== "pie"}
+        onChange={(ev: any) => {
+          props.addFilterableToList(ev.length ? ev : [ev]);
+        }}
         defaultValue={props.filters}
         name="colors"
         options={props.filterables}

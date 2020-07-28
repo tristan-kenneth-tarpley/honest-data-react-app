@@ -1,5 +1,5 @@
 import { DayRange, Day } from "react-modern-calendar-datepicker";
-import { IMetric, ViewTypes } from "../types";
+import { IMetric, ViewTypes, IFilterable } from "../types";
 
 interface __filterData {
   records: Array<any>;
@@ -55,7 +55,13 @@ export class DataViewModel {
     return false;
   }
 
-  clean() {
+  clean({
+    grouping,
+    groupingKey,
+  }: {
+    grouping?: IFilterable[];
+    groupingKey?: string;
+  }) {
     const { metrics, records, shrink, from, to } = this;
     const _metrics = this.groupCategory(metrics);
     const filters = _metrics.map((m) => m.value);
@@ -73,14 +79,26 @@ export class DataViewModel {
         return this.evalDate(_from, _to, _check) === true;
       });
     }
+    if (grouping && groupingKey) {
+      base = base.filter((record: any) =>
+        grouping.map((x) => x.value).includes(record[groupingKey])
+      );
+    }
 
     const returned = base.map((d: any) => {
       let filtered: any = {};
+
+      if (grouping && groupingKey) {
+        filtered.name = d[groupingKey];
+      }
+
       for (let key of Object.keys(d)) {
         if (filters.includes(key)) {
-          if (key === "date")
+          if (key === "date") {
             filtered[key] = new Date(d[key]).toLocaleDateString();
-          else filtered[key] = d[key];
+          } else {
+            filtered[key] = d[key];
+          }
         }
       }
       return filtered;

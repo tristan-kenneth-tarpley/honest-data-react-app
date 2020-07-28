@@ -8,6 +8,7 @@ import {
   IEndpointsKeys,
   APIResponse,
   ViewTypes,
+  IFilterable,
 } from "../types";
 import { ChartListing } from "./ChartListing";
 import { DayRange } from "react-modern-calendar-datepicker";
@@ -24,6 +25,7 @@ interface IDashboard {
   editMode: boolean;
   from: DayRange["from"];
   to: DayRange["to"];
+  groupingKey?: string;
   toggleEditMode: () => void;
   records: APIResponse["records"];
   isLoaded: boolean;
@@ -34,7 +36,6 @@ interface IDashboard {
 
 const Dashboard: React.FC<IDashboard> = (props) => {
   if (!props.isLoaded) return <Loader />;
-
   const { source, description, title, endpoints, src } = props;
   const sortedChartKeys = sortChartKeys(props.charts);
   return (
@@ -63,7 +64,10 @@ const Dashboard: React.FC<IDashboard> = (props) => {
               const data = new DataViewModel({
                 records: props.records,
                 metrics: chart.metrics,
-                shrink: props.records.length > 15 ? true : false,
+                shrink:
+                  chart.chartType !== "pie" && props.records.length > 15
+                    ? true
+                    : false,
                 from: from ? from : props.from,
                 to: to ? to : props.to,
                 viewType: props.viewType,
@@ -71,10 +75,15 @@ const Dashboard: React.FC<IDashboard> = (props) => {
               return (
                 <ChartListing
                   key={_chart}
+                  groupedBy={chart.groupedBy}
+                  groupingKey={props.groupingKey}
                   viewType={props.viewType}
                   metrics={chart.metrics}
                   colWidth={chart.width}
-                  data={data.clean()}
+                  data={data.clean({
+                    grouping: chart.groupedBy,
+                    groupingKey: props.groupingKey,
+                  })}
                   to={chart.to ? chart.to : props.to}
                   from={chart.from ? chart.from : props.from}
                   chartType={chart.chartType}

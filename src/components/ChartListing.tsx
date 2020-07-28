@@ -1,11 +1,11 @@
 import React from "react";
 import { Col } from "react-flexbox-grid";
 import Card from "./Card";
-import { IMetric } from "../types";
+import { IMetric, IFilterable } from "../types";
 import { LINE_CHART, PIE_CHART, BAR_CHART } from "./charts/Charts";
 import { DayRange } from "react-modern-calendar-datepicker";
 
-interface chartComponent {
+interface IChartComponent {
   metrics: Array<IMetric>;
   data: any;
   uid: string;
@@ -14,14 +14,23 @@ interface chartComponent {
   chartType: string;
   colWidth: number;
   viewType: number;
+  groupingKey?: string;
+  groupedBy?: Array<IFilterable>;
 }
-export const ChartListing: React.FC<chartComponent> = (props) => {
+export const ChartListing: React.FC<IChartComponent> = (props) => {
   const dataKey = props.metrics.filter((m) => m.value !== "date")[0].value;
-
   const chartTable: any = {
     line: <LINE_CHART uid={props.uid} data={props.data} />,
     bar: <BAR_CHART uid={props.uid} data={props.data} />,
-    pie: <PIE_CHART uid={props.uid} data={props.data} dataKey={dataKey} />,
+    pie: (
+      <PIE_CHART
+        uid={props.uid}
+        data={props.data}
+        dataKey={dataKey}
+        groupingKey={props.groupingKey}
+        groupedBy={props.groupedBy ? props.groupedBy : []}
+      />
+    ),
   };
   return (
     <Col className="parent" lg={props.colWidth} md={props.colWidth} sm={12}>

@@ -64,15 +64,29 @@ const initialState: initialstate = {
       editing: false,
       metrics: [
         {
-          label: "negative",
-          value: "negative",
-        },
-        {
           label: "positive",
           value: "positive",
         },
       ],
       chartType: "pie",
+      groupedBy: [
+        {
+          value: "AK",
+          label: "AK",
+        },
+        {
+          value: "CO",
+          label: "CO",
+        },
+        {
+          value: "FL",
+          label: "FL",
+        },
+        {
+          value: "TX",
+          label: "TX",
+        },
+      ],
     },
   },
 };
@@ -164,7 +178,6 @@ export const dashboardReducer = (state = initialState, action: _action) => {
       };
       break;
     case "GROUP_CHART_BY":
-      console.log(payload);
       state = {
         ...state,
         charts: {

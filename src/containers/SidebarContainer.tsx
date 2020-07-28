@@ -108,7 +108,6 @@ const BuildChartReducer = (
       };
       break;
     case "GROUP_BY":
-      console.log(payload);
       state = {
         [uid]: {
           ...state[uid],
