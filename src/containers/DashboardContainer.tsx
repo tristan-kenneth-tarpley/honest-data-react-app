@@ -68,7 +68,7 @@ const DashboardContainer: React.FC = (props: any) => {
     (async () => {
       hydrateDashboard(null);
       const data = await fetchData(singleOrMulti, src, endpoint);
-
+      console.log(data.records);
       if (data.groupedBy) {
         setGroupingKey(data.groupedBy);
         updateGroupedBy(
@@ -89,7 +89,7 @@ const DashboardContainer: React.FC = (props: any) => {
       setDataViewType(data.viewType);
     })();
   }, [endpoint, singleOrMulti, src, hydrateDashboard, setDataViewType]);
-
+  console.log(groupedByFields);
   const data = props.data ? props.data : {};
   const DashboardProps = {
     isLoaded: data.title ? true : false,

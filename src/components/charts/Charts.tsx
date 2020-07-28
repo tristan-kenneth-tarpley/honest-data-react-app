@@ -140,13 +140,6 @@ interface IPieChart extends IChart {
   groupingKey?: string;
 }
 export const PIE_CHART: React.FC<IPieChart> = (props) => {
-  let [activeMetric, changeMetric] = useState(props.dataKey);
-  const lengths: Array<number> = props.data.map(
-    (x: any) => Object.keys(x).length
-  );
-  const max = Math.max.apply(Math, lengths);
-  const filtered = props.data.filter((x) => Object.keys(x).length >= max);
-
   return (
     <React.Fragment>
       <ResponsiveContainerParent>
@@ -156,7 +149,7 @@ export const PIE_CHART: React.FC<IPieChart> = (props) => {
               new Intl.NumberFormat("en").format(value.toString())
             }
           />
-          <Legend wrapperStyle={{ top: -10, left: 25 }} />
+          <Legend wrapperStyle={{ top: -10, left: 5 }} />
           <Pie
             data={props.data}
             dataKey={
@@ -171,7 +164,7 @@ export const PIE_CHART: React.FC<IPieChart> = (props) => {
           >
             {props.data.map((key, index) => {
               const color = COLORS[index % COLORS.length];
-              return <Cell key={key.label} fill={color} />;
+              return <Cell key={index} fill={color} />;
             })}
           </Pie>
         </PieChart>

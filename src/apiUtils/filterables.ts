@@ -6,7 +6,7 @@ export const getFilterables = (recordKeys: any): Array<IFilterable> => {
 
   for (let i of recordKeys) {
     const disallowedKeys = ["internal", "flag"];
-    if (i !== "uid" && !disallowedKeys.includes(i)) {
+    if (i !== "uid" && !disallowedKeys.includes(i) && i !== "date") {
       filterables = [
         ...filterables,
         {

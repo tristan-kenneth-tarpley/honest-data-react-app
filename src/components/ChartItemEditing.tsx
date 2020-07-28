@@ -90,7 +90,10 @@ export const ChartItemEditing: React.FC<IChartItemEditing> = (props) => {
         defaultValue={colWidths.filter((w) => w.value === props.chartWidth)[0]}
         name="colors"
         options={colWidths}
-        onChange={(e: any) => props.setNewChartWidth(e.value)}
+        onChange={(e: any) => {
+          if (!e || e.length === 0) return;
+          props.setNewChartWidth(e.value);
+        }}
         classNamePrefix="select"
       />
       <br />
@@ -101,6 +104,7 @@ export const ChartItemEditing: React.FC<IChartItemEditing> = (props) => {
         id="select"
         isMulti={props.activeChartType !== "pie"}
         onChange={(ev: any) => {
+          if (!ev || ev.length === 0) return;
           props.addFilterableToList(ev.length ? ev : [ev]);
         }}
         defaultValue={props.filters}
@@ -121,7 +125,10 @@ export const ChartItemEditing: React.FC<IChartItemEditing> = (props) => {
               <Select
                 id="select"
                 isMulti
-                onChange={props.setGroupedBy}
+                onChange={(ev: any) => {
+                  if (!ev || ev.length === 0) return;
+                  props.setGroupedBy(ev);
+                }}
                 defaultValue={props.currentlyGroupedBy}
                 name="groupBy"
                 options={props.groupedByFields}
