@@ -1,32 +1,17 @@
 import React, { useState } from "react";
-import { IFilterable, ViewTypes } from "../types";
+import { IFilterable, ViewTypes, Charts } from "../types";
 import { ButtonPrimary, ButtonTertiary } from "../styles/Buttons";
 import { ChartSelection } from "./charts/ChartSelection";
 import Select from "react-select";
 import { Text } from "../styles/Typography";
 import { DateRange } from "./DateRange";
 import { DayRange } from "react-modern-calendar-datepicker";
+// @ts-ignore
+import { IChartItemEditing } from "./charts/ChartManagementTypes";
 
 const classNames = require("classnames");
 
-export const ChartItemEditing: React.FC<{
-  from: DayRange["from"];
-  to: DayRange["to"];
-  dataViewType: ViewTypes;
-  filterables: Array<IFilterable>;
-  error?: boolean;
-  setActiveChartType: any; //(() => void) | Dispatch<SetStateAction<string>>;
-  setChartDateRange: any; //({ from, to }: DayRange, chartId: string) => void;
-  setNewChartWidth: (newChartWidth: number) => void;
-  onSave: () => void;
-  addFilterableToList: (ev: any) => void;
-  chartWidth?: number;
-  activeChartType?: string;
-  uid?: string;
-  adding?: boolean;
-  toggleEditing?: () => void;
-  filters?: Array<any>;
-}> = (props) => {
+export const ChartItemEditing: React.FC<IChartItemEditing> = (props) => {
   const [date, renderDate] = useState<{
     from?: DayRange["from"];
     to?: DayRange["to"];
@@ -122,6 +107,30 @@ export const ChartItemEditing: React.FC<{
         className="basic-multi-select"
         classNamePrefix="select"
       />
+      <br />
+
+      {props.dataViewType === ViewTypes.categorized && props.groupedByFields && (
+        <React.Fragment>
+          {props.activeChartType === "pie" && (
+            <React.Fragment>
+              <Text size="sm" len="short">
+                Group by:
+              </Text>
+              <Select
+                id="select"
+                isMulti
+                onChange={props.setGroupedBy}
+                defaultValue={props.currentlyGroupedBy}
+                name="groupBy"
+                options={props.groupedByFields}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
+            </React.Fragment>
+          )}
+        </React.Fragment>
+      )}
+
       <div className="confirm__container">
         {props.adding ? (
           <ButtonPrimary onClick={props.onSave} id="addChart">

@@ -61,11 +61,26 @@ const DashboardContainer: React.FC = (props: any) => {
   const { editMode } = props;
   const filterablesDefinition: Array<IFilterable> = [];
   const [filterables, updateFilterables] = useState(filterablesDefinition);
+  const [groupedByFields, updateGroupedBy] = useState<Array<IFilterable>>([]);
 
   useEffect(() => {
     (async () => {
       hydrateDashboard(null);
       const data = await fetchData(singleOrMulti, src, endpoint);
+
+      if (data.groupedBy) {
+        updateGroupedBy(
+          [
+            // @ts-ignore
+            ...new Set([...data.records.map((r: any) => r[data.groupedBy])]),
+          ].map(
+            (x: string): IFilterable => ({
+              value: x,
+              label: x,
+            })
+          )
+        );
+      }
       updateFilterables(getFilterables(Object.keys(data.records[0])));
       hydrateDashboard(data);
       setDataViewType(data.viewType);
@@ -90,6 +105,7 @@ const DashboardContainer: React.FC = (props: any) => {
         <SidebarContainer
           filterables={filterables}
           viewType={DashboardProps.viewType}
+          groupedByFields={groupedByFields}
         />
       )}
 

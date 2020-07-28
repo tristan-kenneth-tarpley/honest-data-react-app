@@ -163,6 +163,19 @@ export const dashboardReducer = (state = initialState, action: _action) => {
         },
       };
       break;
+    case "GROUP_CHART_BY":
+      console.log(payload);
+      state = {
+        ...state,
+        charts: {
+          ...state.charts,
+          [payload.chartId]: {
+            ...state.charts[payload.chartId],
+            groupedBy: [...payload.groupedBy],
+          },
+        },
+      };
+      break;
     case "SET_DATE_RANGE":
       state = {
         ...state,

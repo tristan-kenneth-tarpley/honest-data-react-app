@@ -1,4 +1,4 @@
-import { IMetric, ViewTypes, ISafeChartListing } from "../types";
+import { IMetric, ViewTypes, ISafeChartListing, IFilterable } from "../types";
 import { DayRange } from "react-modern-calendar-datepicker";
 
 export const hydrateDashboard = (data: string) => {
@@ -103,3 +103,17 @@ export const setChartOrderOnPage = ({
     payload: { previousOrder, desiredOrder, chartId },
   };
 };
+
+export const groupChartBy = ({
+  chartId,
+  groupedBy,
+}: {
+  chartId: string;
+  groupedBy: Array<IFilterable>;
+}) => ({
+  type: "GROUP_CHART_BY",
+  payload: {
+    chartId,
+    groupedBy,
+  },
+});

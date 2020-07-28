@@ -5,6 +5,7 @@ import { editchart } from "../actions/dashboardActions";
 import { decamelize } from "../helpers";
 import { DayRange } from "react-modern-calendar-datepicker";
 import { ChartItemEditing } from "./ChartItemEditing";
+import { ISidebarItem } from "./charts/ChartManagementTypes";
 
 const SidebarItemInfoView: React.FC = (props: any) => {
   return (
@@ -46,24 +47,7 @@ const DeleteConfirmation: React.FC = (props: any) => {
   );
 };
 
-export const SidebarItem: React.FC<{
-  chartType: string;
-  uid: string;
-  filterables: Array<IFilterable>;
-  viewType: number;
-  from: DayRange["from"];
-  to: DayRange["to"];
-  dataViewType: ViewTypes;
-  setChartDateRange: (_date: DayRange, chartId: string) => void;
-  editChart: (chart: editchart) => void;
-  deleteChart: (uid: string) => void;
-  editChartWidth: (width: number, chartId: string) => void;
-  editChartType: (chart: { chartId: string; chartType: string }) => void;
-  chartOrderOnPage: number;
-  metrics: Array<IMetric>;
-  editing?: boolean;
-  chartWidth: number;
-}> = (props) => {
+export const SidebarItem: React.FC<ISidebarItem> = (props) => {
   const [editing, toggleEditing] = useState(false);
   const [deleteConfirmation, toggleDeleteConfirmation] = useState(false);
   const [newChartWidth, setNewChartWidth] = useState(props.chartWidth);
@@ -127,6 +111,14 @@ export const SidebarItem: React.FC<{
                 from={props.from}
                 to={props.to}
                 activeChartType={activeChartType}
+                groupedByFields={props.groupedByFields}
+                setGroupedBy={(groupedBy: any) =>
+                  props.setGroupedBy({
+                    chartId: props.uid,
+                    groupedBy,
+                  })
+                }
+                currentlyGroupedBy={props.currentlyGroupedBy}
                 dataViewType={props.dataViewType}
                 chartWidth={props.chartWidth}
                 addFilterableToList={add}

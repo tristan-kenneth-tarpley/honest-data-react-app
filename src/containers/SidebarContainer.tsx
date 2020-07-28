@@ -10,6 +10,7 @@ import {
   editChartType,
   setChartDateRange,
   setChartOrderOnPage,
+  groupChartBy,
 } from "../actions/dashboardActions";
 import {
   IChartListing,
@@ -37,6 +38,14 @@ interface sidebarContainer {
   from: DayRange["from"];
   to: DayRange["to"];
   dataViewType: ViewTypes;
+  groupedByFields: Array<IFilterable>;
+  setGroupedBy: ({
+    chartId,
+    groupedBy,
+  }: {
+    chartId: string;
+    groupedBy: Array<IFilterable>;
+  }) => void;
   addChart: (chart: ISafeChartListing) => void;
   deleteChart: (uid: string) => void;
   editChartWidth: (width: number, chartId: string) => void;
@@ -71,7 +80,6 @@ const BuildChartReducer = (
       };
       break;
     case "CHART_DATE_RANGE":
-      console.log(payload);
       state = {
         [uid]: {
           ...state[uid],
@@ -96,6 +104,16 @@ const BuildChartReducer = (
           ...state[uid],
           uid,
           metrics: [...payload.filterableToAdd],
+        },
+      };
+      break;
+    case "GROUP_BY":
+      console.log(payload);
+      state = {
+        [uid]: {
+          ...state[uid],
+          uid,
+          groupedBy: [...payload.groupedBy],
         },
       };
       break;
@@ -130,14 +148,12 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
   const onSave = () => {
     if (newChartState[newChartUID]?.metrics.length > 0) {
       props.addChart(newChartState);
-      console.log(newChartState);
       toggleError(false);
       toggleAdding(false);
     } else {
       toggleError(true);
     }
   };
-
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     const chartId = result.draggableId;
@@ -172,11 +188,13 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
 
             {adding && (
               <ChartItemEditing
+                uid={newChartUID}
                 filterables={props.filterables}
                 error={error}
                 dataViewType={props.dataViewType}
                 from={newChartState[newChartUID]?.from}
                 to={newChartState[newChartUID]?.to}
+                groupedByFields={props.groupedByFields}
                 activeChartType={newChartState[newChartUID]?.chartType}
                 setActiveChartType={(chartType: string) =>
                   dispatchNewChart({
@@ -201,6 +219,15 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                     type: "CHART_WIDTH",
                     payload: {
                       width,
+                      uid: newChartUID,
+                    },
+                  })
+                }
+                setGroupedBy={(groupedBy: any) =>
+                  dispatchNewChart({
+                    type: "GROUP_BY",
+                    payload: {
+                      groupedBy,
                       uid: newChartUID,
                     },
                   })
@@ -246,6 +273,9 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                           : props.to
                       }
                       viewType={props.viewType}
+                      currentlyGroupedBy={chartListings[chart].groupedBy}
+                      setGroupedBy={props.setGroupedBy}
+                      groupedByFields={props.groupedByFields}
                       metrics={chartListings[chart].metrics}
                       chartWidth={chartListings[chart].width}
                       editChartWidth={props.editChartWidth}
@@ -278,6 +308,13 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
+    setGroupedBy: ({
+      chartId,
+      groupedBy,
+    }: {
+      chartId: string;
+      groupedBy: Array<IFilterable>;
+    }) => dispatch(groupChartBy({ chartId, groupedBy })),
     setChartDateRange: (_date: DayRange, chartId: string) =>
       dispatch(setChartDateRange(_date, chartId)),
     editChart: (chart: any) => dispatch(editChart(chart)),
