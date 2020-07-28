@@ -7,7 +7,7 @@ import { Text } from "../styles/Typography";
 import { DateRange } from "./DateRange";
 import { DayRange } from "react-modern-calendar-datepicker";
 // @ts-ignore
-import { IChartItemEditing } from "./charts/ChartManagementTypes";
+import { IChartItemEditing } from "./charts/chartManagementTypes";
 
 const classNames = require("classnames");
 
