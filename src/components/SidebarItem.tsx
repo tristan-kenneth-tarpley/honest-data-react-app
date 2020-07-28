@@ -5,7 +5,7 @@ import { editchart } from "../actions/dashboardActions";
 import { decamelize } from "../helpers";
 import { DayRange } from "react-modern-calendar-datepicker";
 import { ChartItemEditing } from "./ChartItemEditing";
-import { ISidebarItem } from "./charts/ChartManagementTypes";
+import { ISidebarItem } from "./charts/chartManagementTypes";
 
 const SidebarItemInfoView: React.FC = (props: any) => {
   return (
