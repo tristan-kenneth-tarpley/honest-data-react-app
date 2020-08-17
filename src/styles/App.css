@@ -97,7 +97,8 @@ p .btn {
 .btn-primary:hover {
   opacity: 0.7;
 }
-.btn-primary.disabled {
+.btn-primary.disabled,
+.btn-primary:disabled {
   opacity: 0.5;
 }
 
@@ -481,6 +482,7 @@ div[class^="col"].parent {
   border: 1px solid transparent;
   padding: 1em 0;
   transition-duration: 0.2s;
+  cursor: pointer;
 }
 .chartSelector__item:hover i,
 .chartSelector__item:hover p {
@@ -644,6 +646,9 @@ div[class^="col"].parent {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding-bottom: 2em;
 }
+.related-data__container .helper {
+  margin: 0;
+}
 .related-data__container .sources {
   display: flex;
 }
@@ -672,6 +677,19 @@ div[class^="col"].parent {
   width: 100%;
   padding: 1.5em;
   justify-content: flex-start;
+}
+
+.listing.pairedDown {
+  background: transparent;
+  border-radius: none;
+  box-shadow: none;
+  flex-basis: auto;
+  padding: 0;
+  margin-right: 2rem;
+}
+.listing.pairedDown.active .title p,
+.listing.pairedDown:hover .title p {
+  color: var(--purple);
 }
 
 .listing.expanded .expanded {

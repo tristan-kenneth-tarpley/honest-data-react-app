@@ -82,38 +82,44 @@ export const ChartItemEditing: React.FC<IChartItemEditing> = (props) => {
         />
       </div>
       <br />
-      <Text size="sm" len="short">
-        Chart width:
-      </Text>
-      <Select
-        id="select"
-        defaultValue={colWidths.filter((w) => w.value === props.chartWidth)[0]}
-        name="colors"
-        options={colWidths}
-        onChange={(e: any) => {
-          if (!e || e.length === 0) return;
-          props.setNewChartWidth(e.value);
-        }}
-        classNamePrefix="select"
-      />
-      <br />
-      <Text size="sm" len="short">
-        Select the fields to view:
-      </Text>
-      <Select
-        id="select"
-        isMulti={props.activeChartType !== "pie"}
-        onChange={(ev: any) => {
-          if (!ev || ev.length === 0) return;
-          props.addFilterableToList(ev.length ? ev : [ev]);
-        }}
-        defaultValue={props.filters}
-        name="colors"
-        options={props.filterables}
-        className="basic-multi-select"
-        classNamePrefix="select"
-      />
-      <br />
+      {props.activeChartType && (
+        <React.Fragment>
+          <Text size="sm" len="short">
+            Chart width:
+          </Text>
+          <Select
+            id="select"
+            defaultValue={
+              colWidths.filter((w) => w.value === props.chartWidth)[0]
+            }
+            name="colors"
+            options={colWidths}
+            onChange={(e: any) => {
+              if (!e || e.length === 0) return;
+              props.setNewChartWidth(e.value);
+            }}
+            classNamePrefix="select"
+          />
+          <br />
+          <Text size="sm" len="short">
+            Select the fields to view:
+          </Text>
+          <Select
+            id="select"
+            isMulti={props.activeChartType !== "pie"}
+            onChange={(ev: any) => {
+              if (!ev || ev.length === 0) return;
+              props.addFilterableToList(ev.length ? ev : [ev]);
+            }}
+            defaultValue={props.filters}
+            name="colors"
+            options={props.filterables}
+            className="basic-multi-select"
+            classNamePrefix="select"
+          />
+          <br />
+        </React.Fragment>
+      )}
 
       {props.dataViewType === ViewTypes.categorized && props.groupedByFields && (
         <React.Fragment>
@@ -142,7 +148,11 @@ export const ChartItemEditing: React.FC<IChartItemEditing> = (props) => {
 
       <div className="confirm__container">
         {props.adding ? (
-          <ButtonPrimary onClick={props.onSave} id="addChart">
+          <ButtonPrimary
+            disabled={props.valid === false ? true : false}
+            onClick={props.onSave}
+            id="addChart"
+          >
             Add
           </ButtonPrimary>
         ) : (

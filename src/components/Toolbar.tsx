@@ -7,6 +7,7 @@ import { Helper } from "../styles/Typography";
 import { IDate, ViewTypes } from "../types";
 import { setDateRange } from "../actions/dashboardActions";
 import { DayRange } from "react-modern-calendar-datepicker";
+import styled from "styled-components";
 
 interface endpoint {
   key: string;
@@ -46,6 +47,7 @@ const RelatedData: React.FC<{
             src={src}
             active={_endpoint.active}
             decamelize={true}
+            pairedDown={true}
           />
         ))}
       </div>

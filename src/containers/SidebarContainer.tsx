@@ -29,6 +29,7 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
+import { getAllowableChartTypes } from "../components/charts/ChartSelection";
 
 interface sidebarContainer {
   filterables: Array<IFilterable>;
@@ -128,7 +129,6 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
   const sortedChartKeys = sortChartKeys(chartListings);
   const [adding, toggleAdding] = useState(false);
   const [error, toggleError] = useState(false);
-
   const newChartUID = useMemo(() => uuidv4(), [adding]);
   const initialChartState = useMemo(
     () => ({
@@ -160,6 +160,10 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
     const previousOrder = result.source.index;
     props.setChartOrderOnPage({ previousOrder, desiredOrder, chartId });
   };
+
+  const allowableCharts = getAllowableChartTypes(props.viewType)?.map(
+    (chartTypes) => chartTypes.name
+  );
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -195,6 +199,10 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                 to={newChartState[newChartUID]?.to}
                 groupedByFields={props.groupedByFields}
                 activeChartType={newChartState[newChartUID]?.chartType}
+                valid={
+                  newChartState[newChartUID]?.metrics?.length > 0 &&
+                  !!newChartState[newChartUID]?.chartType
+                }
                 setActiveChartType={(chartType: string) =>
                   dispatchNewChart({
                     type: "CHART_TYPE",
@@ -284,6 +292,7 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                       chartType={chartListings[chart].chartType}
                       filterables={props.filterables}
                       dataViewType={props.dataViewType}
+                      allowableCharts={allowableCharts}
                     />
                   </div>
                 )}

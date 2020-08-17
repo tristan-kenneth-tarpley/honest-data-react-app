@@ -98,14 +98,13 @@ export const SidebarItem: React.FC<ISidebarItem> = (props) => {
     setActiveChartType,
   };
 
+  const shouldShow = props.allowableCharts?.includes(activeChartType);
   return (
     <div className={`${editing ? "editing" : ""} sidebar__item`}>
       {!deleteConfirmation ? (
         <React.Fragment>
           <div className="sidebar__item-info">
-            {!editing ? (
-              <SidebarItemInfoView {...props} />
-            ) : (
+            {editing && shouldShow ? (
               <ChartItemEditing
                 uid={props.uid}
                 from={props.from}
@@ -130,20 +129,22 @@ export const SidebarItem: React.FC<ISidebarItem> = (props) => {
                 toggleEditing={() => toggleEditing(!editing)}
                 onSave={onSave}
               />
+            ) : (
+              <SidebarItemInfoView {...props} />
             )}
           </div>
-          {!editing && (
+          {!editing && shouldShow && (
             <div className="sidebar__item-edit">
               <i
                 onClick={() => toggleDeleteConfirmation(true)}
                 className="red far fa-times"
-              ></i>
+              />
               <i
                 onClick={() => {
                   toggleEditing(!editing);
                 }}
                 className="fad fa-edit"
-              ></i>
+              />
             </div>
           )}
         </React.Fragment>

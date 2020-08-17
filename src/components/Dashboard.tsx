@@ -15,6 +15,7 @@ import { DayRange } from "react-modern-calendar-datepicker";
 import { DataViewModel } from "../apiUtils/DataViewModel";
 import Loader from "./Loader";
 import { sortChartKeys } from "../utils/sortChartKeys";
+import { getAllowableChartTypes } from "./charts/ChartSelection";
 
 interface IDashboard {
   source: string;
@@ -38,6 +39,10 @@ const Dashboard: React.FC<IDashboard> = (props) => {
   if (!props.isLoaded) return <Loader />;
   const { source, description, title, endpoints, src } = props;
   const sortedChartKeys = sortChartKeys(props.charts);
+  const allowableCharts = getAllowableChartTypes(props.viewType).map(
+    (chartTypes) => chartTypes.name
+  );
+
   return (
     <React.Fragment>
       <Grid fluid>
@@ -58,7 +63,7 @@ const Dashboard: React.FC<IDashboard> = (props) => {
         />
         <Row>
           {sortedChartKeys.length > 0 ? (
-            sortedChartKeys.map((_chart: any) => {
+            sortedChartKeys.map((_chart: string) => {
               const chart = props.charts[_chart];
               const { from, to } = chart;
               const data = new DataViewModel({
@@ -88,6 +93,8 @@ const Dashboard: React.FC<IDashboard> = (props) => {
                   from={chart.from ? chart.from : props.from}
                   chartType={chart.chartType}
                   uid={_chart}
+                  allowableCharts={allowableCharts}
+                  editMode={props.editMode}
                 />
               );
             })

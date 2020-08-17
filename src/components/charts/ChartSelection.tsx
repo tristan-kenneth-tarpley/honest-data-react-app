@@ -4,76 +4,83 @@ import { Helper } from "../../styles/Typography";
 
 export const getAllowableChartTypes = (
   viewType: ViewTypes,
-  setActiveChartType: (() => void) | Dispatch<SetStateAction<string>>,
-  activeChartType: string
+  setActiveChartType?: (() => void) | Dispatch<SetStateAction<string>>,
+  activeChartType?: string
 ) => {
   interface IAllowableTypes {
     [key: number]: Array<{
       chart: Charts;
+      name: string;
       displayName: string;
       component: ReactNode;
     }>;
   }
 
+  const displayMode = !setActiveChartType ? false : true;
+
   const allowableTypes: IAllowableTypes = {
     [ViewTypes.categorized]: [
       {
         chart: Charts.pie,
+        name: "pie",
         displayName: "Pie chart",
-        component: (
+        component: displayMode ? (
           <ChartIcon
             key={`pie_chart-${Charts.bar}`}
-            onClick={setActiveChartType}
-            activeChartType={activeChartType}
+            onClick={setActiveChartType!}
+            activeChartType={activeChartType!}
             icon={<i className="fad fa-chart-pie"></i>}
             displayName="Pie Chart"
             chartType="pie"
           />
-        ),
+        ) : null,
       },
       {
         chart: Charts.bar,
+        name: "bar",
         displayName: "Bar chart",
-        component: (
+        component: displayMode ? (
           <ChartIcon
             key={`bar_chart-${Charts.bar}`}
-            onClick={setActiveChartType}
-            activeChartType={activeChartType}
+            onClick={setActiveChartType!}
+            activeChartType={activeChartType!}
             icon={<i className="fad fa-chart-bar"></i>}
             displayName="Bar chart"
             chartType="bar"
           />
-        ),
+        ) : null,
       },
     ],
     [ViewTypes.timeSeries]: [
       {
         chart: Charts.line,
+        name: "line",
         displayName: "Line chart",
-        component: (
+        component: displayMode ? (
           <ChartIcon
             key={`line_chart-${Charts.bar}`}
-            onClick={setActiveChartType}
-            activeChartType={activeChartType}
+            onClick={setActiveChartType!}
+            activeChartType={activeChartType!}
             icon={<i className="fad fa-chart-line"></i>}
             displayName="Line Chart"
             chartType="line"
           />
-        ),
+        ) : null,
       },
       {
         chart: Charts.bar,
+        name: "line",
         displayName: "Bar chart",
-        component: (
+        component: displayMode ? (
           <ChartIcon
             key={`bar_chart-${Charts.bar}`}
-            onClick={setActiveChartType}
-            activeChartType={activeChartType}
+            onClick={setActiveChartType!}
+            activeChartType={activeChartType!}
             icon={<i className="fad fa-chart-bar"></i>}
             displayName="Bar chart"
             chartType="bar"
           />
-        ),
+        ) : null,
       },
     ],
   };
@@ -110,6 +117,7 @@ export const ChartSelection: React.FC<{
     setActiveChartType,
     activeChartType
   );
+  console.log(activeChartType);
 
   return (
     <div className="chartSelection__container">

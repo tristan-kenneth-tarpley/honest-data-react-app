@@ -5,8 +5,7 @@ import { SearchTypes } from "../types";
 import { CompareSearch } from "./ComparableSearchField";
 import { SingleSourceSearchField } from "./SingleSourceSearchField";
 import APIClient from "../services/apiClient";
-
-const classNames = require("classnames");
+import classNames from "classnames";
 
 const Search: React.FC = () => {
   const [activeSearchField, setActiveSearchField] = useState(
@@ -15,11 +14,12 @@ const Search: React.FC = () => {
   const [availableEndpoints, setAvailableEndpoints] = useState<Array<any>>([]);
 
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       const api = new APIClient();
       const res = await api.get("/available_endpoints");
       setAvailableEndpoints(res);
-    })();
+    };
+    fetchData();
   }, []);
 
   return (

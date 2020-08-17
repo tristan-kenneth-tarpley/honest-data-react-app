@@ -23,6 +23,9 @@ const App = () => {
           path="/dashboard/:src/:singleOrMulti/:endpoint"
           component={DashboardContainer}
         />
+        <Route path="/">
+          <Search />
+        </Route>
       </Switch>
     </Router>
   );
