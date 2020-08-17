@@ -1,7 +1,7 @@
 import React from "react";
 import { decamelize } from "../helpers";
 import { Link } from "react-router-dom";
-import { Text, Helper } from "../styles/Typography";
+import { Text, Helper } from "./ui/Typography";
 const classNames = require("classnames");
 
 interface listing {

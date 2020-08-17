@@ -231,6 +231,18 @@ export const dashboardReducer = (state = initialState, action: _action) => {
       };
 
       break;
+    case "SET_CHART_NAME":
+      state = {
+        ...state,
+        charts: {
+          ...state.charts,
+          [action.payload.chartId]: {
+            ...state.charts[action.payload.chartId],
+            displayName: action.payload.value,
+          },
+        },
+      };
+      break;
     default:
       return state;
   }

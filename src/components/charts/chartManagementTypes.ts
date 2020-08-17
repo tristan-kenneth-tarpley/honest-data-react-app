@@ -40,6 +40,8 @@ export interface ISidebarItem extends IChartEditing {
   chartType: string;
   editChart: (chart: editchart) => void;
   allowableCharts: Array<string>;
+  setChartName?: (desiredName: string, chartId: string) => void;
+  chartDisplayName?: string;
 }
 
 export interface IChartItemEditing extends IChartEditing {
@@ -57,6 +59,8 @@ export interface IChartItemEditing extends IChartEditing {
   toggleEditing?: () => void;
   filters?: Array<any>;
   valid?: boolean;
+  setChartName?: (desiredName: string, chartId: string) => void;
+  chartDisplayName?: string;
 }
 
 export interface ISidebarContainer extends IBaseChartManagement {

@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useMemo } from "react";
-import { ButtonTertiary } from "../styles/Buttons";
+import { ButtonTertiary } from "../components/ui/Buttons";
 import { SidebarItem } from "../components/SidebarItem";
 import { connect } from "react-redux";
 import {
@@ -31,7 +31,7 @@ import {
 } from "react-beautiful-dnd";
 import { getAllowableChartTypes } from "../components/charts/ChartSelection";
 
-interface sidebarContainer {
+interface ISidebarContainer {
   filterables: Array<IFilterable>;
   chartListings: { [key: string]: IChartListing };
   editChart: any;
@@ -61,6 +61,7 @@ interface sidebarContainer {
     desiredOrder: number;
     chartId: string;
   }) => void;
+  setChartName?: (desiredName: string, chartId: string) => void;
 }
 
 const BuildChartReducer = (
@@ -117,6 +118,15 @@ const BuildChartReducer = (
         },
       };
       break;
+    case "CHART_NAME":
+      state = {
+        [uid]: {
+          ...state[uid],
+          uid,
+          displayName: payload.displayName,
+        },
+      };
+      break;
     default:
       return state;
   }
@@ -124,7 +134,7 @@ const BuildChartReducer = (
   return state;
 };
 
-const SidebarContainer: React.FC<sidebarContainer> = (props) => {
+const SidebarContainer: React.FC<ISidebarContainer> = (props) => {
   const { chartListings } = props;
   const sortedChartKeys = sortChartKeys(chartListings);
   const [adding, toggleAdding] = useState(false);
@@ -194,6 +204,7 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                 uid={newChartUID}
                 filterables={props.filterables}
                 error={error}
+                chartDisplayName={newChartState[newChartUID]?.displayName}
                 dataViewType={props.dataViewType}
                 from={newChartState[newChartUID]?.from}
                 to={newChartState[newChartUID]?.to}
@@ -251,6 +262,15 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                     },
                   })
                 }
+                setChartName={(ev: any) =>
+                  dispatchNewChart({
+                    type: "CHART_NAME",
+                    payload: {
+                      displayName: ev,
+                      uid: newChartUID,
+                    },
+                  })
+                }
                 onSave={onSave}
                 adding={adding}
               />
@@ -293,6 +313,8 @@ const SidebarContainer: React.FC<sidebarContainer> = (props) => {
                       filterables={props.filterables}
                       dataViewType={props.dataViewType}
                       allowableCharts={allowableCharts}
+                      setChartName={props.setChartName}
+                      chartDisplayName={chartListings[chart].displayName}
                     />
                   </div>
                 )}
@@ -341,6 +363,14 @@ const mapDispatchToProps = (dispatch: any) => {
       chartId: string;
     }) =>
       dispatch(setChartOrderOnPage({ previousOrder, desiredOrder, chartId })),
+    setChartName: (desiredName: string, chartId: string) =>
+      dispatch({
+        type: "SET_CHART_NAME",
+        payload: {
+          chartId,
+          value: desiredName,
+        },
+      }),
   };
 };
 

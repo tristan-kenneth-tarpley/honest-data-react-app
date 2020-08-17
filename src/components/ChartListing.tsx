@@ -5,13 +5,14 @@ import { IMetric, IFilterable } from "../types";
 import { LINE_CHART, PIE_CHART, BAR_CHART } from "./charts/Charts";
 import { DayRange } from "react-modern-calendar-datepicker";
 import styled from "styled-components/macro";
-import { Text } from "../styles/Typography";
+import { Text } from "./ui/Typography";
 import ReactTooltip from "react-tooltip";
 import Styles from "../styles/Styles";
 
 const InvalidChartType = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   & .tooltipCover {
     cursor: pointer;
     width: 1.7rem;
@@ -27,6 +28,16 @@ const InvalidChartType = styled.div`
     margin-left: 1rem;
   }
 `;
+
+const ChartInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  & .chart-header {
+    margin-bottom: 0 !important;
+  }
+`;
+
 interface IChartComponent {
   metrics: Array<IMetric>;
   data: any;
@@ -40,6 +51,7 @@ interface IChartComponent {
   groupingKey?: string;
   groupedBy?: Array<IFilterable>;
   allowableCharts?: Array<string>;
+  displayName?: string;
 }
 export const ChartListing: React.FC<IChartComponent> = (props) => {
   const dataKey = props.metrics.filter((m) => m.value !== "date")[0].value;
@@ -59,6 +71,22 @@ export const ChartListing: React.FC<IChartComponent> = (props) => {
     ),
   };
 
+  const ChartMetaInfo = (
+    <React.Fragment>
+      {props.metrics.map((metric_: IMetric, index: number) => {
+        return `${metric_.label}${
+          index < props.metrics.length - 1 ? ", " : ""
+        }`;
+      })}{" "}
+      {props.from && props.to && (
+        <span className="helper sub chart-info">
+          ({`${props.from.month}-${props.from.day}-${props.from.year} `}
+          to {`${props.to.month}-${props.to.day}-${props.to.year}`})
+        </span>
+      )}
+    </React.Fragment>
+  );
+
   const shouldShow = props.allowableCharts?.includes(props.chartType);
 
   return (
@@ -70,19 +98,10 @@ export const ChartListing: React.FC<IChartComponent> = (props) => {
       sm={12}
     >
       <Card>
-        <h5>
-          {props.metrics.map((metric_: IMetric, index: number) => {
-            return `${metric_.label}${
-              index < props.metrics.length - 1 ? ", " : ""
-            }`;
-          })}{" "}
-          {props.from && props.to && (
-            <span className="helper sub chart-info">
-              ({`${props.from.month}-${props.from.day}-${props.from.year} `}
-              to {`${props.to.month}-${props.to.day}-${props.to.year}`})
-            </span>
-          )}
-        </h5>
+        <ChartInfoContainer>
+          <h5 className="chart-header">{props.displayName}</h5>
+          <div className="chart-meta">{ChartMetaInfo}</div>
+        </ChartInfoContainer>
 
         {shouldShow ? (
           <React.Fragment>{chartTable[props.chartType]}</React.Fragment>

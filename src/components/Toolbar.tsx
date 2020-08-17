@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Listing } from "./Listing";
 import { Grid, Row, Col } from "react-flexbox-grid";
 import { DateRange } from "./DateRange";
-import { Helper } from "../styles/Typography";
+import { Helper } from "./ui/Typography";
 import { IDate, ViewTypes } from "../types";
 import { setDateRange } from "../actions/dashboardActions";
 import { DayRange } from "react-modern-calendar-datepicker";

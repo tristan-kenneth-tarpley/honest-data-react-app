@@ -23,6 +23,7 @@ export interface IChartListing {
   to?: DayRange["to"];
   editing?: boolean;
   groupedBy?: Array<IFilterable>;
+  displayName?: string;
 }
 
 export interface ISafeChartListing {
@@ -36,6 +37,7 @@ export interface ISafeChartListing {
     to?: DayRange["to"];
     editing?: boolean;
     groupedBy?: Array<IFilterable>;
+    displayName?: string;
   };
 }
 

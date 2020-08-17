@@ -1,29 +1,35 @@
 import React, { useState } from "react";
-import { IFilterable, IMetric, ViewTypes } from "../types";
-import { ButtonSecondary, ButtonTertiary } from "../styles/Buttons";
-import { editchart } from "../actions/dashboardActions";
+import { IMetric } from "../types";
+import { ButtonSecondary, ButtonTertiary } from "./ui/Buttons";
 import { decamelize } from "../helpers";
-import { DayRange } from "react-modern-calendar-datepicker";
 import { ChartItemEditing } from "./ChartItemEditing";
 import { ISidebarItem } from "./charts/chartManagementTypes";
+import { Text, Helper } from "./ui/Typography";
 
 const SidebarItemInfoView: React.FC = (props: any) => {
   return (
     <React.Fragment>
-      <p>
+      {props.chartDisplayName && (
+        <Text size="lg" len="long">
+          <strong>{props.chartDisplayName}</strong>
+        </Text>
+      )}
+      <Text size="sm" len="short">
         {props.metrics.map((metric_: IMetric, index: number) => {
           return `${metric_.label}${
             index < props.metrics.length - 1 ? " + " : ""
           }`;
         })}
-      </p>
-      <span className="helper sub chart-info">
-        {decamelize(props.chartType)} chart
-      </span>
+      </Text>
+      <Helper>
+        <strong>{decamelize(props.chartType)} chart</strong>
+      </Helper>
       {props.from && props.to && (
         <span className="helper sub chart-info">
-          {`${props.from.month}-${props.from.day}-${props.from.year} `}
-          to {`${props.to.month}-${props.to.day}-${props.to.year}`}
+          <strong>
+            {`${props.from.month}-${props.from.day}-${props.from.year} `}
+            to {`${props.to.month}-${props.to.day}-${props.to.year}`}
+          </strong>
         </span>
       )}
     </React.Fragment>
@@ -128,6 +134,8 @@ export const SidebarItem: React.FC<ISidebarItem> = (props) => {
                 setNewChartWidth={setNewChartWidth}
                 toggleEditing={() => toggleEditing(!editing)}
                 onSave={onSave}
+                setChartName={props.setChartName}
+                chartDisplayName={props.chartDisplayName}
               />
             ) : (
               <SidebarItemInfoView {...props} />

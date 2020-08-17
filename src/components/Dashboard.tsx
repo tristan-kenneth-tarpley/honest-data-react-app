@@ -2,7 +2,7 @@ import React from "react";
 
 import { Grid, Row, Col } from "react-flexbox-grid";
 import Toolbar from "../components/Toolbar";
-import { ButtonPrimary } from "../styles/Buttons";
+import { ButtonPrimary } from "./ui/Buttons";
 import {
   IChartListing,
   IEndpointsKeys,
@@ -16,6 +16,7 @@ import { DataViewModel } from "../apiUtils/DataViewModel";
 import Loader from "./Loader";
 import { sortChartKeys } from "../utils/sortChartKeys";
 import { getAllowableChartTypes } from "./charts/ChartSelection";
+import InputField from "./ui/InputField";
 
 interface IDashboard {
   source: string;
@@ -61,6 +62,7 @@ const Dashboard: React.FC<IDashboard> = (props) => {
           src={src}
           dataViewType={props.viewType}
         />
+
         <Row>
           {sortedChartKeys.length > 0 ? (
             sortedChartKeys.map((_chart: string) => {
@@ -77,6 +79,7 @@ const Dashboard: React.FC<IDashboard> = (props) => {
                 to: to ? to : props.to,
                 viewType: props.viewType,
               });
+
               return (
                 <ChartListing
                   key={_chart}
@@ -95,6 +98,7 @@ const Dashboard: React.FC<IDashboard> = (props) => {
                   uid={_chart}
                   allowableCharts={allowableCharts}
                   editMode={props.editMode}
+                  displayName={chart.displayName}
                 />
               );
             })

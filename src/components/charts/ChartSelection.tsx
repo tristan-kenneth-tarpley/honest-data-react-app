@@ -1,6 +1,6 @@
 import React, { ReactNode, Dispatch, SetStateAction } from "react";
 import { ViewTypes, Charts } from "../../types";
-import { Helper } from "../../styles/Typography";
+import { Helper } from "../ui/Typography";
 
 export const getAllowableChartTypes = (
   viewType: ViewTypes,
@@ -117,7 +117,6 @@ export const ChartSelection: React.FC<{
     setActiveChartType,
     activeChartType
   );
-  console.log(activeChartType);
 
   return (
     <div className="chartSelection__container">

@@ -1,15 +1,23 @@
 import React, { useState } from "react";
 import { IFilterable, ViewTypes, Charts } from "../types";
-import { ButtonPrimary, ButtonTertiary } from "../styles/Buttons";
+import { ButtonPrimary, ButtonTertiary } from "./ui/Buttons";
 import { ChartSelection } from "./charts/ChartSelection";
 import Select from "react-select";
-import { Text } from "../styles/Typography";
+import { Text } from "./ui/Typography";
 import { DateRange } from "./DateRange";
 import { DayRange } from "react-modern-calendar-datepicker";
 // @ts-ignore
 import { IChartItemEditing } from "./charts/chartManagementTypes";
+import classNames from "classnames";
+import InputField from "./ui/InputField";
+import styled from "styled-components/macro";
 
-const classNames = require("classnames");
+const ChartItemEditingContainer = styled.div`
+  & .set-chart-name__input {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+`;
 
 export const ChartItemEditing: React.FC<IChartItemEditing> = (props) => {
   const [date, renderDate] = useState<{
@@ -43,133 +51,147 @@ export const ChartItemEditing: React.FC<IChartItemEditing> = (props) => {
   ];
 
   return (
-    <div
-      className={classNames({
-        "chart-item-editing__container": true,
-        adding: props.adding,
-        editing: !props.adding,
-      })}
-    >
-      {props.dataViewType === ViewTypes.timeSeries && (
-        <React.Fragment>
-          <Text size="sm" len="long">
-            Date range:
-            <span onClick={() => onResetDate()} className="reset">
-              reset to default{" "}
-            </span>
-          </Text>
-          <DateRange
-            from={date.from ? date.from : props.from}
-            to={date.to ? date.to : props.to}
-            chartId={props.uid}
-            setDateRange={(_date: DayRange) => {
-              renderDate({ from: _date.from, to: _date.to });
-              if (_date.from && _date.to) {
-                props.setChartDateRange(_date, props.uid);
-              }
-            }}
-          />
-        </React.Fragment>
-      )}
-      <Text size="sm" len="short">
-        Chart type:
-      </Text>
-      <div className="sidebar__item-edit-chartSelector">
-        <ChartSelection
-          dataViewType={props.dataViewType}
-          setActiveChartType={props.setActiveChartType}
-          activeChartType={props.activeChartType!}
-        />
-      </div>
-      <br />
-      {props.activeChartType && (
-        <React.Fragment>
-          <Text size="sm" len="short">
-            Chart width:
-          </Text>
-          <Select
-            id="select"
-            defaultValue={
-              colWidths.filter((w) => w.value === props.chartWidth)[0]
-            }
-            name="colors"
-            options={colWidths}
-            onChange={(e: any) => {
-              if (!e || e.length === 0) return;
-              props.setNewChartWidth(e.value);
-            }}
-            classNamePrefix="select"
-          />
-          <br />
-          <Text size="sm" len="short">
-            Select the fields to view:
-          </Text>
-          <Select
-            id="select"
-            isMulti={props.activeChartType !== "pie"}
-            onChange={(ev: any) => {
-              if (!ev || ev.length === 0) return;
-              props.addFilterableToList(ev.length ? ev : [ev]);
-            }}
-            defaultValue={props.filters}
-            name="colors"
-            options={props.filterables}
-            className="basic-multi-select"
-            classNamePrefix="select"
-          />
-          <br />
-        </React.Fragment>
-      )}
-
-      {props.dataViewType === ViewTypes.categorized && props.groupedByFields && (
-        <React.Fragment>
-          {props.activeChartType === "pie" && (
-            <React.Fragment>
-              <Text size="sm" len="short">
-                Group by:
-              </Text>
-              <Select
-                id="select"
-                isMulti
-                onChange={(ev: any) => {
-                  if (!ev || ev.length === 0) return;
-                  props.setGroupedBy(ev);
-                }}
-                defaultValue={props.currentlyGroupedBy}
-                name="groupBy"
-                options={props.groupedByFields}
-                className="basic-multi-select"
-                classNamePrefix="select"
-              />
-            </React.Fragment>
-          )}
-        </React.Fragment>
-      )}
-
-      <div className="confirm__container">
-        {props.adding ? (
-          <ButtonPrimary
-            disabled={props.valid === false ? true : false}
-            onClick={props.onSave}
-            id="addChart"
-          >
-            Add
-          </ButtonPrimary>
-        ) : (
+    <ChartItemEditingContainer>
+      <div
+        className={classNames({
+          "chart-item-editing__container": true,
+          adding: props.adding,
+          editing: !props.adding,
+        })}
+      >
+        {props.dataViewType === ViewTypes.timeSeries && (
           <React.Fragment>
-            <ButtonTertiary
-              onClick={props.toggleEditing}
-              id="sidebar__item-save"
-            >
-              Cancel
-            </ButtonTertiary>
-            <ButtonTertiary onClick={props.onSave} id="sidebar__item-save">
-              Save
-            </ButtonTertiary>
+            <Text size="sm" len="long">
+              Date range:
+              <span onClick={() => onResetDate()} className="reset">
+                reset to default{" "}
+              </span>
+            </Text>
+            <DateRange
+              from={date.from ? date.from : props.from}
+              to={date.to ? date.to : props.to}
+              chartId={props.uid}
+              setDateRange={(_date: DayRange) => {
+                renderDate({ from: _date.from, to: _date.to });
+                if (_date.from && _date.to) {
+                  props.setChartDateRange(_date, props.uid);
+                }
+              }}
+            />
           </React.Fragment>
         )}
+        <Text size="sm" len="short">
+          Name this chart (optional):
+        </Text>
+        <InputField
+          className="set-chart-name__input"
+          value={props.chartDisplayName}
+          onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
+            props.setChartName?.(ev.target.value, props.uid)
+          }
+        />
+
+        <br />
+        <Text size="sm" len="short">
+          Chart type:
+        </Text>
+        <div className="sidebar__item-edit-chartSelector">
+          <ChartSelection
+            dataViewType={props.dataViewType}
+            setActiveChartType={props.setActiveChartType}
+            activeChartType={props.activeChartType!}
+          />
+        </div>
+        <br />
+        {props.activeChartType && (
+          <React.Fragment>
+            <Text size="sm" len="short">
+              Chart width:
+            </Text>
+            <Select
+              id="select"
+              defaultValue={
+                colWidths.filter((w) => w.value === props.chartWidth)[0]
+              }
+              name="colors"
+              options={colWidths}
+              onChange={(e: any) => {
+                if (!e || e.length === 0) return;
+                props.setNewChartWidth(e.value);
+              }}
+              classNamePrefix="select"
+            />
+            <br />
+            <Text size="sm" len="short">
+              Select the fields to view:
+            </Text>
+            <Select
+              id="select"
+              isMulti={props.activeChartType !== "pie"}
+              onChange={(ev: any) => {
+                if (!ev || ev.length === 0) return;
+                props.addFilterableToList(ev.length ? ev : [ev]);
+              }}
+              defaultValue={props.filters}
+              name="colors"
+              options={props.filterables}
+              className="basic-multi-select"
+              classNamePrefix="select"
+            />
+            <br />
+          </React.Fragment>
+        )}
+
+        {props.dataViewType === ViewTypes.categorized && props.groupedByFields && (
+          <React.Fragment>
+            {props.activeChartType === "pie" && (
+              <React.Fragment>
+                <Text size="sm" len="short">
+                  Group by:
+                </Text>
+                <Select
+                  id="select"
+                  isMulti
+                  onChange={(ev: any) => {
+                    if (!ev || ev.length === 0) return;
+                    props.setGroupedBy(ev);
+                  }}
+                  defaultValue={props.currentlyGroupedBy}
+                  name="groupBy"
+                  options={props.groupedByFields}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                />
+              </React.Fragment>
+            )}
+          </React.Fragment>
+        )}
+
+        <div className="confirm__container">
+          {props.adding ? (
+            <ButtonPrimary
+              disabled={props.valid === false ? true : false}
+              onClick={props.onSave}
+              id="addChart"
+            >
+              Add
+            </ButtonPrimary>
+          ) : (
+            <React.Fragment>
+              <ButtonTertiary
+                onClick={props.toggleEditing}
+                id="sidebar__item-save"
+              >
+                Cancel
+              </ButtonTertiary>
+              <ButtonTertiary onClick={props.onSave} id="sidebar__item-save">
+                Save
+              </ButtonTertiary>
+            </React.Fragment>
+          )}
+        </div>
       </div>
-    </div>
+    </ChartItemEditingContainer>
   );
 };
 
