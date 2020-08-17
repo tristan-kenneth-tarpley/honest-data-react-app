@@ -9,7 +9,7 @@ import { Text, Helper } from "./ui/Typography";
 const SidebarItemInfoView: React.FC = (props: any) => {
   return (
     <React.Fragment>
-      {props.chartDisplayName && (
+      {props.chartDisplayName && props.chartDisplayName !== "" && (
         <Text size="lg" len="long">
           <strong>{props.chartDisplayName}</strong>
         </Text>
