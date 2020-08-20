@@ -12,7 +12,6 @@ export default class APIClient {
     } else {
       url = "https://api.honestdata.world";
     }
-    console.log(url);
     this.url = url;
 
     this.options = {};
