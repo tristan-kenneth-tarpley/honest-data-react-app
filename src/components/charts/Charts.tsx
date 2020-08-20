@@ -153,7 +153,7 @@ export const PIE_CHART: React.FC<IPieChart> = (props) => {
           <Pie
             data={props.data}
             dataKey={
-              Object.keys(props.data[0]).filter(
+              Object.keys(props.data[0] ? props.data[0] : {}).filter(
                 (key: string) => key !== "name"
               )[0]
             }

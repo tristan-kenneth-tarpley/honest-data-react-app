@@ -8,10 +8,11 @@ export default class APIClient {
   constructor() {
     let url;
     if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-      url = "http://127.0.0.1:5000";
+      url = "http://localhost:5000";
     } else {
       url = "https://api.honestdata.world";
     }
+    console.log(url);
     this.url = url;
 
     this.options = {};
