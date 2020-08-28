@@ -8,6 +8,7 @@ import styled from "styled-components/macro";
 import { Text } from "./ui/Typography";
 import ReactTooltip from "react-tooltip";
 import Styles from "../styles/Styles";
+import { IChartComponent } from "./blocks/models";
 
 const InvalidChartType = styled.div`
   display: flex;
@@ -38,21 +39,6 @@ const ChartInfoContainer = styled.div`
   }
 `;
 
-interface IChartComponent {
-  metrics: Array<IMetric>;
-  data: any;
-  uid: string;
-  to: DayRange["to"];
-  from: DayRange["from"];
-  chartType: string;
-  colWidth: number;
-  viewType: number;
-  editMode: boolean;
-  groupingKey?: string;
-  groupedBy?: Array<IFilterable>;
-  allowableCharts?: Array<string>;
-  displayName?: string;
-}
 export const ChartListing: React.FC<IChartComponent> = (props) => {
   const dataKey = props.metrics.filter((m) => m.value !== "date")[0].value;
   const chartTable: {
