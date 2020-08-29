@@ -1,101 +1,76 @@
-import { IChartListing, ViewTypes } from "../types";
+import { IChartListing, ViewTypes } from "../../types";
 import { DayRange } from "react-modern-calendar-datepicker";
-import reorderCharts from "../utils/reorderCharts";
+import {
+  BlockTypes,
+  PossibleControlInterfaces,
+  PossibleShapeInterfaces,
+  IBlock,
+} from "../../components/blocks/models";
+import IChartComponent from "../../components/blocks/shapes/IChartComponent";
+import { IReducer } from "../reducers";
 
-interface initialstate {
+interface IInitialState {
   from: DayRange["from"];
   to: DayRange["to"];
   data: any | null;
   editMode: boolean;
   dataViewType: ViewTypes;
-  charts: {
-    [key: string]: IChartListing;
+  blocks: {
+    [key: string]: IBlock<PossibleControlInterfaces, PossibleShapeInterfaces>;
   };
 }
 
 const initUID: string = "first"; //uuidv4();
 const secondUID: string = "second"; //uuidv4();
 const thirdUID: string = "third";
-const initialState: initialstate = {
+const initialState: IInitialState = {
   from: null,
   to: null,
   data: null,
   editMode: true,
   dataViewType: ViewTypes.timeSeries,
-  charts: {
-    [initUID]: {
-      orderOnPage: 0,
-      width: 12,
-      uid: initUID,
-      editing: false,
-      metrics: [
-        {
-          label: "negative",
-          value: "negative",
-        },
-        {
-          label: "positive",
-          value: "positive",
-        },
-      ],
+  blocks: {},
+};
+
+initialState.blocks[initUID] = {
+  uid: initUID,
+  orderOnPage: 0,
+  blockType: BlockTypes.chart,
+  component: undefined,
+  editing: false,
+  viewType: 0,
+  displayProperties: {
+    colWidth: 12,
+    shouldShow: true,
+    className: "hi",
+  },
+  payload: {
+    properties: {
       chartType: "line",
-    },
-    [secondUID]: {
-      orderOnPage: 1,
-      width: 6,
-      uid: secondUID,
-      editing: false,
+      from: undefined,
+      to: undefined,
+      data: [
+        {
+          value: "tx",
+          label: "TX",
+        },
+      ],
+      editMode: false,
       metrics: [
         {
           label: "negative",
           value: "negative",
         },
         {
-          label: "pending",
-          value: "pending",
-        },
-      ],
-      chartType: "bar",
-    },
-    [thirdUID]: {
-      orderOnPage: 2,
-      width: 6,
-      uid: thirdUID,
-      editing: false,
-      metrics: [
-        {
           label: "positive",
           value: "positive",
-        },
-      ],
-      chartType: "pie",
-      groupedBy: [
-        {
-          value: "AK",
-          label: "AK",
-        },
-        {
-          value: "CO",
-          label: "CO",
-        },
-        {
-          value: "FL",
-          label: "FL",
-        },
-        {
-          value: "TX",
-          label: "TX",
         },
       ],
     },
   },
 };
-interface _action {
-  type: string;
-  payload: any;
-}
 
-export const dashboardReducer = (state = initialState, action: _action) => {
+export const dashboardReducer: IReducer = (state = {}, action) => {
   const { type, payload } = action;
   switch (type) {
     case "HYDRATE_DASHBOARD":

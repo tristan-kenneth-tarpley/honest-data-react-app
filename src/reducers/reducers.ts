@@ -1,7 +1,15 @@
-import {searchTypeReducer} from './searchReducer'
-import {dashboardReducer} from './dashboardReducer'
+import { searchTypeReducer } from "./searchReducer";
+import { chartReducer } from "./reactReducers/chartReducer";
+import { dashboardReducer } from "./reduxReducers/dashboardReducer";
+
+interface IAction {
+  type: string;
+  payload: any;
+}
+
+export type IReducer = (state: any, action: IAction) => any;
 
 export default {
-    searchTypeReducer,
-    dashboardReducer
-}
+  searchTypeReducer,
+  dashboardReducer,
+};

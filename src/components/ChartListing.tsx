@@ -8,7 +8,7 @@ import styled from "styled-components/macro";
 import { Text } from "./ui/Typography";
 import ReactTooltip from "react-tooltip";
 import Styles from "../styles/Styles";
-import { IChartComponent } from "./blocks/models";
+import IChartComponent from "./blocks/shapes/IChartComponent";
 
 const InvalidChartType = styled.div`
   display: flex;

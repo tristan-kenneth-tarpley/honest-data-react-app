@@ -1,44 +1,42 @@
 import React from "react";
 import { IMetric, IFilterable } from "../../types";
 import { DayRange } from "react-modern-calendar-datepicker";
+import IMarkdownBlockControls from "./controls/IMarkdownBlockControls";
+import IChartBlockControls from "./controls/IChartBlockControls";
+import IImageBlockControls from "./controls/IImageBlockControls";
+import IVideoBlockControls from "./controls/IVideoBlockControls";
+import IChartComponent from "./shapes/IChartComponent";
 
-enum BlockTypes {
+export enum BlockTypes {
   chart,
   markdown,
   image,
   video,
 }
 
-export interface IChartBlockControls {}
+export type PossibleControlInterfaces =
+  | IChartBlockControls
+  | IMarkdownBlockControls
+  | IImageBlockControls
+  | IVideoBlockControls;
 
-export interface IMarkdownBlockControls {}
-
-export interface IImageBlockControls {}
-
-export interface IVideoBlockControls {}
-
-export interface IChartComponent {
-  metrics: Array<IMetric>;
-  data: any;
-  uid: string;
-  to: DayRange["to"];
-  from: DayRange["from"];
-  chartType: string;
-  colWidth: number;
-  viewType: number;
-  editMode: boolean;
-  groupingKey?: string;
-  groupedBy?: Array<IFilterable>;
-  allowableCharts?: Array<string>;
-  displayName?: string;
-}
+export type PossibleShapeInterfaces = IChartComponent;
 
 export interface IBlock<ControlsInterface, ShapeInterface> {
+  uid: string;
+  orderOnPage: number;
   blockType: BlockTypes;
-  component: React.ReactNode;
-  title: string;
+  component?: React.ReactNode;
+  displayName?: string;
+  viewType: number;
+  editing: boolean;
+  displayProperties: {
+    colWidth: number;
+    shouldShow: boolean;
+    className: string;
+  };
   payload: {
-    controls: ControlsInterface;
-    shape: ShapeInterface;
+    controls?: ControlsInterface;
+    properties: ShapeInterface;
   };
 }
